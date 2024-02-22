@@ -1,4 +1,4 @@
-package com.example.market;
+package com.example.market.controller;
 
 import com.example.market.jwt.JwtRequestDto;
 import com.example.market.jwt.JwtResponseDto;

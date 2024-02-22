@@ -65,10 +65,4 @@ public class WebSecurityConfig {
                 );
         return http.build();
     }
-
-//    @Bean
-//    // 비밀번호 암호화 클래스
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 }
