@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 public class JwtTokenUtils {
     // JWT를 만드는 용도의 암호키
     private final Key signingKey;
+    // JWT를 해석하는 용도의 객체
+    private final JwtParser jwtParser;
 
     public JwtTokenUtils(
             @Value("${jwt.secret}")
@@ -27,6 +29,10 @@ public class JwtTokenUtils {
         log.info(jwtSecret);
         this.signingKey
                 = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        this.jwtParser = Jwts
+                .parserBuilder()
+                .setSigningKey(this.signingKey)
+                .build();
     }
 
     // UserDetails 를 받아서 JWT로 변환하는 메서드
@@ -41,12 +47,32 @@ public class JwtTokenUtils {
                 // iat : 언제 발급 되었는지
                 .setIssuedAt(Date.from(now))
                 // exp : 언제 만료 예정인지
-                .setExpiration(Date.from(now.plusSeconds(20L)));
+                .setExpiration(Date.from(now.plusSeconds(60 * 60 * 24 * 7)));
 
         // 최종적으로 JWT를 발급한다.
         return Jwts.builder()
                 .setClaims(jwtClaims)
                 .signWith(this.signingKey)
                 .compact();
+    }
+
+    // 정상적인 JWT인지 판단하는 메서드
+    public boolean validate(String token) {
+        try {
+            // 정상적이지 않은 JWT라면 예외(Exception)가 발생한다.
+            jwtParser.parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            log.warn("invalid jwt");
+        }
+        return false;
+    }
+
+    // JWT를 인자로 받고, 그 JWT를 해석해서 사용자 정보를 회수하는 메서드
+    // 실제 데이터(Payload)를 반환하는 메서드
+    public Claims parseClaims(String token) {
+        return jwtParser
+                .parseClaimsJwt(token)
+                .getBody();
     }
 }
