@@ -20,8 +20,7 @@ public class UserDto {
     private int age;
     private String email;
     private String phoneNumber;
-
+    private String authorities;
     private String profileImage;
 
-    // static factory method : UserEntity 객체에서 UserDto로 변환
 }

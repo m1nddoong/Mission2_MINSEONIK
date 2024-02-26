@@ -33,14 +33,20 @@ public class UserEntity{
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
+    @Setter
     private String nickname;
+    @Setter
     private String name;
+    @Setter
     private int age;
+    @Setter
     private String email;
+    @Setter
     private String phoneNumber;
 
     // 테스트를 위해서 문자열 하나에 ','로 구분해 권한을 묘사
     // ROLE_USER,ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY
+    @Setter
     private String authorities;
 
     @Setter

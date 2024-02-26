@@ -36,25 +36,17 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         createUser(CustomUserDetails.builder()
                 .username("user1")
                 .password(passwordEncoder.encode("password1"))
-                .nickname("Alex")
-                .name("알렉스")
-                .age(20)
                 .email("user1@gmail.com")
                 .phoneNumber("01012345678")
-                // .authorities("ROLE_USER,READ_AUTHORITY")
-                .authorities("Regular User")
+                .authorities("ROLE_USER,READ_AUTHORITY")
                 .build());
 
         createUser(CustomUserDetails.builder()
                 .username("admin1")
                 .password(passwordEncoder.encode("password1"))
-                .nickname("Brad")
-                .name("브래드")
-                .age(26)
                 .email("admin1@gmail.com")
                 .phoneNumber("01011112222")
-                // .authorities("ROLE_ADMIN,WRITE_AUTHORITY")
-                .authorities("Admin")
+                .authorities("ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY")
                 .build());
     }
 
@@ -72,9 +64,6 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         return CustomUserDetails.builder()
                 .username(userEntity.getUsername())
                 .password(userEntity.getPassword())
-                .nickname(userEntity.getNickname())
-                .name(userEntity.getName())
-                .age(userEntity.getAge())
                 .email(userEntity.getEmail())
                 .phoneNumber(userEntity.getPhoneNumber())
                 .build();

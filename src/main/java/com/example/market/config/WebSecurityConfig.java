@@ -52,6 +52,13 @@ public class WebSecurityConfig {
                                         "/users/register"
                                 )
                                 .anonymous()
+
+                                // ROLE에 따른 접근 설정
+                                .requestMatchers("/auth/user-role")
+                                .hasAnyRole("USER", "ADMIN")
+
+                                .requestMatchers("/auth/admin-role")
+                                .hasAnyRole("ADMIN")
                 )
                 // JWT를 사용하기 떄문에 보안 관련 세션 해제
                 .sessionManagement(
