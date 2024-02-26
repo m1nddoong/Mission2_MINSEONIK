@@ -39,6 +39,11 @@ public class UserController {
         UserEntity userEntity = UserEntity.builder()
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
+                .nickname(dto.getNickname())
+                .name(dto.getName())
+                .age(dto.getAge())
+                .email(dto.getEmail())
+                .phoneNumber(dto.getPhoneNumber())
                 .build();
 
         // 사용자 등록

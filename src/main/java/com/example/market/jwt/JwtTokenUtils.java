@@ -72,7 +72,7 @@ public class JwtTokenUtils {
     // 실제 데이터(Payload)를 반환하는 메서드
     public Claims parseClaims(String token) {
         return jwtParser
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 }
