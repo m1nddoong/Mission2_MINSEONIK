@@ -68,11 +68,26 @@ public class JwtTokenUtils {
         return false;
     }
 
-    // JWT를 인자로 받고, 그 JWT를 해석해서 사용자 정보를 회수하는 메서드
+    // JWT를 인자로 받고, 그 JWT를 해석해서 그 안에 포함된 JWT의 클레임(Claims)을 가져오는 메서드
     // 실제 데이터(Payload)를 반환하는 메서드
     public Claims parseClaims(String token) {
         return jwtParser
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+
+    // JWT 토큰에서 사용자 이름 추출
+    public String getUsernameFromToken(String token) {
+        try {
+            // JWT 토큰 해석하여 클레임 추출
+            Claims claims = parseClaims(token);
+
+            // 클레임에서 사용자 이름 추출
+            return claims.getSubject();
+        } catch (Exception e) {
+            // 오류 처리
+            return null;
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.market.service;
 
 import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,7 @@ public class UserService {
     public void save(UserEntity userEntity) {
         userRepository.save(userEntity);
     }
+
+
 
 }

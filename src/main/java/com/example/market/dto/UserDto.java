@@ -1,5 +1,6 @@
 package com.example.market.dto;
 
+import com.example.market.entity.UserEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,8 @@ public class UserDto {
     private int age;
     private String email;
     private String phoneNumber;
+
+    private String profileImage;
+
+    // static factory method : UserEntity 객체에서 UserDto로 변환
 }

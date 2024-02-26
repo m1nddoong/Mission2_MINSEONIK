@@ -41,7 +41,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .age(20)
                 .email("user1@gmail.com")
                 .phoneNumber("01012345678")
-                .authorities("ROLE_USER,READ_AUTHORITY")
+                // .authorities("ROLE_USER,READ_AUTHORITY")
+                .authorities("Regular User")
                 .build());
 
         createUser(CustomUserDetails.builder()
@@ -52,7 +53,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .age(26)
                 .email("admin1@gmail.com")
                 .phoneNumber("01011112222")
-                .authorities("ROLE_ADMIN,WRITE_AUTHORITY")
+                // .authorities("ROLE_ADMIN,WRITE_AUTHORITY")
+                .authorities("Admin")
                 .build());
     }
 

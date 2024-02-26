@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -41,5 +42,8 @@ public class UserEntity{
     // 테스트를 위해서 문자열 하나에 ','로 구분해 권한을 묘사
     // ROLE_USER,ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY
     private String authorities;
+
+    @Setter
+    private String profileImage;
 
 }
