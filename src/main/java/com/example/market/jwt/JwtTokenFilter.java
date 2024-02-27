@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -56,18 +58,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         .parseClaims(token)
                         .getSubject();
 
-                log.info("Username extracted from JWT token : {}", username);
-                // 사용자 이름을 SecurityContextHolder에 저장
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(username, token)
-                );
+                UserDetails userDetails = manager.loadUserByUsername(username);
+                for (GrantedAuthority authority : userDetails.getAuthorities()) {
+                    log.info("authority: {}", authority.getAuthority());
+                }
 
                 // 인증 정보 생성
                 AbstractAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                // manager에서 실제 사용자 정보 조회
-                                manager.loadUserByUsername(username),
-                                token, new ArrayList<>()
+                                userDetails,
+                                token,
+                                userDetails.getAuthorities()
                         );
                 // 인증 정보 등록
                 context.setAuthentication(authentication);

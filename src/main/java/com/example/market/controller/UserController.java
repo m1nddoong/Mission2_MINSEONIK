@@ -10,14 +10,19 @@ import com.example.market.service.UserService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -91,24 +96,8 @@ public class UserController {
             userEntity.setAge(dto.getAge());
             userEntity.setEmail(dto.getEmail());
             userEntity.setPhone(dto.getPhone());
-            userEntity.setAuthorities("ROLE_REGULAR_USER"); // 일반 사용자로 승급
+            userEntity.setAuthorities("ROLE_USER"); // 일반 사용자로 승급
             userRepository.save(userEntity);
-
-            // 업데이트된 사용자 정보로 UserDetails 생성
-            UserDetails updatedUserDetails = CustomUserDetails.fromEntity(userEntity);
-
-            // SecurityContext 업데이트
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null) {
-                // 현재 인증 정보를 가져와서 새로운 UserDetails로 업데이트
-                Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
-                        updatedUserDetails,
-                        authentication.getCredentials(),
-                        updatedUserDetails.getAuthorities()
-                );
-                SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-            }
-
 
             return ResponseEntity.status(HttpStatus.OK).body("프로필 추가 정보 작성 완료!");
         } else {

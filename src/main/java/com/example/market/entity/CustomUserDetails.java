@@ -30,6 +30,7 @@ public class CustomUserDetails implements UserDetails {
     private int age;
     private String email;
     private String phone;
+    @Setter
     private String authorities;
     private String avatar;
     private String businessNumber;
@@ -55,17 +56,22 @@ public class CustomUserDetails implements UserDetails {
     // 새로운 객체 생성 메서드
     public UserEntity newEntity() {
         UserEntity entity = new UserEntity();
-        entity.setUsername(username);
-        entity.setPassword(password);
-        entity.setNickname(nickname);
-        entity.setEmail(email);
-        entity.setPhone(phone);
-        entity.setAge(age);
-        entity.setAuthorities(authorities);
+        entity.setUsername(this.username);
+        entity.setPassword(this.password);
+        entity.setNickname(this.nickname);
+        entity.setEmail(this.email);
+        entity.setPhone(this.phone);
+        entity.setAge(this.age);
+        entity.setAuthorities(this.authorities);
         return entity;
     }
 
 
+    // 기존 CustomUserDetails 클래스 내에서
+//    public CustomUserDetails withAuthorities(String authorities) {
+//        this.authorities = authorities;
+//        return this;
+//    }
 
 
     public String getRawAuthorities() {

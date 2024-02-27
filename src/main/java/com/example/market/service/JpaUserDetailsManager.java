@@ -48,9 +48,9 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         if (optionalUser.isEmpty())
             throw new UsernameNotFoundException(username);
 
-        return CustomUserDetails.fromEntity(optionalUser.get());
+        UserEntity userEntity = optionalUser.get();
+        return CustomUserDetails.fromEntity(userEntity);
 
-        // UserEntity userEntity = optionalUser.get();
         /*return User.withUsername(username)
                 .password(optionalUser.get().getPassword())
                 .build();*/
@@ -64,6 +64,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
         try {
             CustomUserDetails userDetails = (CustomUserDetails) user;
+            // userEntity에 있는 authorities 를 포함하여 userDetails 를 만들고 레포에 저장
             this.userRepository.save(userDetails.newEntity());
 
 

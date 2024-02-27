@@ -42,15 +42,13 @@ public class WebSecurityConfig {
                                         "/token/issue",
                                         "/token/validate",
                                         "/users/profile-info",
-                                        "/users/avatar",
-                                        "/auth/regular-user-role"
+                                        "/users/avatar"
 
                                 )
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정 (모두)
                                 .permitAll()
                                 .requestMatchers(
                                         "/users/my-profile"
-
 
                                 )
                                 .authenticated()
@@ -61,8 +59,8 @@ public class WebSecurityConfig {
                                 .anonymous()
 
                                 // ROLE에 따른 접근 설정
-                                // .requestMatchers("/auth/regular-user-role")
-                                // .hasRole("REGULAR_USER")
+                                .requestMatchers("/auth/user-role")
+                                .hasAnyRole("USER", "ADMIN")
 
                                 .requestMatchers("/auth/admin-role")
                                 .hasRole("ADMIN")
