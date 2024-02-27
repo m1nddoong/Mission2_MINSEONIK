@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // UserEntity를 바탕으로 Spring Security 내부에서
@@ -20,20 +22,51 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    @Getter
     private Long id;
     private String username;
     private String password;
     private String nickname;
     private String name;
     private int age;
-    @Getter
     private String email;
-    @Getter
-    private String phoneNumber;
-
-    // 권한 데이터를 담기 위한 속성
+    private String phone;
     private String authorities;
+    private String avatar;
+    private String businessNumber;
+
+    // OptionalUser 라는 레포지토리로부터 조회한 사용자 엔티티 정보를 가지고
+    // CustomUserDetails형 객체로 변환하는 과정
+    public static CustomUserDetails fromEntity(UserEntity entity) {
+        CustomUserDetails details = new CustomUserDetails();
+        details.id = entity.getId();
+        details.username = entity.getUsername();
+        details.password = entity.getPassword();
+        details.nickname = entity.getNickname();
+        details.email = entity.getEmail();
+        details.phone = entity.getPhone();
+        details.age = entity.getAge();
+        details.authorities = entity.getAuthorities();
+        details.avatar = entity.getAvatar();
+        details.businessNumber = entity.getBusinessNumber();
+        return details;
+    }
+
+
+    // 새로운 객체 생성 메서드
+    public UserEntity newEntity() {
+        UserEntity entity = new UserEntity();
+        entity.setUsername(username);
+        entity.setPassword(password);
+        entity.setNickname(nickname);
+        entity.setEmail(email);
+        entity.setPhone(phone);
+        entity.setAge(age);
+        entity.setAuthorities(authorities);
+        return entity;
+    }
+
+
+
 
     public String getRawAuthorities() {
         return this.authorities;
@@ -70,8 +103,6 @@ public class CustomUserDetails implements UserDetails {
     }
 
 
-
-
     // 먼 미래
     @Override
     public boolean isAccountNonExpired() {
@@ -92,4 +123,9 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+
+
 }

@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
@@ -36,31 +39,33 @@ public class WebSecurityConfig {
                         auth -> auth
                                 // 어떤 경로에 대한 설정인지
                                 .requestMatchers(
-                                        "/no-auth",
                                         "/token/issue",
                                         "/token/validate",
                                         "/users/profile-info",
-                                        "/users/avatar"
+                                        "/users/avatar",
+                                        "/auth/regular-user-role"
 
                                 )
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정 (모두)
                                 .permitAll()
                                 .requestMatchers(
-                                        "/re-auth",
                                         "/users/my-profile"
+
+
                                 )
                                 .authenticated()
+
                                 .requestMatchers(
-                                        "/users/register"
+                                        "/users/signup"
                                 )
                                 .anonymous()
 
                                 // ROLE에 따른 접근 설정
-                                .requestMatchers("/auth/user-role")
-                                .hasAnyRole("USER", "ADMIN")
+                                // .requestMatchers("/auth/regular-user-role")
+                                // .hasRole("REGULAR_USER")
 
                                 .requestMatchers("/auth/admin-role")
-                                .hasAnyRole("ADMIN")
+                                .hasRole("ADMIN")
                 )
                 // JWT를 사용하기 떄문에 보안 관련 세션 해제
                 .sessionManagement(
@@ -73,5 +78,19 @@ public class WebSecurityConfig {
                         new JwtTokenFilter(jwtTokenUtils, manager), AuthorizationFilter.class
                 );
         return http.build();
+    }
+
+    //    @Bean
+    // 사용자 정보 관리 클래스
+    public UserDetailsManager userDetailsManager(
+            PasswordEncoder passwordEncoder
+    ) {
+        // 사용자 1
+        UserDetails user1 = User.withUsername("user1")
+                .password(passwordEncoder.encode("password1"))
+                .build();
+        // Spring Security에서 기본으로 제공하는,
+        // 메모리 기반 사용자 관리 클래스 + 사용자 1
+        return new InMemoryUserDetailsManager(user1);
     }
 }

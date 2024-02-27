@@ -6,6 +6,7 @@ import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @Slf4j
 //@RequiredArgsConstructor
 @Service
+// UserDetailsManager는 UserDetailsService 를 상속받은 인터페이스
 public class JpaUserDetailsManager implements UserDetailsManager {
     private final UserRepository userRepository;
 
@@ -27,24 +29,18 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     ) {
         this.userRepository = userRepository;
         // 오롯이 테스트 목적의 사용자를 추가하는 용도
-        /*createUser(User.withUsername("user1")
-                .password(passwordEncoder.encode("password1"))
-                .build());
-        createUser(User.withUsername("user2")
-                .password(passwordEncoder.encode("password2"))
-                .build());*/
         createUser(CustomUserDetails.builder()
                 .username("관리자")
                 .password(passwordEncoder.encode("admin1234"))
                 .email("admin@gmail.com")
-                .phoneNumber("010-9999-5555")
+                .phone("010-9999-5555")
                 .authorities("ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY")
                 .build());
     }
 
     @Override
-    // formLogin 등 Spring Security 내부에서
-    // 인증을 처리할때 사용하는 메서드이다.
+    // Spring Security 내부에서 인증을 처리할때 사용하는 메서드
+    // : username 을 가지고 사용자 정보(CustomUserDetails )를 반환
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         Optional<UserEntity> optionalUser
@@ -52,14 +48,9 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         if (optionalUser.isEmpty())
             throw new UsernameNotFoundException(username);
 
-        UserEntity userEntity = optionalUser.get();
-        return CustomUserDetails.builder()
-                .username(userEntity.getUsername())
-                .password(userEntity.getPassword())
-                .email(userEntity.getEmail())
-                .phoneNumber(userEntity.getPhoneNumber())
-                .build();
+        return CustomUserDetails.fromEntity(optionalUser.get());
 
+        // UserEntity userEntity = optionalUser.get();
         /*return User.withUsername(username)
                 .password(optionalUser.get().getPassword())
                 .build();*/
@@ -67,37 +58,28 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
     @Override
     // 편의를 위해 같은 규약으로 회원가입을 하는 메서드
-    public void createUser(UserDetails user) {
+    public void createUser(UserDetails user) { // 이거는 그 제공된 user 객체다.
         if (userExists(user.getUsername()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         try {
-            CustomUserDetails userDetails =
-                    (CustomUserDetails) user;
-            UserEntity newUser = UserEntity.builder()
-                    .username(userDetails.getUsername())
-                    .password(userDetails.getPassword())
-                    .email(userDetails.getEmail())
-                    .phoneNumber(userDetails.getPhoneNumber())
-                    .authorities(userDetails.getRawAuthorities())
-                    .build();
-            userRepository.save(newUser);
+            CustomUserDetails userDetails = (CustomUserDetails) user;
+            this.userRepository.save(userDetails.newEntity());
+
+
         } catch (ClassCastException e) {
             log.error("Failed Cast to: {}", CustomUserDetails.class);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        /*UserEntity userEntity = UserEntity.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .build();
-        userRepository.save(userEntity);*/
     }
 
     @Override
     public boolean userExists(String username) {
         return userRepository.existsByUsername(username);
     }
+
+
+
 
     // 나중에...
     @Override
