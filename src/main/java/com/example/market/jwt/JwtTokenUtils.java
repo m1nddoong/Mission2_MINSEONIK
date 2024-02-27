@@ -35,7 +35,11 @@ public class JwtTokenUtils {
                 .build();
     }
 
-    // UserDetails 를 받아서 JWT로 변환하는 메서드
+    /**
+     * userDetails 를 받아서 클레임으로 만들고, JWT로 변환하는 메서드
+     * @param userDetails
+     * @return
+     */
     public String generateToken(UserDetails userDetails) {
         // JWT에 담고싶은 정보를 Claims로 만든다.
 
@@ -56,7 +60,12 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    // 정상적인 JWT인지 판단하는 메서드
+
+    /**
+     * 토큰을 검증하여 정상적인 JWT 인지 판단하는 메서드
+     * @param token
+     * @return
+     */
     public boolean validate(String token) {
         try {
             // 정상적이지 않은 JWT라면 예외(Exception)가 발생한다.
@@ -68,26 +77,17 @@ public class JwtTokenUtils {
         return false;
     }
 
-    // JWT를 인자로 받고, 그 JWT를 해석해서 그 안에 포함된 JWT의 클레임(Claims)을 가져오는 메서드
-    // 실제 데이터(Payload)를 반환하는 메서드
+
+    /**
+     * JWT 토큰을 인자로 받고, 그것을 해석하여
+     * 그 안에 포함된 JWT의 클레임(Claims - 실제 데이터(Payload))을 반환하는 메서드
+     * @param token
+     * @return
+     */
     public Claims parseClaims(String token) {
         return jwtParser
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-
-    // JWT 토큰에서 사용자 이름 추출
-    public String getUsernameFromToken(String token) {
-        try {
-            // JWT 토큰 해석하여 클레임 추출
-            Claims claims = parseClaims(token);
-
-            // 클레임에서 사용자 이름 추출
-            return claims.getSubject();
-        } catch (Exception e) {
-            // 오류 처리
-            return null;
-        }
-    }
 }

@@ -16,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+// Request 이전에 1회 작동할 필터
 @Slf4j
 //@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -53,13 +55,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String username = jwtTokenUtils
                         .parseClaims(token)
                         .getSubject();
+
                 log.info("Username extracted from JWT token : {}", username);
+                // 사용자 이름을 SecurityContextHolder에 저장
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(username, token)
+                );
+
                 // 인증 정보 생성
                 AbstractAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-//                                CustomUserDetails.builder()
-//                                        .username(username)
-//                                        .build(),
                                 // manager에서 실제 사용자 정보 조회
                                 manager.loadUserByUsername(username),
                                 token, new ArrayList<>()

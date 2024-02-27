@@ -34,18 +34,10 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .password(passwordEncoder.encode("password2"))
                 .build());*/
         createUser(CustomUserDetails.builder()
-                .username("user1")
-                .password(passwordEncoder.encode("password1"))
-                .email("user1@gmail.com")
-                .phoneNumber("01012345678")
-                .authorities("ROLE_USER,READ_AUTHORITY")
-                .build());
-
-        createUser(CustomUserDetails.builder()
-                .username("admin1")
-                .password(passwordEncoder.encode("password1"))
-                .email("admin1@gmail.com")
-                .phoneNumber("01011112222")
+                .username("관리자")
+                .password(passwordEncoder.encode("admin1234"))
+                .email("admin@gmail.com")
+                .phoneNumber("010-9999-5555")
                 .authorities("ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY")
                 .build());
     }
