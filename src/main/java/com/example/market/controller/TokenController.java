@@ -68,14 +68,14 @@ public class TokenController {
         return response;
     }
 
-    @GetMapping("/validate")
-    public Claims validateToken(
-            @RequestParam("token")
-            String token
-    ) {
-        if (!jwtTokenUtils.validate(token))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
-        return jwtTokenUtils.parseClaims(token);
-    }
+//    @GetMapping("/validate")
+//    public Claims validateToken(
+//            @RequestParam("token")
+//            String token
+//    ) {
+//        if (!jwtTokenUtils.validate(token))
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//
+//        return jwtTokenUtils.parseClaims(token);
+//    }
 }

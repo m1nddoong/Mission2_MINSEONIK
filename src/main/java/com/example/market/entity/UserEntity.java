@@ -33,6 +33,7 @@ public class UserEntity{
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
+
     @Setter
     private String nickname;
     @Setter
@@ -50,6 +51,6 @@ public class UserEntity{
     private String authorities;
 
     @Setter
-    private String profileImage;
+    private String avatar;
 
 }

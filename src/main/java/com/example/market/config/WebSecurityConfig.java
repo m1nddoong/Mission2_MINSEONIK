@@ -38,7 +38,9 @@ public class WebSecurityConfig {
                                 .requestMatchers(
                                         "/no-auth",
                                         "/token/issue",
-                                        "/token/validate"
+                                        "/token/validate",
+                                        "/users/profile-info",
+                                        "/users/avatar"
 
                                 )
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정 (모두)

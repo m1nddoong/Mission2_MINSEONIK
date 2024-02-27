@@ -21,6 +21,6 @@ public class UserDto {
     private String email;
     private String phoneNumber;
     private String authorities;
-    private String profileImage;
+    private String avatar;
 
 }

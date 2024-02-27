@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -20,28 +21,6 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
-
-    public void updateUserProfile(
-        String username,
-        UserDto dto
-    ) {
-        Optional<UserEntity> optionalUser = userRepository.findByUsername(username);
-        log.info("Username extracted from JWT token: {}", username);
-        if (optionalUser.isEmpty()) {
-            // 사용자가 존재하지 않는 경우 예외 처리
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-
-        // 사용자가 존재하는 경우 프로필 정보 업데이트
-        UserEntity userEntity = optionalUser.get();
-        userEntity.setNickname(dto.getNickname());
-        userEntity.setNickname(dto.getName());
-        userEntity.setAge(dto.getAge());
-        userEntity.setEmail(dto.getEmail());
-        userEntity.setPhoneNumber(dto.getPhoneNumber());
-
-        userRepository.save(userEntity);
-    }
 
     // ResponseEntity 타입은 HTTP 응답을 좀 더 상세하게 제어하고
     // 다양한 상태 코드와 본문을 클라이언트에게 반환하기 위함.

@@ -17,7 +17,7 @@ public class AuthorizationController {
     }
 
     // ROLE_ADMIN 을 가졌을 때 요청 가능
-    @GetMapping("/user-role")
+    @GetMapping("/admin-role")
     public String adminRole() {
         return "adminRole";
     }
