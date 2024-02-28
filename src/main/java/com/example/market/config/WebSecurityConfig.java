@@ -62,7 +62,8 @@ public class WebSecurityConfig {
                                         "/auth/user-role",
                                         "/users/register-business",
                                         "/items",
-                                        "/items/register"
+                                        "/items/register",
+                                        "/items/register-image"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 

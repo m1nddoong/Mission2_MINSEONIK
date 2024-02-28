@@ -31,7 +31,7 @@ public class ItemDto {
                 .price(item.getPrice())
                 .imageUrl(item.getImageUrl())
                 .status(item.getStatus())
-                .writer(item.getWriter().getUsername())
+                //.writer(item.getWriter().getUsername())
                 .build();
     }
 

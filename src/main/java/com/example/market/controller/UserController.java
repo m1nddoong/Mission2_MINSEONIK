@@ -127,8 +127,8 @@ public class UserController {
             @RequestParam("file")
             MultipartFile multipartFile
     ) throws IOException {
+        // 현재 인증된 사용자의 정보 가져오기
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         // 데이터베이스에서 사용자 정보 가져오기
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
         if (optionalUserEntity.isPresent()) {
@@ -143,7 +143,7 @@ public class UserController {
                 log.error(e.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("디렉토리 생성 실패");
             }
-            // 파일 업로드: media/{username}/profile.{확장자}
+            // 파일 조합: media/{username}/profile.{확장자}
             String originalFilename = multipartFile.getOriginalFilename();
             String[] fileNameSplit = originalFilename.split("\\.");
             String extension = fileNameSplit[fileNameSplit.length - 1];
@@ -155,7 +155,7 @@ public class UserController {
             log.info(profilePath);
 
             // 업로드된 파일의 URL 저장
-            String requestPath = String.format("/static/%s/%s", username, profileFilename);
+            String requestPath = String.format("/media/%s/%s", username, profileFilename);
             userEntity.setAvatar(requestPath);
             userRepository.save(userEntity);
             // 성공적으로 업로드된 메시지 반환
