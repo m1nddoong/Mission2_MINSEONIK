@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -146,4 +147,23 @@ public class ItemController {
     }
 
 
+    /**
+     * 물품 수정
+     * @param dto
+     * @return
+     */
+    @PutMapping("/update")
+    public ResponseEntity<String> updateItem(
+        @RequestBody
+        ItemDto dto
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (itemService.updateItem(dto, username)) {
+            return ResponseEntity.ok("물품이 성공적으로 수정되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("물품을 찾을 수 없습니다.");
+        }
+    }
+
+    // 물품 삭제
 }

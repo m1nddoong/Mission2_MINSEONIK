@@ -10,6 +10,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,9 +20,11 @@ import org.springframework.web.server.ResponseStatusException;
 // @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository) {
         this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
 
         if (this.itemRepository.count() == 0) {
             String username = "Admin";
@@ -50,4 +53,20 @@ public class ItemService {
     }
 
 
+    // 물품을 수정하는 서비스
+    public boolean updateItem(ItemDto dto, String username) {
+        Optional<Item> optionalItem = itemRepository.findByWriter(username);
+        if (optionalItem.isPresent()) {
+            Item itemEntity = optionalItem.get();
+            itemEntity.setTitle(dto.getTitle());
+            itemEntity.setContent(dto.getContent());
+            itemEntity.setPrice(dto.getPrice());
+            itemEntity.setStatus(dto.getStatus());
+            itemRepository.save(itemEntity);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
