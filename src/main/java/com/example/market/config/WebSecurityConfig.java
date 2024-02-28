@@ -43,7 +43,6 @@ public class WebSecurityConfig {
                                         "/token/validate",
                                         "/users/profile-info",
                                         "/users/avatar"
-
                                 )
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정 (모두)
                                 .permitAll()
@@ -61,9 +60,11 @@ public class WebSecurityConfig {
                                 // ROLE_USER 접근 가능
                                 .requestMatchers(
                                         "/auth/user-role",
-                                        "/users/register-business"
+                                        "/users/register-business",
+                                        "/items",
+                                        "/items/{id}"
                                 )
-                                .hasAnyRole("USER", "ADMIN")
+                                .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
                                 // ROLE_ADMIN 접근 가능
                                 .requestMatchers(
