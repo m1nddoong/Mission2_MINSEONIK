@@ -5,6 +5,7 @@ import com.example.market.Item.entity.Item;
 import com.example.market.Item.repo.ItemRepository;
 import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -54,19 +55,33 @@ public class ItemService {
 
 
     // 물품을 수정하는 서비스
-    public boolean updateItem(ItemDto dto, String username) {
-        Optional<Item> optionalItem = itemRepository.findByWriter(username);
+    @Transactional
+    public boolean updateItem(ItemDto dto, Long itemId, String username) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item itemEntity = optionalItem.get();
-            itemEntity.setTitle(dto.getTitle());
-            itemEntity.setContent(dto.getContent());
-            itemEntity.setPrice(dto.getPrice());
-            itemEntity.setStatus(dto.getStatus());
-            itemRepository.save(itemEntity);
-            return true;
+            if (itemEntity.getWriter().equals(username)) {
+                itemEntity.setTitle(dto.getTitle());
+                itemEntity.setContent(dto.getContent());
+                itemEntity.setPrice(dto.getPrice());
+                itemEntity.setStatus(dto.getStatus());
+                itemRepository.save(itemEntity);
+                return true;
+            }
         }
-        else {
-            return false;
+        return false; // 물품을 찾을 수 없거나 권한이 없음
+    }
+
+    @Transactional
+    public boolean deleteItem(Long itemId, String username) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isPresent()) {
+            Item existingItem = optionalItem.get();
+            if (existingItem.getWriter().equals(username)) {
+                itemRepository.delete(existingItem);
+                return true;
+            }
         }
+        return false; // 물품을 찾을 수 없거나 권한이 없음
     }
 }
