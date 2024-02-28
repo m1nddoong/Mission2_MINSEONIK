@@ -40,11 +40,20 @@ public class ItemController {
     private final UserRepository userRepository;
 
 
+    /**
+     * 물품 전체 조회
+     * @return
+     */
     @GetMapping
     public List<ItemDto> readAll() {
         return itemService.readAll();
     }
 
+    /**
+     * 일반 사용자의 물품 등록
+     * @param dto
+     * @return
+     */
     @PostMapping("/register")
     public ResponseEntity<String> registerItem(
             @RequestBody
@@ -66,6 +75,7 @@ public class ItemController {
                 .content(dto.getContent())
                 .price(dto.getPrice())
                 .status("판매중") // 기본값 설정
+                .writer(username)
                 .build();
 
         itemRepository.save(itemEntity);
@@ -74,7 +84,13 @@ public class ItemController {
     }
 
 
-    // 물품 이미지 등록
+    /**
+     * 일반 사용자가 등록한 물품의 이미지 등록
+     * @param multipartFile
+     * @param itemId
+     * @return
+     * @throws IOException
+     */
     @PostMapping(
             value = "/register-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE

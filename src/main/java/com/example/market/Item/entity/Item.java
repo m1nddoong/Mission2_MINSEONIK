@@ -37,7 +37,6 @@ public class Item {
     private String status;
 
     @Setter
-    @ManyToOne
-    private UserEntity writer;
+    private String writer;
 
 }
