@@ -63,6 +63,7 @@ public class CustomUserDetails implements UserDetails {
         entity.setPhone(this.phone);
         entity.setAge(this.age);
         entity.setAuthorities(this.authorities);
+        entity.setBusinessNumber(this.businessNumber);
         return entity;
     }
 
@@ -97,6 +98,7 @@ public class CustomUserDetails implements UserDetails {
         return grantedAuthorities;
         // return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
 
     @Override
     public String getPassword() {

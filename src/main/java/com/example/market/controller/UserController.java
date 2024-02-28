@@ -15,19 +15,25 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserController {
     private final JwtTokenUtils jwtTokenUtils;
-    private final JpaUserDetailsManager userDetailsManager;
+    private final JpaUserDetailsManager manager;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final UserRepository userRepository;
@@ -57,7 +63,7 @@ public class UserController {
             @RequestBody
             UserDto dto
     ) {
-        if (userDetailsManager.userExists(dto.getUsername())) {
+        if (manager.userExists(dto.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
         }
 
@@ -159,4 +165,87 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
         }
     }
+
+    /**
+     * 사업자 등록번호 신청 (ROLE_USER 일떄만 가능)
+     * @param dto businessNumber 만 포함
+     * @return 해당 사용자의 사업자 등록번호 컬럼에 데이터 추가
+     */
+    @PostMapping("/register-business")
+    public ResponseEntity<String> registerBusinessUser(
+            @RequestBody
+            UserDto dto
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        // 사용자 정보 가져오기
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+            // 자신의 사업자 번호 등록 (데이터베이스에)
+            userEntity.setBusinessNumber(dto.getBusinessNumber());
+            userRepository.save(userEntity);
+            return ResponseEntity.ok("사업자 등록번호 신청 완료");
+        } else {
+            return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    /**
+     * 사업자 등록 번호가 존재하는 사용자 정보 반환
+     * @return 사용자 정보 반환
+     */
+    @GetMapping("/read-business")
+    public ResponseEntity<List<UserEntity>> getBusinessUserRequest() {
+        List<UserEntity> businessUserRequests = userRepository.findByBusinessNumberNotNull();
+        return ResponseEntity.ok(businessUserRequests);
+    }
+
+
+    /**
+     * 사업지 사용자 신청 승인
+     * @param userId
+     * @return
+     */
+    @PostMapping("/approve-business/{userId}")
+    public ResponseEntity<String> approveBusinessUserRequest(
+            @PathVariable
+            Long userId
+    ) {
+        // 사용자의 정보 가져오기
+        Optional<UserEntity> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            UserEntity userEntity = optionalUser.get();
+
+            // 사업자 사용자 권한으로 설정
+            userEntity.setAuthorities("ROLE_BUSINESS_USER");
+            userRepository.save(userEntity);
+
+            return ResponseEntity.ok("사업자 사용자 등록이 완료되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    /**
+     * 사업자 사용자 신청 거절 후 데이터베이스에서 해당 사용자의 사업자 번호 삭제
+     * @param userId
+     * @return
+     */
+    @PostMapping("/reject-business/{userId}")
+    public ResponseEntity<String> rejectBusinessUserRequest(
+            @PathVariable
+            Long userId
+    ) {
+        Optional<UserEntity> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            UserEntity userEntity = optionalUser.get();
+            userEntity.setBusinessNumber(null);
+            userRepository.save(userEntity);
+            return ResponseEntity.ok("사업자 사용자 등록이 거절되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+
 }

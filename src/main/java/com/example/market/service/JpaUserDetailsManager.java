@@ -31,10 +31,34 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         // 오롯이 테스트 목적의 사용자를 추가하는 용도
         createUser(CustomUserDetails.builder()
                 .username("관리자")
-                .password(passwordEncoder.encode("admin1234"))
+                .password(passwordEncoder.encode("1234"))
                 .email("admin@gmail.com")
                 .phone("010-9999-5555")
-                .authorities("ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY")
+                .authorities("ROLE_ADMIN")
+                .build());
+
+        createUser(CustomUserDetails.builder()
+                .username("일반사용자1")
+                .password(passwordEncoder.encode("1234"))
+                .nickname("닉네임1")
+                .name("김길동")
+                .age(23)
+                .email("user1@gmail.com")
+                .phone("010-1111-2222")
+                .authorities("ROLE_USER")
+                .businessNumber("20240226")
+                .build());
+
+        createUser(CustomUserDetails.builder()
+                .username("일반사용자2")
+                .password(passwordEncoder.encode("1234"))
+                .nickname("닉네임2")
+                .name("김철수")
+                .age(20)
+                .email("user2@gmail.com")
+                .phone("010-2222-3333")
+                .authorities("ROLE_USER")
+                .businessNumber("20240226-2")
                 .build());
     }
 

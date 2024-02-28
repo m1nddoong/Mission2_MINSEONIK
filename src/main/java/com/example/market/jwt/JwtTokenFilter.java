@@ -35,6 +35,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         this.manager = manager;
     }
 
+    // JWT 유효성 검증 & 현재 인증된 사용자의 정보를 SecurityContext에 반영
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
