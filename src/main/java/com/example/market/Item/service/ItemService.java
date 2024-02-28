@@ -29,14 +29,36 @@ public class ItemService {
 
         if (this.itemRepository.count() == 0) {
             String username = "Admin";
-            Item item = Item.builder()
-                    .title("해피해킹 스튜디오")
-                    .content("구성품: 키보드 본체, 루프, 포인트 키캡")
-                    .price(430000)
+            Item item1 = Item.builder()
+                    .title("해피해킹 하이브리드 type-s")
+                    .content("토프레 무접점, 키보드 루프, 파우치, 전용 팜레스트")
+                    .price(300000)
                     .status("판매중")
                     .writer(username)
                     .build();
-            this.itemRepository.save(item);
+
+            username = "BusinessUser";
+            Item item2 = Item.builder()
+                    .title("GMK67 커스텀 키보드")
+                    .content("핫스왑 기능, 67배열, 하이무 미드나잇 스위치")
+                    .price(35000)
+                    .status("판매중")
+                    .writer(username)
+                    .build();
+
+            username = "User";
+            Item item3 = Item.builder()
+                    .title("한성 GK868b 키보드")
+                    .content("노뿌 무접점, 풀윤활 O")
+                    .price(120000)
+                    .status("판매중")
+                    .writer(username)
+                    .build();
+
+            this.itemRepository.save(item1);
+            this.itemRepository.save(item2);
+            this.itemRepository.save(item3);
+
         } else {
             log.warn("인증된 사용자 정보가 없습니다.");
         }

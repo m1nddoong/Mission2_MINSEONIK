@@ -33,21 +33,41 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .username("Admin")
                 .password(passwordEncoder.encode("1234"))
                 .nickname("관리자")
+                .name("보라돌이")
+                .age(40)
                 .email("admin@gmail.com")
                 .phone("010-9999-5555")
                 .authorities("ROLE_ADMIN")
                 .build());
 
         createUser(CustomUserDetails.builder()
+                .username("BusinessUser")
+                .password(passwordEncoder.encode("1234"))
+                .nickname("사업자 사용자")
+                .name("뚜비")
+                .age(31)
+                .email("businessUser1@gmail.com")
+                .phone("010-1111-2222")
+                .authorities("ROLE_BUSINESS_USER")
+                .build());
+
+        createUser(CustomUserDetails.builder()
                 .username("User")
                 .password(passwordEncoder.encode("1234"))
                 .nickname("일반사용자")
-                .name("김길동")
-                .age(23)
+                .name("나나")
+                .age(25)
                 .email("user1@gmail.com")
-                .phone("010-1111-2222")
+                .phone("010-3333-4444")
                 .authorities("ROLE_USER")
                 .businessNumber("20240226")
+                .build());
+
+        createUser(CustomUserDetails.builder()
+                .username("InactiveUser")
+                .password(passwordEncoder.encode("1234"))
+                .nickname("비활성 사용자")
+                .authorities("ROLE_INACTIVE_USER")
                 .build());
     }
 

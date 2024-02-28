@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Setter;
 
 @Entity
 @Table(name = "item_proposal")
@@ -22,16 +23,19 @@ public class ItemProposal {
     private Long id;
 
     // 물품
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    // 사용자를 식별한 외래키
+    // 물품 구매를 제안한 사람
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposer_id", nullable = false)
     private UserEntity proposer;
 
     // 제안 상태
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProposalStatus status;
