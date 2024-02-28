@@ -41,11 +41,4 @@ public class ItemService {
                 .toList();
     }
 
-    public ItemDto readOne(Long id) {
-        return itemRepository.findById(id)
-                .map(ItemDto::fromEntity)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
-
-
 }

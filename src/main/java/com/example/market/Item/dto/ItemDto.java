@@ -1,6 +1,7 @@
 package com.example.market.Item.dto;
 
 import com.example.market.Item.entity.Item;
+import com.example.market.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,4 +34,6 @@ public class ItemDto {
                 .writer(item.getWriter().getUsername())
                 .build();
     }
+
+
 }

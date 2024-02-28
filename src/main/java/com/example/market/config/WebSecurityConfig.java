@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                                         "/auth/user-role",
                                         "/users/register-business",
                                         "/items",
-                                        "/items/{id}"
+                                        "/items/register"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
