@@ -57,7 +57,7 @@ public class WebSecurityConfig {
                                 )
                                 .anonymous()
 
-                                // ROLE_USER 접근 가능
+                                // ROLE_USER 이상 접근 가능
                                 .requestMatchers(
                                         "/auth/user-role",
                                         "/users/register-business",
@@ -73,7 +73,13 @@ public class WebSecurityConfig {
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
-                                // ROLE_ADMIN 접근 가능
+                                // ROLE_BUSINESS_USER 이상부터 접근 가능
+                                .requestMatchers(
+                                        "/shop/update"
+                                )
+                                .hasAnyRole("BUSINESS_USER", "ADMIN")
+
+                                // ROLE_ADMIN 만 접근 가능
                                 .requestMatchers(
                                         "/auth/admin-role",
                                         "/users/read-business",

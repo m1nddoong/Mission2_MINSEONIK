@@ -224,7 +224,7 @@ public class UserController {
 
             // PREPARING 상태인 쇼핑몰이 생성이 되어,
             // shop 레포지토리에 추가된다.
-            shopService.createShop(userEntity);
+            shopService.registerShop(userEntity);
 
             return ResponseEntity.ok("사업자 사용자 등록이 완료되었고, 쇼핑몰이 추가되었습니다.");
         } else {
