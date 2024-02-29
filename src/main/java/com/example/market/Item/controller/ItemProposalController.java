@@ -66,7 +66,13 @@ public class ItemProposalController {
         return ResponseEntity.ok(proposals);
     }
 
-    // 물품을 등록한 사용자는 등록된 구매 제안을 수락 또는 거절할 수 있다.
+
+    /**
+     * 물품을 등록한 사용자의 구매 제안 수락
+     * @param itemId
+     * @param proposalId
+     * @return
+     */
     @PostMapping("/{itemId}/proposals/{proposalId}/accept")
     public ResponseEntity<String> acceptProposal(
             @PathVariable("itemId")
@@ -78,5 +84,24 @@ public class ItemProposalController {
         return ResponseEntity.ok("구매 제안이 성공적으로 수락되었습니다.");
 
     }
+
+    /**
+     * 물품을 등록한 사용자의 구매 제안 거절
+     * @param itemId
+     * @param proposalId
+     * @return
+     */
+    @PostMapping("/{itemId}/proposals/{proposalId}/reject")
+    public ResponseEntity<String> rejectProposal(
+            @PathVariable("itemId")
+            Long itemId,
+            @PathVariable("proposalId")
+            Long proposalId
+    ) {
+        service.rejectProposal(itemId, proposalId);
+        return ResponseEntity.ok("구매 제안이 성공적으로 거절되었습니다.");
+
+    }
+
 
 }

@@ -46,7 +46,7 @@ public class ItemService {
                     .writer(username)
                     .build();
 
-            username = "User";
+            username = "User1";
             Item item3 = Item.builder()
                     .title("한성 GK868b 키보드")
                     .content("노뿌 무접점, 풀윤활 O")

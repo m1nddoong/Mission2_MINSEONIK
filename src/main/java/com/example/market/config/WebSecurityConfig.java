@@ -67,7 +67,8 @@ public class WebSecurityConfig {
                                         "/items/update/{itemId}",
                                         "/items/delete/{itemId}",
                                         "/items/{itemId}/proposals",
-                                        "/items/{itemId}/proposals/{proposalId}/accept"
+                                        "/items/{itemId}/proposals/{proposalId}/accept",
+                                        "/items/{itemId}/proposals/{proposalId}/reject"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 

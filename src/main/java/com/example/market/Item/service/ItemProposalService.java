@@ -127,6 +127,37 @@ public class ItemProposalService {
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 수락할 수 있습니다.");
         }
+    }
+
+
+    /**
+     * 구매 제안 거절
+     * @param proposalId
+     */
+    public void rejectProposal(Long itemId, Long proposalId) { // 어떤 물품을, 누가 구매 제안했는지
+        // 현재 인증된 사용자의 정보 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 물품 조회
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // GMK67
+
+        // 해당 물품을 등록한 사용자라면
+        if (item.getWriter().equals(username)) {
+            log.info("당신은 물품을 등록한 {} 입니다. 제안을 거절하겠습니다.", item.getWriter());
+            // 구매 제안 정보
+            Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
+            if (optionalProposal.isEmpty())
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 구매 제안을 찾을 수 없습니다.");
+            ItemProposal proposal = optionalProposal.get();
+            // 구매 제인을 수락상태로 변경
+            proposal.setStatus(ProposalStatus.REJECTED);
+            itemProposalRepository.save(proposal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 거절할 수 있습니다.");
+        }
 
     }
 }
