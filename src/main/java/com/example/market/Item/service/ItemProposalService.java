@@ -32,7 +32,6 @@ public class ItemProposalService {
     private final UserRepository userRepository;
     private final ItemProposalRepository itemProposalRepository;
 
-
     /**
      * 상품 구매 제안 등록하기
      * @param itemId
@@ -63,7 +62,6 @@ public class ItemProposalService {
         proposal.setStatus(ProposalStatus.PENDING); // 대기 중 상태로 등록
         itemProposalRepository.save(proposal);
     }
-
 
 
     /**
@@ -101,4 +99,34 @@ public class ItemProposalService {
     }
 
 
+    /**
+     * 구매 제안 수락
+     * @param proposalId
+     */
+    public void acceptProposal(Long itemId, Long proposalId) { // 어떤 물품을, 누가 구매 제안했는지
+        // 현재 인증된 사용자의 정보 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 물품 조회
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // GMK67
+
+        // 해당 물품을 등록한 사용자라면
+        if (item.getWriter().equals(username)) {
+            log.info("당신은 물품을 등록한 {} 입니다. 제안을 수락하겠습니다.", item.getWriter());
+            // 구매 제안 정보
+            Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
+            if (optionalProposal.isEmpty())
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 구매 제안을 찾을 수 없습니다.");
+            ItemProposal proposal = optionalProposal.get();
+            // 구매 제인을 수락상태로 변경
+            proposal.setStatus(ProposalStatus.ACCEPTED);
+            itemProposalRepository.save(proposal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 수락할 수 있습니다.");
+        }
+
+    }
 }

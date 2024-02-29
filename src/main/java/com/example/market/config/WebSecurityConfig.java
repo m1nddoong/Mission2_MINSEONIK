@@ -66,7 +66,8 @@ public class WebSecurityConfig {
                                         "/items/register-image",
                                         "/items/update/{itemId}",
                                         "/items/delete/{itemId}",
-                                        "/items/{itemId}/proposals"
+                                        "/items/{itemId}/proposals",
+                                        "/items/{itemId}/proposals/{proposalId}/accept"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 

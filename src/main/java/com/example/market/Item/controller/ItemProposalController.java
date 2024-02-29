@@ -37,22 +37,6 @@ public class ItemProposalController {
     private final ItemProposalService service;
 
     /**
-     * 구매 제안 확인
-     * 등록된 구매 제안은 물품을 등록한 사용자와 제안을 등록한 사용자만 조회 가능
-     * @param itemId
-     * @return
-     */
-    @GetMapping("/{itemId}/proposals")
-    public ResponseEntity<List<ItemProposalDto>> getItemProposals(
-        @PathVariable
-        Long itemId
-    ) {
-        // 현재 인증된 사용자 정보 가져오기
-        List<ItemProposalDto> proposals = service.getItemProposals(itemId);
-        return ResponseEntity.ok(proposals);
-    }
-
-    /**
      * 상품 구매 제안 등록하기
      * @param itemId
      * @return
@@ -65,4 +49,34 @@ public class ItemProposalController {
         service.createProposal(itemId);
         return ResponseEntity.ok("상품 구매 제안이 등록되었습니다.");
     }
+
+    /**
+     * 구매 제안 확인
+     * 등록된 구매 제안은 물품을 등록한 사용자와 제안을 등록한 사용자만 조회 가능
+     * @param itemId
+     * @return
+     */
+    @GetMapping("/{itemId}/proposals")
+    public ResponseEntity<List<ItemProposalDto>> getItemProposals(
+            @PathVariable
+            Long itemId
+    ) {
+        // 현재 인증된 사용자 정보 가져오기
+        List<ItemProposalDto> proposals = service.getItemProposals(itemId);
+        return ResponseEntity.ok(proposals);
+    }
+
+    // 물품을 등록한 사용자는 등록된 구매 제안을 수락 또는 거절할 수 있다.
+    @PostMapping("/{itemId}/proposals/{proposalId}/accept")
+    public ResponseEntity<String> acceptProposal(
+            @PathVariable("itemId")
+            Long itemId,
+            @PathVariable("proposalId")
+            Long proposalId
+    ) {
+        service.acceptProposal(itemId, proposalId);
+        return ResponseEntity.ok("구매 제안이 성공적으로 수락되었습니다.");
+
+    }
+
 }
