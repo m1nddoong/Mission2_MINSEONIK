@@ -72,18 +72,24 @@ public class ItemProposalService {
      * @return
      */
     public List<ItemProposalDto> getItemProposals(Long itemId) {
-        // 현재 인증된 사용자 정보 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName(); // USER1
         // 물품 조회
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        Item item = optionalItem.get(); // GMK67
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "물품 정보를 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // 해피해킹
+
+        // 현재 인증된 사용자 정보 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get(); // USER1
+
 
         // 해당 물품을 등록한 사용자라면
-        if (item.getWriter().equals(username)) {
-            log.info("당신은 물품을 등록한 {} 입니다.", item.getWriter());
-            // 해당 물품에 대한 모든 제안을 확인 가능
+        if (item.getWriter().getId().equals(userEntity.getId())) {
+            log.info("딩신은 이 물품을 등록한 {}입니다.", item.getWriter().getUsername());
+            // 해당 물품에 대한 다른 사람들의 모든 구매 제안을 확인 가능
             List<ItemProposal> allProposals = itemProposalRepository.findByItem(item);
             return allProposals.stream()
                     .map(ItemProposalDto::fromEntity)
@@ -105,18 +111,22 @@ public class ItemProposalService {
      * @param proposalId
      */
     public void acceptProposal(Long itemId, Long proposalId) { // 어떤 물품을, 누가 구매 제안했는지
-        // 현재 인증된 사용자의 정보 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         // 물품 조회
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
-        Item item = optionalItem.get(); // GMK67
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "물품 정보를 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // 해피해킹
+
+        // 현재 인증된 사용자 정보 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get(); // USER1
 
         // 해당 물품을 등록한 사용자라면
-        if (item.getWriter().equals(username)) {
-            log.info("당신은 물품을 등록한 {} 입니다. 제안을 수락하겠습니다.", item.getWriter());
+        if (item.getWriter().getId().equals(userEntity.getId())) {
+            log.info("당신은 이 물품을 등록한 {} 입니다. (제안 수락)", item.getWriter().getUsername());
             // 구매 제안 정보
             Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
             if (optionalProposal.isEmpty())
@@ -125,7 +135,8 @@ public class ItemProposalService {
             // 구매 제인을 수락상태로 변경
             proposal.setStatus(ProposalStatus.ACCEPTED);
             itemProposalRepository.save(proposal);
-        } else {
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 수락할 수 있습니다.");
         }
     }
@@ -136,18 +147,22 @@ public class ItemProposalService {
      * @param proposalId
      */
     public void rejectProposal(Long itemId, Long proposalId) { // 어떤 물품을, 누가 구매 제안했는지
-        // 현재 인증된 사용자의 정보 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         // 물품 조회
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
-        Item item = optionalItem.get(); // GMK67
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "물품 정보를 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // 해피해킹
+
+        // 현재 인증된 사용자 정보 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get(); // USER1
 
         // 해당 물품을 등록한 사용자라면
-        if (item.getWriter().equals(username)) {
-            log.info("당신은 물품을 등록한 {} 입니다. 제안을 거절하겠습니다.", item.getWriter());
+        if (item.getWriter().getId().equals(userEntity.getId())) {
+            log.info("당신은 이 물품을 등록한 {}입니다. (제안 거절)", item.getWriter().getUsername());
             // 구매 제안 정보
             Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
             if (optionalProposal.isEmpty())
@@ -156,7 +171,8 @@ public class ItemProposalService {
             // 구매 제인을 수락상태로 변경
             proposal.setStatus(ProposalStatus.REJECTED);
             itemProposalRepository.save(proposal);
-        } else {
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 거절할 수 있습니다.");
         }
 
@@ -165,13 +181,19 @@ public class ItemProposalService {
     // 제안을 등록한 사용자의 구매 확정
     // 좀 복잡하다.
     public void confirmProposal(Long itemId, Long proposalId) {
-        // 현재 인증된 사용자의 username
+        // 물품 조회
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "물품 정보를 찾을 수 없습니다.");
+        Item item = optionalItem.get(); // 해피해킹
+
+        // 현재 인증된 사용자 정보 가져오기
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // username 을 통해 사용자 조회 (userEntity 를 받는다)
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
         if (optionalUserEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-        UserEntity userEntity = optionalUserEntity.get();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get(); // USER1
+
 
         // 구매 제안 정보 조회
         Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
@@ -179,11 +201,6 @@ public class ItemProposalService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 구매 제안을 찾을 수 없습니다.");
         ItemProposal proposal = optionalProposal.get();
 
-        // 물품 조회
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
-        Item item = optionalItem.get();
 
         // 해당 물품을 구매 제안한 사용자라면?
         // 구매 제안 정보중 proposer의 id 가 userEntity 의 id 와 같다면

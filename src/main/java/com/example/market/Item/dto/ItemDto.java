@@ -20,8 +20,7 @@ public class ItemDto {
     private String imageUrl;
     private Integer price;
     private String status;
-    private String writer;
-
+    private Long writerId;
 
     public static ItemDto fromEntity(Item item) {
         return ItemDto.builder()
@@ -31,7 +30,7 @@ public class ItemDto {
                 .price(item.getPrice())
                 .imageUrl(item.getImageUrl())
                 .status(item.getStatus())
-                .writer(item.getWriter())
+                .writerId(item.getWriter().getId())
                 .build();
     }
 }
