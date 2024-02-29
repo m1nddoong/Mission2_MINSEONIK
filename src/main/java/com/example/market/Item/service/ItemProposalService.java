@@ -8,6 +8,7 @@ import com.example.market.Item.entity.ProposalStatus;
 import com.example.market.Item.repo.ItemProposalRepository;
 import com.example.market.Item.repo.ItemRepository;
 import com.example.market.entity.CustomUserDetails;
+import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -157,6 +158,54 @@ public class ItemProposalService {
             itemProposalRepository.save(proposal);
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매 제안을 거절할 수 있습니다.");
+        }
+
+    }
+
+    // 제안을 등록한 사용자의 구매 확정
+    // 좀 복잡하다.
+    public void confirmProposal(Long itemId, Long proposalId) {
+        // 현재 인증된 사용자의 username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        // username 을 통해 사용자 조회 (userEntity 를 받는다)
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get();
+
+        // 구매 제안 정보 조회
+        Optional<ItemProposal> optionalProposal = itemProposalRepository.findById(proposalId);
+        if (optionalProposal.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 구매 제안을 찾을 수 없습니다.");
+        ItemProposal proposal = optionalProposal.get();
+
+        // 물품 조회
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 itemId의 상품을 찾을 수 없습니다.");
+        Item item = optionalItem.get();
+
+        // 해당 물품을 구매 제안한 사용자라면?
+        // 구매 제안 정보중 proposer의 id 가 userEntity 의 id 와 같다면
+        if (proposal.getProposer().getId().equals(userEntity.getId())) {
+            // 구매 제안 상태가 "ACCEPTED" 일 경우 아래 진행 (따로 조건문은 작성하지 않음)
+            // 1. 구매 제안 상태를 "확정 상태" 로 변경
+            proposal.setStatus(ProposalStatus.CONFIRMED);
+            itemProposalRepository.save(proposal);
+
+            // 2. 구매 제안이 "확정 상태"가 될 경우, 물품의 상태는 판매 완료가 된다.
+            item.setStatus("판매완료");
+            itemRepository.save(item);
+
+            // 3. 구매 제안이 "확정 상태"가 될 경우, 확정되지 않은 다른 구매 제안의 상태는 모두 거절된다.
+            List<ItemProposal> otherProposals = itemProposalRepository.findByItemAndIdNot(item, proposalId);
+            for (ItemProposal otherProposal : otherProposals) {
+                otherProposal.setStatus(ProposalStatus.REJECTED);
+                itemProposalRepository.save(otherProposal);
+            }
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 물품을 등록한 사용자만 구매를 확정할 수 있습니다.");
         }
 
     }

@@ -103,5 +103,22 @@ public class ItemProposalController {
 
     }
 
+    /**
+     * 제안을 등록한 사용자의 구매 확정 (수락 상태 일 경우)
+     * @param itemId
+     * @param proposalId
+     * @return
+     */
+    @PostMapping("/{itemId}/proposals/{proposalId}/confirm")
+    public ResponseEntity<String> confirmProposal(
+            @PathVariable("itemId")
+            Long itemId,
+            @PathVariable("proposalId")
+            Long proposalId
+    ) {
+        service.confirmProposal(itemId, proposalId);
+        return ResponseEntity.ok("구매 제안이 확정되었습니다.");
+    }
+
 
 }

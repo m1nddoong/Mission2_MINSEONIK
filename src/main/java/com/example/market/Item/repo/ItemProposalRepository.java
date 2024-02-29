@@ -11,4 +11,7 @@ public interface ItemProposalRepository extends JpaRepository<ItemProposal, Long
 
     List<ItemProposal> findByItem(Item item);
 
+    // item 에 해당하는 모든 구매 제안을 찾되,
+    // proposalId 와 일치하지 않는 구매 제안 반환
+    List<ItemProposal> findByItemAndIdNot(Item item, Long proposalId);
 }
