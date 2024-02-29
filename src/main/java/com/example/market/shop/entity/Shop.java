@@ -33,6 +33,7 @@ public class Shop {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity owner; // 주인은 자유롭게 수정이 가능
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private ShopStatus status;
 

@@ -7,6 +7,7 @@ import com.example.market.jwt.JwtTokenUtils;
 import com.example.market.repo.UserRepository;
 import com.example.market.service.JpaUserDetailsManager;
 import com.example.market.service.UserService;
+import com.example.market.shop.service.ShopService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,6 +52,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final ShopService shopService;
 
 
     /**
@@ -220,7 +222,11 @@ public class UserController {
             userEntity.setAuthorities("ROLE_BUSINESS_USER");
             userRepository.save(userEntity);
 
-            return ResponseEntity.ok("사업자 사용자 등록이 완료되었습니다.");
+            // PREPARING 상태인 쇼핑몰이 생성이 되어,
+            // shop 레포지토리에 추가된다.
+            shopService.createShop(userEntity);
+
+            return ResponseEntity.ok("사업자 사용자 등록이 완료되었고, 쇼핑몰이 추가되었습니다.");
         } else {
             return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
         }
