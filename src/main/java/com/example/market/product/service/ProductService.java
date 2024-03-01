@@ -38,22 +38,64 @@ public class ProductService {
         this.shopRepository = shopRepository;
         this.userRepository = userRepository;
 
-        // 여가에 createProduct 를 통해서 테스트용 데이터 가져오기
-
-        Optional<UserEntity> userEntity = userRepository.findById(4L);
+        // 테스트용 데이터 가져오기
+        // BusinessUser1
+        Optional<UserEntity> userEntity = userRepository.findById(2L);
         if (userEntity.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
 
         Product product = Product.builder()
+                .name("아로마틱 우드 10ml")
+                .content("스프레이 퍼퓸")
+                .price(20000)
+                .category("화장품")
+                .subCategory("향수")
+                .Stock(5)
+                .writer(userEntity.get())
+                .build();
+        productRepository.save(product);
+
+        // USER1
+        userEntity = userRepository.findById(3L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        product = Product.builder()
                 .name("벤큐 모니터")
                 .content("144hz")
                 .price(150000)
                 .category("PC제품")
                 .subCategory("모니터")
-                .Stock(20)
+                .Stock(30)
                 .writer(userEntity.get())
                 .build();
+        productRepository.save(product);
 
+        product = Product.builder()
+                .name("삼성 모니터")
+                .content("60hz")
+                .price(240000)
+                .category("PC제품")
+                .subCategory("모니터")
+                .Stock(50)
+                .writer(userEntity.get())
+                .build();
+        productRepository.save(product);
+
+        // USER2
+        userEntity = userRepository.findById(4L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        product = Product.builder()
+                .name("수제 첼시부츠")
+                .content("천연 가죽, 무광")
+                .price(110000)
+                .category("의류")
+                .subCategory("신발")
+                .Stock(1)
+                .writer(userEntity.get())
+                .build();
         productRepository.save(product);
     }
 
@@ -64,7 +106,9 @@ public class ProductService {
      * @param dto
      * @return
      */
-    public boolean createProduct(UserEntity userEntity, ProductDto dto) {
+    public boolean createProduct(ProductDto dto) {
+        // 현재 인증된 사용자 정보 가져오기
+        UserEntity userEntity = getCurrentUser();
 
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
@@ -145,9 +189,11 @@ public class ProductService {
 
     /*
    <===================================================================>
-   중복을 피하기 위해 인증된 사용의 객체, 쇼핑몰 객체를 가져오는 부분을 따로 메서드로 추출
+   사용자 객체, 쇼핑몰 객체, 쇼핑몰 상품 객체를 가져오는 부분을 따로 메서드로 추출
    <===================================================================>
     */
+
+    // 사용자의 인증 정보를 가져올 메서드
     private UserEntity getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
@@ -159,14 +205,6 @@ public class ProductService {
 
     private Shop getCurrentUserShop(UserEntity userEntity) {
         Optional<Shop> optionalShopEntity = shopRepository.findByOwnerId(userEntity.getId());
-        if (optionalShopEntity.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자의 쇼핑몰 정보를 찾을 수 없습니다.");
-        }
-        return optionalShopEntity.get();
-    }
-
-    private Shop getUserShopFromId(Long shopId) {
-        Optional<Shop> optionalShopEntity = shopRepository.findById(shopId);
         if (optionalShopEntity.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자의 쇼핑몰 정보를 찾을 수 없습니다.");
         }

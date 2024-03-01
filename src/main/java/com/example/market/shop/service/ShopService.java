@@ -23,11 +23,67 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+// RequiredArgsConstructor
 public class ShopService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+
+    public ShopService(
+            ShopRepository shopRepository,
+            UserRepository userRepository,
+            EmailService emailService
+    ) {
+        this.shopRepository = shopRepository;
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+
+        // 테스트용 데이터 가져오기
+        // BusinessUser
+        Optional<UserEntity> userEntity = userRepository.findById(2L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        Shop shop = Shop.builder()
+                .shopName("향수 공방")
+                .introduction("향수 공방 제품 판매합니다.")
+                .category(ShopCategory.BEAUTY)
+                .owner(userEntity.get())
+                .shopStatus(ShopStatus.OPEN)
+                .build();
+        shopRepository.save(shop);
+
+        // USER1
+        userEntity = userRepository.findById(3L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        shop = Shop.builder()
+                .shopName("PC Factory")
+                .introduction("직수입 할인 매장 운영합니다. 반갑습니다.")
+                .category(ShopCategory.ELECTRONICS)
+                .owner(userEntity.get())
+                .shopStatus(ShopStatus.OPEN)
+                .build();
+        shopRepository.save(shop);
+
+        // USER2
+        userEntity = userRepository.findById(4L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        shop = Shop.builder()
+                .shopName("FASHION village")
+                .introduction("안녕하세요. 수제 의류 용퓸 제작 판매합니다.")
+                .category(ShopCategory.FASHION)
+                .owner(userEntity.get())
+                .shopStatus(ShopStatus.OPEN)
+                .build();
+        shopRepository.save(shop);
+
+
+
+    }
 
     public void registerShop(
             UserEntity userEntity
@@ -46,7 +102,6 @@ public class ShopService {
         UserEntity userEntity = getCurrentUser();
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
-
         // dto 로부터 쇼핑몰 정보 업데이트
         shop.setShopName(dto.getShopName());
         shop.setIntroduction(dto.getIntroduction());
@@ -145,9 +200,11 @@ public class ShopService {
 
     /*
     <===================================================================>
-    중복을 피하기 위해 인증된 사용의 객체, 쇼핑몰 객체를 가져오는 부분을 따로 메서드로 추출
+    중복을 피하기 위해 사용자 객체, 쇼핑몰 객체를 가져오는 부분을 따로 메서드로 추출
     <===================================================================>
      */
+
+    // 사용자의 인증 정보를 가져올 메서드
     private UserEntity getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);

@@ -29,10 +29,57 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+//RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository) {
+        this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
+
+        // 중고 물품은 필요시 만들어 주자.
+
+//        // 테스트용 데이터 가져오기
+//        // USER1
+//        Optional<UserEntity> userEntity = userRepository.findById(3L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        Item item = Item.builder()
+//                .title("레오폴드 FC660C")
+//                .content("토프래 무접점 저소음, 풀윤활 O, 파루치 O")
+//                .price(290000)
+//                .status("판매중")
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+//
+//        item = Item.builder()
+//                .title("해피해킹 프로페셔널 하이브리드 일반")
+//                .content("전용 파우지, 트랙패드 팜레스트, 포인트 키캡, 풀윤활 O")
+//                .price(300000)
+//                .status("판매중")
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+//
+//        // USER2
+//        userEntity = userRepository.findById(4L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        item = Item.builder()
+//                .title("gmk67 커스텀 키보드")
+//                .content("하이무 미드나잇 스위치 공장윤활, XDA 키캡, 테이핑 모드")
+//                .price(45000)
+//                .status("판매중")
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+
+    }
+
 
 
     /**
@@ -43,10 +90,7 @@ public class ItemService {
     public void registerItem(ItemDto dto) {
         // 현재 인증된 사용자의 정보 가져오기
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // 데이터베이스에서 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // 물품 객체 생성
         Item itemEntity = Item.builder()
@@ -54,7 +98,7 @@ public class ItemService {
                 .content(dto.getContent())
                 .price(dto.getPrice())
                 .status("판매중") // 기본값 설정
-                .writer(optionalUserEntity.get())
+                .writer(userEntity)
                 .build();
 
         itemRepository.save(itemEntity);
@@ -69,19 +113,12 @@ public class ItemService {
      * @throws IOException
      */
     public void registerItemImage(MultipartFile multipartFile, Long itemId) throws IOException {
-        // 현재 인증된 사용자의 username 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         // 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
-        UserEntity userEntity = optionalUserEntity.get();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // 물품 정보 가져오기
-        Optional<Item> optionalItemEntity = itemRepository.findById(itemId);
-        if (optionalItemEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "물품 정보를 찾을 수 없습니다.");
-        Item itemEntity = optionalItemEntity.get();
+        Item itemEntity = getItemFromId(itemId);
 
         if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
             // 파일 저장 경로 설정
@@ -132,22 +169,17 @@ public class ItemService {
      * 물품 수정
      * @param dto 수정 내용
      * @param itemId 수정할 물품의 id
-     * @param username 현재 인증된 사용자
      * @return 업데이트가 완료되었으면 true, 아니면 false
      */
     @Transactional
-    public Boolean updateItem(ItemDto dto, Long itemId, String username) {
+    public Boolean updateItem(ItemDto dto, Long itemId) {
+
         // 물품 정보 조회
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "물품 정보를 찾을 수 없습니다.");
-        Item itemEntity = optionalItem.get();
+        Item itemEntity = getItemFromId(itemId);
 
         // 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
-        UserEntity userEntity = optionalUserEntity.get();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // itemId 에 헤댕하는 물품의 writer_id 와 현재 인증된 사용자의 id 가 같으면
         if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
@@ -165,22 +197,18 @@ public class ItemService {
     /**
      * 물품 삭제
      * @param itemId 삭제할 물품의 id
-     * @param username 현재 인증된 사용자
      * @return 조회한 물품을 삭제했으면 true, 아니면 false
      */
     @Transactional
-    public boolean deleteItem(Long itemId, String username) {
-        // 물품 정보 조회
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "물품 정보를 찾을 수 없습니다.");
-        Item itemEntity = optionalItem.get();
-
+    public boolean deleteItem(Long itemId) {
         // 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
-        UserEntity userEntity = optionalUserEntity.get();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity userEntity = getCurrentUserFromUsername(username);
+
+        // 물품 정보 조회
+        Item itemEntity = getItemFromId(itemId);
+
+
 
         // itemId 에 헤댕하는 물품의 writer_id 와 현재 인증된 사용자의 id 가 같으면
         if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
@@ -190,4 +218,28 @@ public class ItemService {
         }
         return false; // 물품을 찾을 수 없거나 권한이 없음
     }
+
+
+     /*
+    <===================================================================>
+    중복을 피하기 위해 사용자 객체, 중고 물품 객체를 가져오는 부분을 따로 메서드로 추출
+    <===================================================================>
+     */
+
+    private UserEntity getCurrentUserFromUsername(String username) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        return optionalUserEntity.get();
+    }
+
+    private Item getItemFromId(Long itemId) {
+        // 물품 정보 조회
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "물품 정보를 찾을 수 없습니다.");
+        return optionalItem.get();
+    }
+
+
 }

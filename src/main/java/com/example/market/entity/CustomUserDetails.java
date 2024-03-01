@@ -43,6 +43,7 @@ public class CustomUserDetails implements UserDetails {
         details.username = entity.getUsername();
         details.password = entity.getPassword();
         details.nickname = entity.getNickname();
+        details.name = entity.getName();
         details.email = entity.getEmail();
         details.phone = entity.getPhone();
         details.age = entity.getAge();
@@ -59,6 +60,7 @@ public class CustomUserDetails implements UserDetails {
         entity.setUsername(this.username);
         entity.setPassword(this.password);
         entity.setNickname(this.nickname);
+        entity.setName(this.name);
         entity.setEmail(this.email);
         entity.setPhone(this.phone);
         entity.setAge(this.age);

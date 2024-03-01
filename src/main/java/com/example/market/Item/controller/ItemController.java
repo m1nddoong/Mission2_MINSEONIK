@@ -105,8 +105,7 @@ public class ItemController {
             @RequestBody
             ItemDto dto
     ) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (service.updateItem(dto, itemId, username)) {
+        if (service.updateItem(dto, itemId)) {
             return ResponseEntity.ok("물품이 성공적으로 수정되었습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("물품을 찾을 수 없거나 권한이 없습니다.");
@@ -122,8 +121,7 @@ public class ItemController {
             @PathVariable
             Long itemId
     ) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (service.deleteItem(itemId, username)) {
+        if (service.deleteItem(itemId)) {
             return ResponseEntity.ok("물품이 성공적으로 삭제되었습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("물품을 찾을 수 없습니다.");

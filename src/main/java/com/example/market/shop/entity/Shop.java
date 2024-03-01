@@ -9,11 +9,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shop {
 
     @Id
@@ -30,7 +36,7 @@ public class Shop {
     private ShopCategory category; // 분류
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity owner; // 주인은 자유롭게 수정이 가능
 
     @Setter

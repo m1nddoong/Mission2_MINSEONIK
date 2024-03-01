@@ -39,6 +39,6 @@ public class Item {
     private String status;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity writer;
 }
