@@ -1,7 +1,7 @@
 package com.example.market.Item.entity;
 
 
-import com.example.market.entity.UserEntity;
+import com.example.market.user.entity.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,4 +1,4 @@
-package com.example.market.jwt;
+package com.example.market.user.jwt;
 
 import lombok.Data;
 

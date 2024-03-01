@@ -1,25 +1,16 @@
 package com.example.market.Item.controller;
 
 import com.example.market.Item.dto.ItemDto;
-import com.example.market.Item.entity.Item;
 import com.example.market.Item.repo.ItemRepository;
 import com.example.market.Item.service.ItemService;
-import com.example.market.entity.UserEntity;
-import com.example.market.repo.UserRepository;
-import java.awt.event.ItemEvent;
+import com.example.market.user.repo.UserRepository;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

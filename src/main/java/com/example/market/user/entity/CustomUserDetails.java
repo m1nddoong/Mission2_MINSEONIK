@@ -1,18 +1,14 @@
-package com.example.market.entity;
+package com.example.market.user.entity;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // UserEntity를 바탕으로 Spring Security 내부에서

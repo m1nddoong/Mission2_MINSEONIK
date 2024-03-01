@@ -2,7 +2,6 @@ package com.example.market.Item.repo;
 
 import com.example.market.Item.entity.Item;
 import com.example.market.Item.entity.ItemProposal;
-import com.example.market.entity.UserEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

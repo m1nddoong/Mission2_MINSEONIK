@@ -1,7 +1,7 @@
-package com.example.market.repo;
+package com.example.market.user.repo;
 
 
-import com.example.market.entity.UserEntity;
+import com.example.market.user.entity.UserEntity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

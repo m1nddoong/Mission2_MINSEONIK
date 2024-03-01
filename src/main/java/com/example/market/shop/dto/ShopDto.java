@@ -2,7 +2,6 @@ package com.example.market.shop.dto;
 
 
 import com.example.market.shop.entity.Shop;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

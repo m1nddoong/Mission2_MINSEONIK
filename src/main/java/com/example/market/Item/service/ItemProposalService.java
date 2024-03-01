@@ -1,28 +1,24 @@
 package com.example.market.Item.service;
 
 
-import com.example.market.Item.dto.ItemProposalDto;
 import com.example.market.Item.entity.Item;
 import com.example.market.Item.entity.ItemProposal;
 import com.example.market.Item.entity.ProposalStatus;
 import com.example.market.Item.repo.ItemProposalRepository;
 import com.example.market.Item.repo.ItemRepository;
-import com.example.market.entity.CustomUserDetails;
-import com.example.market.entity.UserEntity;
-import com.example.market.repo.UserRepository;
+import com.example.market.Item.dto.ItemProposalDto;
+import com.example.market.user.entity.CustomUserDetails;
+import com.example.market.user.entity.UserEntity;
+import com.example.market.user.repo.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j

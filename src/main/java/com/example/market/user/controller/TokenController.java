@@ -1,9 +1,9 @@
-package com.example.market.controller;
+package com.example.market.user.controller;
 
-import com.example.market.jwt.JwtRequestDto;
-import com.example.market.jwt.JwtResponseDto;
-import com.example.market.jwt.JwtTokenUtils;
-import com.example.market.repo.UserRepository;
+import com.example.market.user.jwt.JwtRequestDto;
+import com.example.market.user.jwt.JwtResponseDto;
+import com.example.market.user.jwt.JwtTokenUtils;
+import com.example.market.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

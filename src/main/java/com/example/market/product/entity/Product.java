@@ -4,7 +4,7 @@ package com.example.market.product.entity;
 
 // 쇼핑몰 상품
 
-import com.example.market.entity.UserEntity;
+import com.example.market.user.entity.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

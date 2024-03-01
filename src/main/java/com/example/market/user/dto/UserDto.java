@@ -1,4 +1,4 @@
-package com.example.market.dto;
+package com.example.market.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

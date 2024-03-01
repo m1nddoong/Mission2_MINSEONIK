@@ -1,9 +1,7 @@
 package com.example.market.Item.entity;
 
 
-import com.example.market.entity.UserEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
+import com.example.market.user.entity.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

@@ -1,7 +1,7 @@
 package com.example.market.shop.service;
 
-import com.example.market.entity.UserEntity;
-import com.example.market.repo.UserRepository;
+import com.example.market.user.entity.UserEntity;
+import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.dto.ClosureRequestDto;
 import com.example.market.shop.dto.EmailDto;
 import com.example.market.shop.dto.ShopDto;
@@ -9,20 +9,14 @@ import com.example.market.shop.entity.Shop;
 import com.example.market.shop.entity.ShopCategory;
 import com.example.market.shop.entity.ShopStatus;
 import com.example.market.shop.repo.ShopRepository;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j

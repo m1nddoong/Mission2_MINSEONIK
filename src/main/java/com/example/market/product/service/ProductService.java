@@ -3,21 +3,17 @@ package com.example.market.product.service;
 
 import static com.example.market.shop.entity.ShopStatus.OPEN;
 
-import com.example.market.entity.UserEntity;
+import com.example.market.user.entity.UserEntity;
 import com.example.market.product.dto.ProductDto;
 import com.example.market.product.entity.Product;
 import com.example.market.product.repo.ProductRepository;
-import com.example.market.repo.UserRepository;
+import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.entity.Shop;
-import com.example.market.shop.entity.ShopStatus;
 import com.example.market.shop.repo.ShopRepository;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

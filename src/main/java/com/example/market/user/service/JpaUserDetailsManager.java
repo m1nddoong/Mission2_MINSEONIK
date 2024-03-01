@@ -1,12 +1,11 @@
-package com.example.market.service;
+package com.example.market.user.service;
 
 
-import com.example.market.entity.CustomUserDetails;
-import com.example.market.entity.UserEntity;
-import com.example.market.repo.UserRepository;
+import com.example.market.user.entity.CustomUserDetails;
+import com.example.market.user.entity.UserEntity;
+import com.example.market.user.repo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

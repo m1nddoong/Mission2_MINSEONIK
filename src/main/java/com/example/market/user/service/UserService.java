@@ -1,7 +1,7 @@
-package com.example.market.service;
+package com.example.market.user.service;
 
-import com.example.market.entity.UserEntity;
-import com.example.market.repo.UserRepository;
+import com.example.market.user.entity.UserEntity;
+import com.example.market.user.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
