@@ -9,6 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,5 +47,6 @@ public class Shop {
     @Enumerated(EnumType.STRING)
     private ShopStatus shopStatus;
 
-    // 생성자, 게터, 세터, 기타 메서드는 생략되었습니다.
+    @Setter
+    private LocalDateTime recentTransactionDate;
 }

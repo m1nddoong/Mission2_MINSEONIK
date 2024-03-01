@@ -10,4 +10,6 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
     Optional<Shop> findByOwnerId(Long id);
 
     List<Shop> findByShopStatus(ShopStatus shopStatus);
+
+    List<Shop> findAllByOrderByRecentTransactionDateDesc();
 }

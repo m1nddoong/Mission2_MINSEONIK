@@ -2,7 +2,8 @@ package com.example.market.shop.dto;
 
 
 import com.example.market.shop.entity.Shop;
-import com.example.market.shop.entity.ShopCategory;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class ShopDto {
     private String category;
     private Long ownerId;
     private String shopStatus;
+    private LocalDateTime recentTransactionDate;
 
 
     public static ShopDto fromEntity(Shop shop) {
@@ -31,6 +33,7 @@ public class ShopDto {
                 .category(shop.getCategory().name()) // Enum을 문자열로 반환
                 .ownerId(shop.getOwner().getId())
                 .shopStatus(shop.getShopStatus().name()) //Enum을 문자열로 반환
+                .recentTransactionDate(shop.getRecentTransactionDate())
                 .build();
     }
 

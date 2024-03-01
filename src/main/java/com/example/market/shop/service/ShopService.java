@@ -9,6 +9,10 @@ import com.example.market.shop.entity.Shop;
 import com.example.market.shop.entity.ShopCategory;
 import com.example.market.shop.entity.ShopStatus;
 import com.example.market.shop.repo.ShopRepository;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,7 +42,7 @@ public class ShopService {
         this.userRepository = userRepository;
         this.emailService = emailService;
 
-        // 테스트용 데이터 가져오기
+        // 테스트용 데이터 가져오기 (최근 거래 시간이 가장 최근인것은 id 4->3->2 순)
         // BusinessUser
         Optional<UserEntity> userEntity = userRepository.findById(2L);
         if (userEntity.isEmpty())
@@ -50,6 +54,7 @@ public class ShopService {
                 .category(ShopCategory.BEAUTY)
                 .owner(userEntity.get())
                 .shopStatus(ShopStatus.OPEN)
+                .recentTransactionDate(LocalDateTime.of(2024, 1, 15, 23, 40))
                 .build();
         shopRepository.save(shop);
 
@@ -64,6 +69,7 @@ public class ShopService {
                 .category(ShopCategory.ELECTRONICS)
                 .owner(userEntity.get())
                 .shopStatus(ShopStatus.OPEN)
+                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 13, 30))
                 .build();
         shopRepository.save(shop);
 
@@ -78,6 +84,7 @@ public class ShopService {
                 .category(ShopCategory.FASHION)
                 .owner(userEntity.get())
                 .shopStatus(ShopStatus.OPEN)
+                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 15, 30))
                 .build();
         shopRepository.save(shop);
 
@@ -134,15 +141,6 @@ public class ShopService {
     public List<ShopDto> getAllOpenRequests() {
         // 오픈 요청된 Shop 엔티티 리스트들을 ShopDto로 변환
         return shopRepository.findByShopStatus(ShopStatus.OPEN_REQUESTED).stream()
-                .map(ShopDto::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    // 비활성 사용자를 제외한 사용자는 쇼핑몰을 조회할 수 있다
-    // 조건 없이 조회할 경우, 가장 최근에 거래가 있었던 쇼핑들을 순서로 조회된다.
-    // 일단 그냥 다 조회
-    public List<ShopDto> readAllShops() {
-        return shopRepository.findAll().stream()
                 .map(ShopDto::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -206,6 +204,16 @@ public class ShopService {
         Shop shop = getUserShopFromId(shopId);
         shop.setShopStatus(ShopStatus.CLOSED);
         shopRepository.save(shop);
+    }
+
+
+
+    // 비활성 사용자를 제외한 사용자는 쇼핑몰을 조회할 수 있다
+    // 조건 없이 조회할 경우, 가장 최근에 거래가 있었던 쇼핑들을 순서로 조회된다.
+    public List<ShopDto> readAllShops() {
+        return shopRepository.findAllByOrderByRecentTransactionDateDesc().stream()
+                .map(ShopDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 
