@@ -2,6 +2,7 @@ package com.example.market.shop.service;
 
 import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
+import com.example.market.shop.dto.ClosureRequestDto;
 import com.example.market.shop.dto.EmailDto;
 import com.example.market.shop.dto.ShopDto;
 import com.example.market.shop.entity.Shop;
@@ -56,7 +57,7 @@ public class ShopService {
     }
 
     // 쇼핑몰 개설 신청
-    public boolean applyOpening() {
+    public boolean requestShopOpen() {
         // 현재 인증된 사용자의 객체 가져오기
         UserEntity userEntity = getCurrentUser();
         // 쇼핑몰 정보 가져오기
@@ -104,10 +105,23 @@ public class ShopService {
 
         // 이메일 전송
         emailService.sendEmail(ownerEmail, dto);
-
     }
 
+    // 쇼핑몰 폐쇄 요청
+    public boolean requestShopClosure(ClosureRequestDto dto) {
+        // 현재 인증된 사용자의 객체 가져오기
+        UserEntity userEntity = getCurrentUser();
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getCurrentUserShop(userEntity);
 
+        // 폐쇄 요청
+        shop.setShopStatus(ShopStatus.CLOSED_REQUESTED);
+        shopRepository.save(shop);
+
+        // 콘솔에 사유 출력 (폐쇄 요청 사유를 어디에 보여지게 할지가 의문이다..)
+        log.info(shop.getOwner().getName() + "님의 쇼핑몰 폐쇄 요청 사유: " + dto.getText());
+        return true;
+    }
 
 
     /*
@@ -137,5 +151,4 @@ public class ShopService {
         }
         return optionalShopEntity.get();
     }
-
 }

@@ -76,7 +76,8 @@ public class WebSecurityConfig {
                                 // ROLE_BUSINESS_USER 이상부터 접근 가능
                                 .requestMatchers(
                                         "/shop/update",
-                                        "/shop/apply-opening"
+                                        "/shop/open-request",
+                                        "/shop/close-request"
                                 )
                                 .hasAnyRole("BUSINESS_USER", "ADMIN")
 
