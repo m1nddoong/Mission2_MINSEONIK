@@ -90,7 +90,8 @@ public class WebSecurityConfig {
                                         "/shop/get-all-open-requests",
                                         "/shop/approve-open/{shopId}",
                                         "/shop/reject-open/{shopId}",
-                                        "/shop/get-all-close-requests"
+                                        "/shop/get-all-close-requests",
+                                        "/shop/approve-close/{shopId}"
                                 )
                                 .hasRole("ADMIN")
                 )

@@ -128,11 +128,18 @@ public class ShopController {
 
 
 
-
-
-
-    // 쇼핑몰의 id 를 통해서 쇼핑몰 폐쇄를 수락
-
-
+    /**
+     * 쇼핑몰 폐쇄 신청 허가 (수락)
+     * @param shopId 쇼핑몰의 id
+     * @return 개설이 허가된 쇼핑몰은 오픈 상태가 된다.
+     */
+    @PostMapping("/approve-close/{shopId}")
+    public ResponseEntity<String> approveClose(
+            @PathVariable
+            Long shopId
+    ) {
+        service.approveClose(shopId);
+        return ResponseEntity.ok("쇼핑몰 폐쇄 완료");
+    }
 
 }

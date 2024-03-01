@@ -69,8 +69,7 @@ public class ShopService {
             shop.setShopStatus(ShopStatus.OPEN_REQUESTED);
             shopRepository.save(shop);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -135,8 +134,19 @@ public class ShopService {
     }
 
 
+    // 쇼핑몰 폐쇄 신청 허가
+    public void approveClose(Long shopId) {
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getUserShopFromId(shopId);
+        shop.setShopStatus(ShopStatus.CLOSED);
+        shopRepository.save(shop);
+    }
+
+
     /*
+    <===================================================================>
     중복을 피하기 위해 인증된 사용의 객체, 쇼핑몰 객체를 가져오는 부분을 따로 메서드로 추출
+    <===================================================================>
      */
     private UserEntity getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -162,5 +172,6 @@ public class ShopService {
         }
         return optionalShopEntity.get();
     }
+
 
 }
