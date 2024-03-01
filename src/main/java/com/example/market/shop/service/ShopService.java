@@ -84,8 +84,9 @@ public class ShopService {
                 .collect(Collectors.toList());
     }
 
+
     // 쇼핑몰 개설 신청 허가
-    public void approveShop(Long shopId) {
+    public void approveOpen(Long shopId) {
         // 쇼핑몰 정보 가져오기
         Shop shop = getUserShopFromId(shopId);
         shop.setShopStatus(ShopStatus.OPEN);
@@ -93,7 +94,7 @@ public class ShopService {
     }
 
     // 쇼핑몰 개설 신청 불허, 불허 사유 전송하기
-    public void rejectShop(Long shopId, EmailDto dto) {
+    public void rejectOpen(Long shopId, EmailDto dto) {
         // 쇼핑몰 정보 가져오기
         Shop shop = getUserShopFromId(shopId);
         // 오픈 요청 거절
@@ -119,8 +120,18 @@ public class ShopService {
         shopRepository.save(shop);
 
         // 콘솔에 사유 출력 (폐쇄 요청 사유를 어디에 보여지게 할지가 의문이다..)
-        log.info(shop.getOwner().getName() + "님의 쇼핑몰 폐쇄 요청 사유: " + dto.getText());
+        log.info(shop.getOwner().getUsername() + "님의 쇼핑몰 폐쇄 요청 사유: " + dto.getText());
         return true;
+    }
+
+
+    // 관리자는 쇼핑몰 페쇄 요청들을 확인
+    public List<ShopDto> getAllCloseRequests() {
+        // 폐쇄 요청된 Shop 엔티티 리스트들을 ShopDto 로 변환
+        return shopRepository.findByShopStatus(ShopStatus.CLOSED_REQUESTED).stream()
+                .map(ShopDto::fromEntity)
+                .collect(Collectors.toList());
+
     }
 
 
@@ -151,4 +162,5 @@ public class ShopService {
         }
         return optionalShopEntity.get();
     }
+
 }
