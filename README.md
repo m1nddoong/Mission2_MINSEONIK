@@ -108,33 +108,17 @@ src
 
 
 
-## 🛠️  기능
+## 🛠️  기능 
 
 ### 1. 기본 기능
-
-<details>
-<summary>기본 과제 요구 사항 ✅ </summary>
-<div markdown="1">
+ 
 
 - [사용자 인증 및 권한 처리](./md/auth.md)
-- 중고거래 중개하기
-- 쇼핑몰 운영하기
-
-
-</div>
-</details>
-
+- [중고거래 중개하기](./md/item.md)
+- [쇼핑몰 운영하기](./md/shop.md)
 
 ### 2. 추가 기능
-
-<details>
-<summary>추가 과제 요구 사항 ✅ </summary>
-<div markdown="1">
-
 - 결제 시스템
-
-</div>
-</details>
 
 
 
