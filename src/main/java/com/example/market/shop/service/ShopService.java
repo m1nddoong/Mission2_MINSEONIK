@@ -59,4 +59,34 @@ public class ShopService {
         // 저장
         shopRepository.save(shop);
     }
+
+
+    public boolean applyOpening() {
+        // 현재 인증된 사용자의 객체 가져오기
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 정보를 찾을 수 없습니다.");
+        UserEntity userEntity = optionalUserEntity.get();
+
+
+        // 쇼핑몰 정보 가져오기
+        Optional<Shop> optionalShopEntity = shopRepository.findByOwnerId(userEntity.getId());
+        if (optionalUserEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자의 쇼핑몰 정보를 찾을 수 없습니다.");
+        Shop shop = optionalShopEntity.get();
+
+
+        // 이름, 소개, 분류가 모두 작성 되었다면
+        if (shop.getShopName() != null && shop.getIntroduction() != null && shop.getCategory() != null) {
+            // 쇼핑몰 개설을 신청할 수 있다.
+            shop.setStatus(ShopStatus.OPEN_REQUESTED);
+            shopRepository.save(shop);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
 }
