@@ -29,6 +29,11 @@ public class ProductService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 쇼핑몰에 상품 등록
+     * @param dto
+     * @return
+     */
     public boolean createProduct(ProductDto dto) {
         // 현재 인증된 사용자 정보 가져오기
         UserEntity userEntity = getCurrentUser();
@@ -41,7 +46,7 @@ public class ProductService {
             product.setName(dto.getName());
             product.setContent(dto.getContent());
             product.setPrice(dto.getPrice());
-            product.setContent(dto.getCategory());
+            product.setCategory(dto.getCategory());
             product.setSubCategory(dto.getSubCategory());
             product.setStock(dto.getStock());
             product.setWriter(userEntity);
@@ -53,8 +58,57 @@ public class ProductService {
         else {
             return false;
         }
-
     }
+
+    /**
+     * TODO : 상품 이미지 추가는 제외 (나중에 구현)
+     */
+
+    // 상품 수정
+    public boolean updateProduct(Long productId, ProductDto dto) {
+        // 현재 인증된 사용자 정보 가져오기
+        UserEntity userEntity = getCurrentUser();
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getCurrentUserShop(userEntity);
+
+        // 쇼핑몰의 상품 정보 가져오기 (상품 id 로)
+        Product product = getProductFromId(productId);
+
+        // 쇼핑몰의 상품 수정하기
+        product.setName(dto.getName());
+        product.setContent(dto.getContent());
+        product.setPrice(dto.getPrice());
+        product.setCategory(dto.getCategory());
+        product.setSubCategory(dto.getSubCategory());
+        product.setStock(dto.getStock());
+
+        // 저장
+        productRepository.save(product);
+        return true;
+    }
+
+
+    // 상품 삭제
+
+
+
+
+
+    // 쇼핑몰을 조회
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*
@@ -86,5 +140,15 @@ public class ProductService {
         }
         return optionalShopEntity.get();
     }
+
+    private Product getProductFromId(Long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 정보를 찾을 수 없습니다.");
+        }
+        return optionalProduct.get();
+    }
+
+
 
 }

@@ -78,7 +78,8 @@ public class WebSecurityConfig {
                                         "/shop/update",
                                         "/shop/open-request",
                                         "/shop/close-request",
-                                        "/products/create"
+                                        "/products/create",
+                                        "/products{productId}/update"
                                 )
                                 .hasAnyRole("BUSINESS_USER", "ADMIN")
 
