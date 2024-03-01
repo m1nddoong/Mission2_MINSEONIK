@@ -2,6 +2,7 @@ package com.example.market.shop.controller;
 
 import com.example.market.shop.dto.ShopDto;
 import com.example.market.shop.service.ShopService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,10 @@ public class ShopController {
         return ResponseEntity.ok("쇼핑몰 정보를 수정했습니다.");
     }
 
-
-    // 쇼핑몰의 이름, 소개, 분류가 전부 작성된 상태라면 쇼핑몰을 개설 신청을 할 수 있다.
-
+    /**
+     * 쇼핑몰의 이름, 소개, 분류가 전부 작성된 상태라면 쇼핑몰을 개설 신청을 할 수 있다.
+     * @return
+     */
     @GetMapping("/apply-opening")
     public ResponseEntity<String> applyOpening() {
         if (service.applyOpening()) {
@@ -44,5 +46,12 @@ public class ShopController {
             return ResponseEntity.badRequest().body("쇼핑몰이 개설 신청이 되지 않았습니다.");
         }
 
+    }
+
+    // 관리자의 개설 쇼핑몰 목록 확인
+    @GetMapping("/get-all-open-requests")
+    public ResponseEntity<List<ShopDto>> getAllOpenRequests() {
+        List<ShopDto> openRequests = service.getAllOpenRequests();
+        return ResponseEntity.ok(openRequests);
     }
 }

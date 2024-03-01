@@ -35,7 +35,7 @@ public class Shop {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private ShopStatus status;
+    private ShopStatus shopStatus;
 
     // 생성자, 게터, 세터, 기타 메서드는 생략되었습니다.
 }

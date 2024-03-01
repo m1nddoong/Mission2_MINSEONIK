@@ -21,6 +21,20 @@ public class ShopDto {
     private String category;
     private Long ownerId;
     private String shopStatus;
+
+
+    public static ShopDto fromEntity(Shop shop) {
+        return ShopDto.builder()
+                .id(shop.getId())
+                .shopName(shop.getShopName())
+                .introduction(shop.getIntroduction())
+                .category(shop.getCategory().name()) // Enum을 문자열로 반환
+                .ownerId(shop.getOwner().getId())
+                .shopStatus(shop.getShopStatus().name()) //Enum을 문자열로 반환
+                .build();
+    }
+
+
 }
 
 // 쇼핑몰의 이름, 소개, 분류가 전부 작성된 상태라면 쇼핑몰을 개설 신청을 할 수 있다.
