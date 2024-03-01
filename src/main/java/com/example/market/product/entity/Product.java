@@ -42,7 +42,7 @@ public class Product {
     private int Stock; // 상품 재고
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity writer; // 상품 등록자
 
 }

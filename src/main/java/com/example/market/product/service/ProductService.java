@@ -23,20 +23,49 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
+    public ProductService(
+            ProductRepository productRepository,
+            ShopRepository shopRepository,
+            UserRepository userRepository
+    ) {
+        this.productRepository = productRepository;
+        this.shopRepository = shopRepository;
+        this.userRepository = userRepository;
+
+        // 여가에 createProduct 를 통해서 테스트용 데이터 가져오기
+
+        Optional<UserEntity> userEntity = userRepository.findById(4L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        Product product = Product.builder()
+                .name("벤큐 모니터")
+                .content("144hz")
+                .price(150000)
+                .category("PC제품")
+                .subCategory("모니터")
+                .Stock(20)
+                .writer(userEntity.get())
+                .build();
+
+        productRepository.save(product);
+    }
+
+
     /**
      * 쇼핑몰에 상품 등록
+     *
      * @param dto
      * @return
      */
-    public boolean createProduct(ProductDto dto) {
-        // 현재 인증된 사용자 정보 가져오기
-        UserEntity userEntity = getCurrentUser();
+    public boolean createProduct(UserEntity userEntity, ProductDto dto) {
+
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
 
@@ -54,8 +83,7 @@ public class ProductService {
             // 저장
             productRepository.save(product);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -112,24 +140,7 @@ public class ProductService {
 
     }
 
-
-
-
     // 쇼핑몰을 조회
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /*
