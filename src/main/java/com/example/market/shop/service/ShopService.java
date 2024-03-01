@@ -81,6 +81,16 @@ public class ShopService {
     }
 
 
+    public void approveShop(Long shopId) {
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getUserShopFromId(shopId);
+        shop.setShopStatus(ShopStatus.OPEN);
+        shopRepository.save(shop);
+    }
+
+
+
+
     /*
     중복을 피하기 위해 인증된 사용의 객체, 쇼핑몰 객체를 가져오는 부분을 따로 메서드로 추출
      */
@@ -100,4 +110,15 @@ public class ShopService {
         }
         return optionalShopEntity.get();
     }
+
+    private Shop getUserShopFromId(Long shopId) {
+        Optional<Shop> optionalShopEntity = shopRepository.findById(shopId);
+        if (optionalShopEntity.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자의 쇼핑몰 정보를 찾을 수 없습니다.");
+        }
+        return optionalShopEntity.get();
+    }
+
+
+
 }

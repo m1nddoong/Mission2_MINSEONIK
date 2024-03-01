@@ -86,7 +86,8 @@ public class WebSecurityConfig {
                                         "/users/read-business",
                                         "/users/approve-business/{userId}",
                                         "/users/reject-business/{userId}",
-                                        "/shop/get-all-open-requests"
+                                        "/shop/get-all-open-requests",
+                                        "/shop/approve-shop/{shopId}"
                                 )
                                 .hasRole("ADMIN")
                 )
