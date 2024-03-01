@@ -40,7 +40,7 @@ public class ProductService {
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
 
-        if (shop.getShopStatus().equals(OPEN)) {
+        if (shop.getShopStatus().equals(OPEN) && shop.getOwner().equals(userEntity.getId())) {
             // 쇼핑몰에 상품을 추가
             Product product = new Product();
             product.setName(dto.getName());
@@ -70,21 +70,25 @@ public class ProductService {
         UserEntity userEntity = getCurrentUser();
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
-
         // 쇼핑몰의 상품 정보 가져오기 (상품 id 로)
         Product product = getProductFromId(productId);
 
-        // 쇼핑몰의 상품 수정하기
-        product.setName(dto.getName());
-        product.setContent(dto.getContent());
-        product.setPrice(dto.getPrice());
-        product.setCategory(dto.getCategory());
-        product.setSubCategory(dto.getSubCategory());
-        product.setStock(dto.getStock());
+        if (shop.getShopStatus().equals(OPEN) && product.getWriter().getId().equals(userEntity.getId())) {
+            // 쇼핑몰의 상품 수정하기
+            product.setName(dto.getName());
+            product.setContent(dto.getContent());
+            product.setPrice(dto.getPrice());
+            product.setCategory(dto.getCategory());
+            product.setSubCategory(dto.getSubCategory());
+            product.setStock(dto.getStock());
 
-        // 저장
-        productRepository.save(product);
-        return true;
+            // 저장
+            productRepository.save(product);
+            return true;
+
+        } else {
+            return false;
+        }
     }
 
 
