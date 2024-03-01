@@ -6,8 +6,10 @@ import com.example.market.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +46,7 @@ public class ProductController {
      * @param dto
      * @return
      */
-    @PostMapping("{productId}/update")
+    @PutMapping("{productId}/update")
     public ResponseEntity<String> updateProduct(
             @PathVariable
             Long productId,
@@ -59,4 +61,20 @@ public class ProductController {
     }
 
 
+    /**
+     * 쇼핑몰 상품 삭제
+     * @param productId
+     * @return
+     */
+    @DeleteMapping("{productId}/delete")
+    public ResponseEntity<String> deleteProduct(
+            @PathVariable
+            Long productId
+    ) {
+        if (service.deleteProduct(productId)) {
+            return ResponseEntity.ok("쇼핑몰의 상품이 삭제되었습니다.");
+        } else {
+            return ResponseEntity.ok("쇼핑몰이 개설되지 않았거나, 상품 삭제에 실패하였습니다.");
+        }
+    }
 }

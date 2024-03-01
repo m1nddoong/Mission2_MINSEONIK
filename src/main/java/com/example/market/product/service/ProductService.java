@@ -89,7 +89,24 @@ public class ProductService {
 
 
     // 상품 삭제
+    public boolean deleteProduct(Long productId) {
+        // 현재 인증된 사용자 정보 가져오기
+        UserEntity userEntity = getCurrentUser();
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getCurrentUserShop(userEntity);
 
+        // productId 로 상품의 정보를 조회하고
+        Product product = getProductFromId(productId);
+
+        // 상품의 writer_id 가 현재 인증된 사용자의 id 와 같다면
+        if (product.getWriter().getId().equals(userEntity.getId())) {
+            // 쇼핑몰 상품 삭제하기
+            productRepository.deleteById(productId);
+            return true;
+        }
+        return false;
+
+    }
 
 
 
@@ -148,7 +165,5 @@ public class ProductService {
         }
         return optionalProduct.get();
     }
-
-
 
 }
