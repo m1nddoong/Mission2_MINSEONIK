@@ -138,6 +138,17 @@ public class ShopService {
                 .collect(Collectors.toList());
     }
 
+    // 비활성 사용자를 제외한 사용자는 쇼핑몰을 조회할 수 있다
+    // 조건 없이 조회할 경우, 가장 최근에 거래가 있었던 쇼핑들을 순서로 조회된다.
+    // 일단 그냥 다 조회
+    public List<ShopDto> readAllShops() {
+        return shopRepository.findAll().stream()
+                .map(ShopDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
+
 
     // 쇼핑몰 개설 신청 허가
     public void approveOpen(Long shopId) {
@@ -196,6 +207,8 @@ public class ShopService {
         shop.setShopStatus(ShopStatus.CLOSED);
         shopRepository.save(shop);
     }
+
+
 
 
     /*

@@ -44,8 +44,7 @@ public class ShopController {
     }
 
     /**
-     * 쇼핑몰을 개설 신청
-     * 쇼핑몰의 이름, 소개, 분류가 전부 작성된 상태라면 가능
+     * 쇼핑몰을 개설 신청 쇼핑몰의 이름, 소개, 분류가 전부 작성된 상태라면 가능
      * @return
      */
     @GetMapping("/open-request")
@@ -59,8 +58,7 @@ public class ShopController {
     }
 
     /**
-     * 개설 신청된 쇼핑몰 목록 확인
-     * 관리자만 접근가능
+     * 개설 신청된 쇼핑몰 목록 확인 관리자만 접근가능
      * @return
      */
     @GetMapping("/get-all-open-requests")
@@ -85,10 +83,9 @@ public class ShopController {
     }
 
     /**
-     * 쇼핑몰 개설 신청 불허
-     * 불허 사유 이메일로 전송
+     * 쇼핑몰 개설 신청 불허 불허 사유 이메일로 전송
      * @param shopId 쇼핑몰의 id
-     * @param dto 불허 사유 (제목, 내용)
+     * @param dto    불허 사유 (제목, 내용)
      * @return 개설 불허 완료
      */
     @PostMapping("/reject-open/{shopId}")
@@ -104,8 +101,7 @@ public class ShopController {
 
 
     /**
-     * 쇼핑몰 폐쇄 요청
-     * 쇼핑몰의 주인은 사유를 작성
+     * 쇼핑몰 폐쇄 요청 쇼핑몰의 주인은 사유를 작성
      * @param dto
      * @return
      */
@@ -133,7 +129,6 @@ public class ShopController {
     }
 
 
-
     /**
      * 쇼핑몰 폐쇄 신청 허가 (수락)
      * @param shopId 쇼핑몰의 id
@@ -148,5 +143,14 @@ public class ShopController {
         return ResponseEntity.ok("쇼핑몰 폐쇄 완료");
     }
 
-
+    /**
+     * 쇼핑몰을 조회하기
+     * TODO : 조건 없이 조회할 경우 가장 최근에 거래가 있었던 쇼핑몰 순서로 조회
+     * @return
+     */
+    @GetMapping("/read-all-shops")
+    public ResponseEntity<List<ShopDto>> readAllShops() {
+        List<ShopDto> shops = service.readAllShops();
+        return ResponseEntity.ok(shops);
+    }
 }
