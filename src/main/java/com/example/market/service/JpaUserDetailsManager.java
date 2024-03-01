@@ -57,7 +57,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 .nickname("일반사용자1")
                 .name("나나")
                 .age(25)
-                .email("user1@gmail.com")
+                .email("m1nddoong0321@gmail.com")
                 .phone("010-3333-4444")
                 .authorities("ROLE_USER")
                 .businessNumber("20240226")

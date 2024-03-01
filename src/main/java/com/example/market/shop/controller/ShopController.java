@@ -1,5 +1,6 @@
 package com.example.market.shop.controller;
 
+import com.example.market.shop.dto.EmailDto;
 import com.example.market.shop.dto.ShopDto;
 import com.example.market.shop.service.ShopService;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ShopController {
     }
 
     /**
-     * 관리자의 개설 쇼핑몰 목록 확인
+     * 관리자의 개설인 신청된 쇼핑몰 목록 확인
      * @return
      */
     @GetMapping("/get-all-open-requests")
@@ -60,8 +61,11 @@ public class ShopController {
     }
 
 
-    // 관지라는 쇼핑몰의 id를 전달받아서, 해당 쇼핑몰을 허가한다.
-    // 개설이 허가된 쇼핑몰은 오픈 상태가 된다.
+    /**
+     * 쇼핑몰 개설 신청 허가
+     * @param shopId 쇼핑몰의 id
+     * @return 개설이 허가된 쇼핑몰은 오픈 상태가 된다.
+     */
     @PostMapping("/approve-shop/{shopId}")
     public ResponseEntity<String> approveShop(
             @PathVariable
@@ -72,12 +76,20 @@ public class ShopController {
     }
 
 
-
-
-
     // 관지라는 쇼핑몰의 id를 전달받아서, 해당 쇼핑몰을 불허한다.
     // 이떄 불허된 이유를 함께 작성하고
     // 이를 쇼핑몰의 주인, 즉 해당 쇼핑몰의 객체의 owner 에게 전달해야 한다.
+    @PostMapping("/reject-shop/{shopId}")
+    public ResponseEntity<String> rejectShop(
+            @PathVariable
+            Long shopId,
+            @RequestBody
+            EmailDto dto
+    ) {
+        service.rejectShop(shopId, dto);
+        return ResponseEntity.ok("쇼핑몰 불허 완료");
+    }
+
 
 
 

@@ -2,6 +2,7 @@ package com.example.market.shop.service;
 
 import com.example.market.entity.UserEntity;
 import com.example.market.repo.UserRepository;
+import com.example.market.shop.dto.EmailDto;
 import com.example.market.shop.dto.ShopDto;
 import com.example.market.shop.entity.Shop;
 import com.example.market.shop.entity.ShopCategory;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ShopService {
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     public void registerShop(
             UserEntity userEntity
@@ -53,7 +55,7 @@ public class ShopService {
         shopRepository.save(shop);
     }
 
-
+    // 쇼핑몰 개설 신청
     public boolean applyOpening() {
         // 현재 인증된 사용자의 객체 가져오기
         UserEntity userEntity = getCurrentUser();
@@ -73,6 +75,7 @@ public class ShopService {
 
     }
 
+    // 개설 신청된 쇼핑몰 목록 확인
     public List<ShopDto> getAllOpenRequests() {
         // 오픈 요청된 Shop 엔티티 리스트들을 ShopDto로 변환
         return shopRepository.findByShopStatus(ShopStatus.OPEN_REQUESTED).stream()
@@ -80,12 +83,28 @@ public class ShopService {
                 .collect(Collectors.toList());
     }
 
-
+    // 쇼핑몰 개설 신청 허가
     public void approveShop(Long shopId) {
         // 쇼핑몰 정보 가져오기
         Shop shop = getUserShopFromId(shopId);
         shop.setShopStatus(ShopStatus.OPEN);
         shopRepository.save(shop);
+    }
+
+    // 쇼핑몰 개설 신청 불허, 불허 사유 전송하기
+    public void rejectShop(Long shopId, EmailDto dto) {
+        // 쇼핑몰 정보 가져오기
+        Shop shop = getUserShopFromId(shopId);
+        // 오픈 요청 거절
+        shop.setShopStatus(ShopStatus.OPEN_REQUEST_REJECTED);
+        shopRepository.save(shop);
+
+        // 쇼핑몰 주인의 이메일 주소
+        String ownerEmail = shop.getOwner().getEmail();
+
+        // 이메일 전송
+        emailService.sendEmail(ownerEmail, dto);
+
     }
 
 
@@ -118,7 +137,5 @@ public class ShopService {
         }
         return optionalShopEntity.get();
     }
-
-
 
 }
