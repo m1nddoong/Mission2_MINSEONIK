@@ -77,7 +77,8 @@ public class WebSecurityConfig {
                                 .requestMatchers(
                                         "/shop/update",
                                         "/shop/open-request",
-                                        "/shop/close-request"
+                                        "/shop/close-request",
+                                        "/products/create"
                                 )
                                 .hasAnyRole("BUSINESS_USER", "ADMIN")
 
