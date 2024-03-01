@@ -1,7 +1,7 @@
-package com.example.market.product.dto;
+package com.example.market.shop.dto;
 
 
-import com.example.market.product.entity.Product;
+import com.example.market.shop.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

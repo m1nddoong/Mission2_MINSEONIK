@@ -1,12 +1,12 @@
-package com.example.market.product.service;
+package com.example.market.shop.service;
 
 
 import static com.example.market.shop.entity.ShopStatus.OPEN;
 
 import com.example.market.user.entity.UserEntity;
-import com.example.market.product.dto.ProductDto;
-import com.example.market.product.entity.Product;
-import com.example.market.product.repo.ProductRepository;
+import com.example.market.shop.dto.ProductDto;
+import com.example.market.shop.entity.Product;
+import com.example.market.shop.repo.ProductRepository;
 import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.entity.Shop;
 import com.example.market.shop.repo.ShopRepository;

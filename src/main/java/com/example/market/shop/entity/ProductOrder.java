@@ -1,6 +1,7 @@
-package com.example.market.product.entity;
+package com.example.market.shop.entity;
 
 
+import com.example.market.shop.entity.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

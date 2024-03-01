@@ -1,4 +1,4 @@
-package com.example.market.product.entity;
+package com.example.market.shop.entity;
 
 
 

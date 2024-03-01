@@ -1,8 +1,8 @@
-package com.example.market.product.controller;
+package com.example.market.shop.controller;
 
 
-import com.example.market.product.dto.ProductDto;
-import com.example.market.product.service.ProductService;
+import com.example.market.shop.dto.ProductDto;
+import com.example.market.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
