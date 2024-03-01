@@ -40,7 +40,7 @@ public class ProductService {
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
 
-        if (shop.getShopStatus().equals(OPEN) && shop.getOwner().equals(userEntity.getId())) {
+        if (shop.getShopStatus().equals(OPEN) && shop.getOwner().getId().equals(userEntity.getId())) {
             // 쇼핑몰에 상품을 추가
             Product product = new Product();
             product.setName(dto.getName());
