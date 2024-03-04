@@ -68,7 +68,8 @@ public class WebSecurityConfig {
                                         "/items/{itemId}/proposals/{proposalId}/accept",
                                         "/items/{itemId}/proposals/{proposalId}/reject",
                                         "/items/{itemId}/proposals/{proposalId}/confirm",
-                                        "/shop/read-all-shops"
+                                        "/shop/read-all-shops",
+                                        "/products/search"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 

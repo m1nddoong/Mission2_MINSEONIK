@@ -2,10 +2,16 @@ package com.example.market.shop.controller;
 
 
 import com.example.market.shop.dto.ProductDto;
+import com.example.market.shop.dto.ProductSearchParams;
+import com.example.market.shop.repo.ProductRepository;
 import com.example.market.shop.service.ProductService;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService service;
+    private final ProductRepository productRepository;
 
     /**
      * 쇼핑몰에 상품 등록
@@ -79,5 +86,17 @@ public class ProductController {
     }
 
 
+    @GetMapping("search")
+    public List<ProductDto> search(
+            // Query Parameter를 받아온다.
+            // /serach?name=name&priceFloor=1&priceCeil=10
+            // 이렇게 파라미터를 넣어줄 수 있는데, 파라미터 생략이 되면 null 이 들어
+            ProductSearchParams searchParams
+    ) {
+        return productRepository.searchDynamic(searchParams)
+                .stream()
+                .map(ProductDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 
 }

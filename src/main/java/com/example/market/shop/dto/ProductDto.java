@@ -21,17 +21,31 @@ public class ProductDto {
     private Long writerId;
 
     public static ProductDto fromEntity(Product product) {
+      /* 빌더 패턴 사용
         return ProductDto.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .imageUrl(product.getImageUrl())
-                .content(product.getContent())
-                .price(product.getPrice())
-                .category(product.getCategory())
-                .subCategory(product.getSubCategory())
-                .stock(product.getStock())
-                .writerId(product.getWriter().getId())
-                .build();
+        .id(product.getId())
+        .name(product.getName())
+        .imageUrl(product.getImageUrl())
+        .content(product.getContent())
+        .price(product.getPrice())
+        .category(product.getCategory())
+        .subCategory(product.getSubCategory())
+        .stock(product.getStock())
+        .writerId(product.getWriter().getId())
+        .build(); */
+
+        // 일반
+        return new ProductDto (
+                product.getId(),
+                product.getName(),
+                product.getImageUrl(),
+                product.getContent(),
+                product.getPrice(),
+                product.getCategory(),
+                product.getSubCategory(),
+                product.getStock(),
+                product.getWriter().getId()
+        );
     }
 
 }
