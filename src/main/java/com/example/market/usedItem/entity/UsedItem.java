@@ -1,4 +1,4 @@
-package com.example.market.Item.entity;
+package com.example.market.usedItem.entity;
 
 
 import com.example.market.user.entity.UserEntity;
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item {
+public class UsedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

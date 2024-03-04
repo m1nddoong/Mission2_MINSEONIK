@@ -1,4 +1,4 @@
-package com.example.market.Item.entity;
+package com.example.market.usedItem.entity;
 
 public enum ProposalStatus {
     PENDING,    // 대기 중

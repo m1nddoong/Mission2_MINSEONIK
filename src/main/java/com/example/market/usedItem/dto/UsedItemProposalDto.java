@@ -1,7 +1,7 @@
-package com.example.market.Item.dto;
+package com.example.market.usedItem.dto;
 
-import com.example.market.Item.entity.ItemProposal;
-import com.example.market.Item.entity.ProposalStatus;
+import com.example.market.usedItem.entity.UsedItemProposal;
+import com.example.market.usedItem.entity.ProposalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,19 +10,19 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ItemProposalDto {
+public class UsedItemProposalDto {
     private Long id;
     private Long itemId;
     private Long proposerId;
     private ProposalStatus status;
 
 
-    public static ItemProposalDto fromEntity(ItemProposal itemProposal) {
-        return ItemProposalDto.builder()
-                .id(itemProposal.getId())
-                .itemId(itemProposal.getItem().getId())
-                .proposerId(itemProposal.getProposer().getId())
-                .status(itemProposal.getStatus())
+    public static UsedItemProposalDto fromEntity(UsedItemProposal usedItemProposal) {
+        return UsedItemProposalDto.builder()
+                .id(usedItemProposal.getId())
+                .itemId(usedItemProposal.getUsedItem().getId())
+                .proposerId(usedItemProposal.getProposer().getId())
+                .status(usedItemProposal.getStatus())
                 .build();
     }
 

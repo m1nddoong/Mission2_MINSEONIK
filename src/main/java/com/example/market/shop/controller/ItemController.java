@@ -1,13 +1,12 @@
 package com.example.market.shop.controller;
 
 
-import com.example.market.shop.dto.ProductDto;
+import com.example.market.shop.dto.ItemDto;
 import com.example.market.shop.dto.ProductSearchParams;
-import com.example.market.shop.repo.ProductRepository;
-import com.example.market.shop.service.ProductService;
+import com.example.market.shop.repo.ItemRepository;
+import com.example.market.shop.service.ItemService;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/items")
 @RequiredArgsConstructor
-public class ProductController {
-    private final ProductService service;
-    private final ProductRepository productRepository;
+public class ItemController {
+    private final ItemService service;
+    private final ItemRepository productRepository;
 
     /**
      * 쇼핑몰에 상품 등록
@@ -32,11 +31,11 @@ public class ProductController {
      * @return 등록 완료 (쇼핑몰 주인만 가능)
      */
     @PostMapping("/create")
-    public ResponseEntity<String> createProduct(
+    public ResponseEntity<String> createItem(
             @RequestBody
-            ProductDto dto
+            ItemDto dto
     ) {
-        if (service.createProduct(dto)) {
+        if (service.createItem(dto)) {
             return ResponseEntity.ok("쇼핑몰에 상품을 등록하였습니다.");
         } else {
             return ResponseEntity.ok("쇼핑몰이 개설되지 않았거나, 상품 등록에 실패하였습니다.");
@@ -53,14 +52,14 @@ public class ProductController {
      * @param dto
      * @return
      */
-    @PutMapping("{productId}/update")
-    public ResponseEntity<String> updateProduct(
+    @PutMapping("{itemId}/update")
+    public ResponseEntity<String> updateItem(
             @PathVariable
-            Long productId,
+            Long itemId,
             @RequestBody
-            ProductDto dto
+            ItemDto dto
     ) {
-        if (service.updateProduct(productId, dto)) {
+        if (service.updateItem(itemId, dto)) {
             return ResponseEntity.ok("쇼핑몰의 상품이 수정되었습니다.");
         } else {
             return ResponseEntity.ok("쇼핑몰이 개설되지 않았거나, 상품 수정에 실패하였습니다.");
@@ -70,15 +69,15 @@ public class ProductController {
 
     /**
      * 쇼핑몰 상품 삭제
-     * @param productId
+     * @param itemId
      * @return
      */
-    @DeleteMapping("{productId}/delete")
-    public ResponseEntity<String> deleteProduct(
+    @DeleteMapping("{itemId}/delete")
+    public ResponseEntity<String> deleteItem(
             @PathVariable
-            Long productId
+            Long itemId
     ) {
-        if (service.deleteProduct(productId)) {
+        if (service.deleteItem(itemId)) {
             return ResponseEntity.ok("쇼핑몰의 상품이 삭제되었습니다.");
         } else {
             return ResponseEntity.ok("쇼핑몰이 개설되지 않았거나, 상품 삭제에 실패하였습니다.");
@@ -87,7 +86,7 @@ public class ProductController {
 
 
     @GetMapping("search")
-    public List<ProductDto> search(
+    public List<ItemDto> search(
             // Query Parameter를 받아온다.
             // /serach?name=name&priceFloor=1&priceCeil=10
             // 이렇게 파라미터를 넣어줄 수 있는데, 파라미터 생략이 되면 null 이 들어
@@ -95,7 +94,7 @@ public class ProductController {
     ) {
         return productRepository.searchDynamic(searchParams)
                 .stream()
-                .map(ProductDto::fromEntity)
+                .map(ItemDto::fromEntity)
                 .collect(Collectors.toList());
     }
 

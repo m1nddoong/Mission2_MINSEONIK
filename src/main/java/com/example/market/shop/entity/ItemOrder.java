@@ -1,7 +1,6 @@
 package com.example.market.shop.entity;
 
 
-import com.example.market.shop.entity.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,12 +18,12 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductOrder {
+public class ItemOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Product product;
+    private Item item;
 
     private String tossPaymentKey;
     private String tossOrderId;

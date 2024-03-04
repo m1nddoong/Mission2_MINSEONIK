@@ -1,9 +1,7 @@
-package com.example.market.Item.controller;
+package com.example.market.usedItem.controller;
 
-import com.example.market.Item.dto.ItemDto;
-import com.example.market.Item.repo.ItemRepository;
-import com.example.market.Item.service.ItemService;
-import com.example.market.user.repo.UserRepository;
+import com.example.market.usedItem.dto.UsedItemDto;
+import com.example.market.usedItem.service.UsedItemService;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
-@RequestMapping("items")
+@RequestMapping("used-items")
 @RequiredArgsConstructor
-public class ItemController {
-    private final ItemService service;
-    private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
-
+public class UsedItemController {
+    private final UsedItemService service;
 
     /**
-     * 물품 전체 조회
+     * 중고 물품 전체 조회
      * @return
      */
     @GetMapping
-    public List<ItemDto> readAll() {
+    public List<UsedItemDto> readAll() {
         return service.readAll();
     }
 
@@ -46,14 +41,14 @@ public class ItemController {
 
 
     /**
-     * 일반 사용자의 물품 등록
+     * 일반 사용자의 중고 물품 등록
      * @param dto
      * @return
      */
     @PostMapping("/register")
     public ResponseEntity<String> registerItem(
             @RequestBody
-            ItemDto dto
+            UsedItemDto dto
     ) {
         service.registerItem(dto);
         return ResponseEntity.ok("물품이 성공적으로 등록되었습니다.");
@@ -63,7 +58,7 @@ public class ItemController {
 
 
     /**
-     * 일반 사용자가 등록한 물품의 이미지 등록
+     * 일반 사용자가 등록한 중고 물품의 이미지 등록
      * @param multipartFile
      * @param itemId
      * @return
@@ -76,46 +71,46 @@ public class ItemController {
     public ResponseEntity<String> registerItemImage(
             @RequestParam("file")
             MultipartFile multipartFile,
-            @RequestParam("itemId")
+            @RequestParam("usedItemId")
             Long itemId
     ) throws IOException {
         service.registerItemImage(multipartFile, itemId);
-        return ResponseEntity.ok("물품 이미지가 성공적으로 등록되었습니다.");
+        return ResponseEntity.ok("중고 물품 이미지가 성공적으로 등록되었습니다.");
     }
 
 
     /**
-     * 물품 수정
+     * 중고 물품 수정
      * @param dto
      * @return
      */
-    @PutMapping("/update/{itemId}")
-    public ResponseEntity<String> updateItem(
+    @PutMapping("/update/{usedItemId}")
+    public ResponseEntity<String> updateUsedItem(
             @PathVariable
-            Long itemId,
+            Long usedItemId,
             @RequestBody
-            ItemDto dto
+            UsedItemDto dto
     ) {
-        if (service.updateItem(dto, itemId)) {
-            return ResponseEntity.ok("물품이 성공적으로 수정되었습니다.");
+        if (service.updateItem(dto, usedItemId)) {
+            return ResponseEntity.ok("중고 물품이 성공적으로 수정되었습니다.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("물품을 찾을 수 없거나 권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("중고 물품을 찾을 수 없거나 권한이 없습니다.");
         }
     }
 
     /**
-     * 물품 삭제
+     * 중고 물품 삭제
      * @return
      */
-    @DeleteMapping("/delete/{itemId}")
-    public ResponseEntity<String> deleteItem(
+    @DeleteMapping("/delete/{usedItemId}")
+    public ResponseEntity<String> deleteUsedItem(
             @PathVariable
-            Long itemId
+            Long usedItemId
     ) {
-        if (service.deleteItem(itemId)) {
-            return ResponseEntity.ok("물품이 성공적으로 삭제되었습니다.");
+        if (service.deleteItem(usedItemId)) {
+            return ResponseEntity.ok("중고 물품이 성공적으로 삭제되었습니다.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("물품을 찾을 수 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("중고 물품을 찾을 수 없습니다.");
         }
     }
 

@@ -1,7 +1,7 @@
 package com.example.market.shop.dto;
 
 
-import com.example.market.shop.entity.Product;
+import com.example.market.shop.entity.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ProductDto {
+public class ItemDto {
     private Long id;
     private String name;
     private String imageUrl;
@@ -20,7 +20,7 @@ public class ProductDto {
     private int stock;
     private Long writerId;
 
-    public static ProductDto fromEntity(Product product) {
+    public static ItemDto fromEntity(Item item) {
       /* 빌더 패턴 사용
         return ProductDto.builder()
         .id(product.getId())
@@ -35,16 +35,16 @@ public class ProductDto {
         .build(); */
 
         // 일반
-        return new ProductDto (
-                product.getId(),
-                product.getName(),
-                product.getImageUrl(),
-                product.getContent(),
-                product.getPrice(),
-                product.getCategory(),
-                product.getSubCategory(),
-                product.getStock(),
-                product.getWriter().getId()
+        return new ItemDto(
+                item.getId(),
+                item.getName(),
+                item.getImageUrl(),
+                item.getContent(),
+                item.getPrice(),
+                item.getCategory(),
+                item.getSubCategory(),
+                item.getStock(),
+                item.getWriter().getId()
         );
     }
 

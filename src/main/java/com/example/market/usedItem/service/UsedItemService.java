@@ -1,8 +1,8 @@
-package com.example.market.Item.service;
+package com.example.market.usedItem.service;
 
-import com.example.market.Item.dto.ItemDto;
-import com.example.market.Item.entity.Item;
-import com.example.market.Item.repo.ItemRepository;
+import com.example.market.usedItem.dto.UsedItemDto;
+import com.example.market.usedItem.entity.UsedItem;
+import com.example.market.usedItem.repo.UsedItemRepository;
 import com.example.market.user.entity.UserEntity;
 import com.example.market.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,12 +23,12 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 @Service
 //RequiredArgsConstructor
-public class ItemService {
-    private final ItemRepository itemRepository;
+public class UsedItemService {
+    private final UsedItemRepository usedItemRepository;
     private final UserRepository userRepository;
 
-    public ItemService(ItemRepository itemRepository, UserRepository userRepository) {
-        this.itemRepository = itemRepository;
+    public UsedItemService(UsedItemRepository usedItemRepository, UserRepository userRepository) {
+        this.usedItemRepository = usedItemRepository;
         this.userRepository = userRepository;
 
         // 중고 물품은 필요시 만들어 주자.
@@ -80,13 +80,13 @@ public class ItemService {
      * @param dto
      * @return
      */
-    public void registerItem(ItemDto dto) {
+    public void registerItem(UsedItemDto dto) {
         // 현재 인증된 사용자의 정보 가져오기
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // 물품 객체 생성
-        Item itemEntity = Item.builder()
+        UsedItem usedItemEntity = UsedItem.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .price(dto.getPrice())
@@ -94,7 +94,7 @@ public class ItemService {
                 .writer(userEntity)
                 .build();
 
-        itemRepository.save(itemEntity);
+        usedItemRepository.save(usedItemEntity);
     }
 
 
@@ -111,9 +111,9 @@ public class ItemService {
         UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // 물품 정보 가져오기
-        Item itemEntity = getItemFromId(itemId);
+        UsedItem usedItemEntity = getItemFromId(itemId);
 
-        if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
+        if (usedItemEntity.getWriter().getId().equals(userEntity.getId())) {
             // 파일 저장 경로 설정
             String profileDir = String.format("media/%s/", username);
             try {
@@ -137,8 +137,8 @@ public class ItemService {
 
             // 업로드된 파일의 URL 저장
             String requestPath = String.format("/media/%s/%s", username, profileFilename);
-            itemEntity.setImageUrl(requestPath);
-            itemRepository.save(itemEntity);
+            usedItemEntity.setImageUrl(requestPath);
+            usedItemRepository.save(usedItemEntity);
         }
     }
 
@@ -147,12 +147,12 @@ public class ItemService {
      * 물품 전체 조회 서비스
      * @return 조회된 물품 리스트
      */
-    public List<ItemDto> readAll() {
-        return itemRepository.findAll().stream()
+    public List<UsedItemDto> readAll() {
+        return usedItemRepository.findAll().stream()
                 .map(item -> {
-                    ItemDto itemDto = ItemDto.fromEntity(item);
-                    itemDto.setWriterId(item.getWriter().getId()); // 작성자의 username을 설정
-                    return itemDto;
+                    UsedItemDto usedItemDto = UsedItemDto.fromEntity(item);
+                    usedItemDto.setWriterId(item.getWriter().getId()); // 작성자의 username을 설정
+                    return usedItemDto;
                 })
                 .toList();
     }
@@ -165,22 +165,22 @@ public class ItemService {
      * @return 업데이트가 완료되었으면 true, 아니면 false
      */
     @Transactional
-    public Boolean updateItem(ItemDto dto, Long itemId) {
+    public Boolean updateItem(UsedItemDto dto, Long itemId) {
 
         // 물품 정보 조회
-        Item itemEntity = getItemFromId(itemId);
+        UsedItem usedItemEntity = getItemFromId(itemId);
 
         // 사용자 정보 가져오기
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // itemId 에 헤댕하는 물품의 writer_id 와 현재 인증된 사용자의 id 가 같으면
-        if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
-            itemEntity.setTitle(dto.getTitle());
-            itemEntity.setContent(dto.getContent());
-            itemEntity.setPrice(dto.getPrice());
-            itemEntity.setStatus(dto.getStatus());
-            itemRepository.save(itemEntity);
+        if (usedItemEntity.getWriter().getId().equals(userEntity.getId())) {
+            usedItemEntity.setTitle(dto.getTitle());
+            usedItemEntity.setContent(dto.getContent());
+            usedItemEntity.setPrice(dto.getPrice());
+            usedItemEntity.setStatus(dto.getStatus());
+            usedItemRepository.save(usedItemEntity);
             return true;
         }
         return false;
@@ -199,14 +199,14 @@ public class ItemService {
         UserEntity userEntity = getCurrentUserFromUsername(username);
 
         // 물품 정보 조회
-        Item itemEntity = getItemFromId(itemId);
+        UsedItem usedItemEntity = getItemFromId(itemId);
 
 
 
         // itemId 에 헤댕하는 물품의 writer_id 와 현재 인증된 사용자의 id 가 같으면
-        if (itemEntity.getWriter().getId().equals(userEntity.getId())) {
+        if (usedItemEntity.getWriter().getId().equals(userEntity.getId())) {
             // 조회한 물품 삭제
-            itemRepository.delete(itemEntity);
+            usedItemRepository.delete(usedItemEntity);
             return true;
         }
         return false; // 물품을 찾을 수 없거나 권한이 없음
@@ -226,9 +226,9 @@ public class ItemService {
         return optionalUserEntity.get();
     }
 
-    private Item getItemFromId(Long itemId) {
+    private UsedItem getItemFromId(Long itemId) {
         // 물품 정보 조회
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        Optional<UsedItem> optionalItem = usedItemRepository.findById(itemId);
         if (optionalItem.isEmpty())
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "물품 정보를 찾을 수 없습니다.");
         return optionalItem.get();

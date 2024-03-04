@@ -3,10 +3,10 @@ package com.example.market.shop.service;
 
 import static com.example.market.shop.entity.ShopStatus.OPEN;
 
+import com.example.market.shop.entity.Item;
 import com.example.market.user.entity.UserEntity;
-import com.example.market.shop.dto.ProductDto;
-import com.example.market.shop.entity.Product;
-import com.example.market.shop.repo.ProductRepository;
+import com.example.market.shop.dto.ItemDto;
+import com.example.market.shop.repo.ItemRepository;
 import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.entity.Shop;
 import com.example.market.shop.repo.ShopRepository;
@@ -20,13 +20,13 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 @Service
 // @RequiredArgsConstructor
-public class ProductService {
-    private final ProductRepository productRepository;
+public class ItemService {
+    private final ItemRepository productRepository;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
-    public ProductService(
-            ProductRepository productRepository,
+    public ItemService(
+            ItemRepository productRepository,
             ShopRepository shopRepository,
             UserRepository userRepository
     ) {
@@ -40,7 +40,7 @@ public class ProductService {
         if (userEntity.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
 
-        Product product = Product.builder()
+        Item item = Item.builder()
                 .name("아로마틱 우드 10ml")
                 .content("스프레이 퍼퓸")
                 .price(20000)
@@ -49,14 +49,14 @@ public class ProductService {
                 .Stock(5)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(product);
+        productRepository.save(item);
 
         // USER1
         userEntity = userRepository.findById(3L);
         if (userEntity.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
 
-        product = Product.builder()
+        item = Item.builder()
                 .name("벤큐 모니터")
                 .content("144hz")
                 .price(150000)
@@ -65,9 +65,9 @@ public class ProductService {
                 .Stock(30)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(product);
+        productRepository.save(item);
 
-        product = Product.builder()
+        item = Item.builder()
                 .name("삼성 모니터")
                 .content("60hz")
                 .price(240000)
@@ -76,14 +76,14 @@ public class ProductService {
                 .Stock(50)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(product);
+        productRepository.save(item);
 
         // USER2
         userEntity = userRepository.findById(4L);
         if (userEntity.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
 
-        product = Product.builder()
+        item = Item.builder()
                 .name("수제 첼시부츠")
                 .content("천연 가죽, 무광")
                 .price(110000)
@@ -92,7 +92,7 @@ public class ProductService {
                 .Stock(1)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(product);
+        productRepository.save(item);
     }
 
 
@@ -102,7 +102,7 @@ public class ProductService {
      * @param dto
      * @return
      */
-    public boolean createProduct(ProductDto dto) {
+    public boolean createItem(ItemDto dto) {
         // 현재 인증된 사용자 정보 가져오기
         UserEntity userEntity = getCurrentUser();
 
@@ -111,17 +111,17 @@ public class ProductService {
 
         if (shop.getShopStatus().equals(OPEN) && shop.getOwner().getId().equals(userEntity.getId())) {
             // 쇼핑몰에 상품을 추가
-            Product product = new Product();
-            product.setName(dto.getName());
-            product.setContent(dto.getContent());
-            product.setPrice(dto.getPrice());
-            product.setCategory(dto.getCategory());
-            product.setSubCategory(dto.getSubCategory());
-            product.setStock(dto.getStock());
-            product.setWriter(userEntity);
+            Item item = new Item();
+            item.setName(dto.getName());
+            item.setContent(dto.getContent());
+            item.setPrice(dto.getPrice());
+            item.setCategory(dto.getCategory());
+            item.setSubCategory(dto.getSubCategory());
+            item.setStock(dto.getStock());
+            item.setWriter(userEntity);
 
             // 저장
-            productRepository.save(product);
+            productRepository.save(item);
             return true;
         } else {
             return false;
@@ -133,25 +133,25 @@ public class ProductService {
      */
 
     // 상품 수정
-    public boolean updateProduct(Long productId, ProductDto dto) {
+    public boolean updateItem(Long itemId, ItemDto dto) {
         // 현재 인증된 사용자 정보 가져오기
         UserEntity userEntity = getCurrentUser();
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
         // 쇼핑몰의 상품 정보 가져오기 (상품 id 로)
-        Product product = getProductFromId(productId);
+        Item item = getItemFromId(itemId);
 
-        if (shop.getShopStatus().equals(OPEN) && product.getWriter().getId().equals(userEntity.getId())) {
+        if (shop.getShopStatus().equals(OPEN) && item.getWriter().getId().equals(userEntity.getId())) {
             // 쇼핑몰의 상품 수정하기
-            product.setName(dto.getName());
-            product.setContent(dto.getContent());
-            product.setPrice(dto.getPrice());
-            product.setCategory(dto.getCategory());
-            product.setSubCategory(dto.getSubCategory());
-            product.setStock(dto.getStock());
+            item.setName(dto.getName());
+            item.setContent(dto.getContent());
+            item.setPrice(dto.getPrice());
+            item.setCategory(dto.getCategory());
+            item.setSubCategory(dto.getSubCategory());
+            item.setStock(dto.getStock());
 
             // 저장
-            productRepository.save(product);
+            productRepository.save(item);
             return true;
 
         } else {
@@ -161,17 +161,17 @@ public class ProductService {
 
 
     // 상품 삭제
-    public boolean deleteProduct(Long productId) {
+    public boolean deleteItem(Long productId) {
         // 현재 인증된 사용자 정보 가져오기
         UserEntity userEntity = getCurrentUser();
         // 쇼핑몰 정보 가져오기
         Shop shop = getCurrentUserShop(userEntity);
 
         // productId 로 상품의 정보를 조회하고
-        Product product = getProductFromId(productId);
+        Item item = getItemFromId(productId);
 
         // 상품의 writer_id 가 현재 인증된 사용자의 id 와 같다면
-        if (product.getWriter().getId().equals(userEntity.getId())) {
+        if (item.getWriter().getId().equals(userEntity.getId())) {
             // 쇼핑몰 상품 삭제하기
             productRepository.deleteById(productId);
             return true;
@@ -207,8 +207,8 @@ public class ProductService {
         return optionalShopEntity.get();
     }
 
-    private Product getProductFromId(Long productId) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
+    private Item getItemFromId(Long productId) {
+        Optional<Item> optionalProduct = productRepository.findById(productId);
         if (optionalProduct.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 정보를 찾을 수 없습니다.");
         }

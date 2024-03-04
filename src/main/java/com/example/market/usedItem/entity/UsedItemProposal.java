@@ -1,4 +1,4 @@
-package com.example.market.Item.entity;
+package com.example.market.usedItem.entity;
 
 
 import com.example.market.user.entity.UserEntity;
@@ -24,8 +24,8 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "item_proposal")
-public class ItemProposal {
+@Table(name = "used_item_proposal")
+public class UsedItemProposal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +34,7 @@ public class ItemProposal {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    private UsedItem usedItem;
 
     // 물품 구매를 제안한 사람
     @Setter
