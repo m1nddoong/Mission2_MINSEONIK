@@ -115,12 +115,12 @@ src
 ### 1. 기본 기능
  
 
-- [사용자 인증 및 권한 처리](./md/auth.md)
-- [중고거래 중개하기](./md/usedItem.md)
-- [쇼핑몰 운영하기](./md/shop.md)
+- [사용자 인증 및 권한 처리(완료)](./md/auth.md)
+- [중고거래 중개하기(완료)](./md/usedItem.md)
+- [쇼핑몰 운영하기(완료)](./md/shop.md)
 
 ### 2. 추가 기능
-- [결제 시스템](./md/toss.md)
+- [Tosspayments 결제 시스템(진행중)](./md/toss.md)
 
 
 ## 결론 
