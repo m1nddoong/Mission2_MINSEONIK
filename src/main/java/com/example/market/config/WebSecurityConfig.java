@@ -79,7 +79,8 @@ public class WebSecurityConfig {
                                         "/products/search",
                                         "/purchase-request",
                                         "/purchase-approve/{itemOrderId}",
-                                        "/purchase-reject/{itemOrderId}"
+                                        "/purchase-reject/{itemOrderId}",
+                                        "/purchase-cancel/{itemOrderId}"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 

@@ -98,6 +98,26 @@ public class ItemOrderService {
 
     }
 
+    // 구매자의 상품 구매 취소
+    public void cancelItemPayment(Long itemOrderId) {
+        // 주문 id 를 통해서 자기 자신이 이 쇼핑몰이 주인이 맞는지.
+        UserEntity userEntity = getCurrentUser();
+        ItemOrder order = getItemOrderFromId(itemOrderId);
+        Item item = getItemFromId(order.getItem().getId());
+
+        // 주문정보에 포함된 상품의 구매자의 id 와 현재 인증된 사용자의 id 가 같다면 => 주인
+        if (order.getConsumer().getId().equals(userEntity.getId())) {
+            // 구매 요청 상태가 "수락" 이 아닐 경우
+            if (!order.getStatus().equals("ACCEPTED")) {
+                order.setStatus("PURCHASE_CANCEL"); // 구메 요청 취소
+                itemOrderRepository.save(order);
+                item.setStock(item.getStock()+1);
+                itemRepository.save(item);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "권한이 없거나, 구매 요청이 수락 상태 입니다.");
+        }
+    }
 
 
     /*
@@ -131,5 +151,6 @@ public class ItemOrderService {
         }
         return optionalItemOrder.get();
     }
+
 
 }
