@@ -1,4 +1,6 @@
 spring:
+  mvc:
+    static-path-pattern: '/static/**'
   datasource:
     url: jdbc:sqlite:db.sqlite
     driver-class-name: org.sqlite.JDBC
@@ -13,9 +15,8 @@ spring:
       hibernate:
         show_sql: true
         # 추가로 출력을 예쁘게
-        format_sql: true
-        use_sql_comments: true
-
+        # format_sql: true
+        # use_sql_comments: true
 
   mail:
     host: smtp.gmail.com
@@ -33,3 +34,5 @@ spring:
 jwt:
   secret: aaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaes
 
+toss:
+  secret: 'test_sk_GePWvyJnrKvjm96bYkYaVgLzN97E'

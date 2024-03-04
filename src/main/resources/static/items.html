@@ -34,12 +34,6 @@
                 const card = document.createElement('div')
                 card.classList.add('card')
 
-                const cardImage = document.createElement('img')
-                cardImage.src = item.imageUrl
-                cardImage.alt = 'item image'
-                cardImage.classList.add('card-img-top', 'p-3')
-                card.appendChild(cardImage)
-
                 const cardBody = document.createElement('div')
                 cardBody.classList.add('card-body')
 
@@ -62,7 +56,6 @@
             }
         })
     }
-
     renderItemList()
 </script>
 </body>

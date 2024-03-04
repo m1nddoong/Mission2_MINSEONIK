@@ -1,5 +1,6 @@
 package com.example.market.shop.service;
 
+import com.example.market.shop.service.EmailService;
 import com.example.market.user.entity.UserEntity;
 import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.dto.ClosureRequestDto;

@@ -10,6 +10,7 @@ import com.example.market.shop.repo.ItemRepository;
 import com.example.market.user.repo.UserRepository;
 import com.example.market.shop.entity.Shop;
 import com.example.market.shop.repo.ShopRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,16 +22,16 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 // @RequiredArgsConstructor
 public class ItemService {
-    private final ItemRepository productRepository;
+    private final ItemRepository itemRepository;
     private final ShopRepository shopRepository;
     private final UserRepository userRepository;
 
     public ItemService(
-            ItemRepository productRepository,
+            ItemRepository itemRepository,
             ShopRepository shopRepository,
             UserRepository userRepository
     ) {
-        this.productRepository = productRepository;
+        this.itemRepository = itemRepository;
         this.shopRepository = shopRepository;
         this.userRepository = userRepository;
 
@@ -49,7 +50,7 @@ public class ItemService {
                 .Stock(5)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(item);
+        itemRepository.save(item);
 
         // USER1
         userEntity = userRepository.findById(3L);
@@ -65,7 +66,7 @@ public class ItemService {
                 .Stock(30)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(item);
+        itemRepository.save(item);
 
         item = Item.builder()
                 .name("삼성 모니터")
@@ -76,7 +77,7 @@ public class ItemService {
                 .Stock(50)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(item);
+        itemRepository.save(item);
 
         // USER2
         userEntity = userRepository.findById(4L);
@@ -92,7 +93,7 @@ public class ItemService {
                 .Stock(1)
                 .writer(userEntity.get())
                 .build();
-        productRepository.save(item);
+        itemRepository.save(item);
     }
 
 
@@ -121,12 +122,22 @@ public class ItemService {
             item.setWriter(userEntity);
 
             // 저장
-            productRepository.save(item);
+            itemRepository.save(item);
             return true;
         } else {
             return false;
         }
     }
+
+
+    // 상품 조회
+    public List<ItemDto> readAll() {
+        return itemRepository.findAll().stream()
+                .map(ItemDto::fromEntity)
+                .toList();
+    }
+
+
 
     /**
      * TODO : 상품 이미지 추가는 제외 (나중에 구현)
@@ -151,7 +162,7 @@ public class ItemService {
             item.setStock(dto.getStock());
 
             // 저장
-            productRepository.save(item);
+            itemRepository.save(item);
             return true;
 
         } else {
@@ -173,14 +184,19 @@ public class ItemService {
         // 상품의 writer_id 가 현재 인증된 사용자의 id 와 같다면
         if (item.getWriter().getId().equals(userEntity.getId())) {
             // 쇼핑몰 상품 삭제하기
-            productRepository.deleteById(productId);
+            itemRepository.deleteById(productId);
             return true;
         }
         return false;
 
     }
 
-    // 쇼핑몰을 조회
+    // 쇼핑몰 상품 구매
+
+
+
+
+
 
 
     /*
@@ -208,11 +224,12 @@ public class ItemService {
     }
 
     private Item getItemFromId(Long productId) {
-        Optional<Item> optionalProduct = productRepository.findById(productId);
-        if (optionalProduct.isEmpty()) {
+        Optional<Item> optionalitem = itemRepository.findById(productId);
+        if (optionalitem.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "상품 정보를 찾을 수 없습니다.");
         }
-        return optionalProduct.get();
+        return optionalitem.get();
     }
+
 
 }

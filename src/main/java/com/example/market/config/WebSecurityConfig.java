@@ -2,9 +2,14 @@ package com.example.market.config;
 
 import com.example.market.user.jwt.JwtTokenFilter;
 import com.example.market.user.jwt.JwtTokenUtils;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +20,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 // @Bean을 비롯해서 인증 등 여러 설정을 하기 위한 Bean 객체
 @Configuration
@@ -24,11 +32,15 @@ public class WebSecurityConfig {
     private final JwtTokenUtils jwtTokenUtils;
     private final UserDetailsManager manager;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http // 인증과 권한 관련 설정을 적용할 수 있는 객체
     ) throws Exception {
         http
+                .cors(c -> {
+                    c.configurationSource(corsConfigurationSource());
+                })
                 // csrf 보안 해제
                 .csrf(AbstractHttpConfigurer::disable)
                 // url에 따른 요청 인가
@@ -40,20 +52,15 @@ public class WebSecurityConfig {
                                         "/token/issue",
                                         "/token/validate",
                                         "/users/profile-info",
-                                        "/users/avatar"
+                                        "/users/avatar",
+                                        "/",
+                                        "/home",
+                                        "/static/**",
+                                        "/static/item.html?id=1",
+                                        "/items"
                                 )
                                 // 이 경로에 도달할 수 있는 사람에 대한 설정 (모두)
                                 .permitAll()
-                                .requestMatchers(
-                                        "/users/my-profile"
-
-                                )
-                                .authenticated()
-
-                                .requestMatchers(
-                                        "/users/signup"
-                                )
-                                .anonymous()
 
                                 // ROLE_USER 이상 접근 가능
                                 .requestMatchers(
@@ -69,7 +76,10 @@ public class WebSecurityConfig {
                                         "/items/{itemId}/proposals/{proposalId}/reject",
                                         "/items/{itemId}/proposals/{proposalId}/confirm",
                                         "/shop/read-all-shops",
-                                        "/products/search"
+                                        "/products/search",
+                                        "/purchase-request",
+                                        "/purchase-approve/{itemOrderId}",
+                                        "/purchase-reject/{itemOrderId}"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
@@ -98,6 +108,7 @@ public class WebSecurityConfig {
                                 )
                                 .hasRole("ADMIN")
                 )
+
                 // JWT를 사용하기 떄문에 보안 관련 세션 해제
                 .sessionManagement(
                         session -> session
@@ -123,5 +134,16 @@ public class WebSecurityConfig {
         // Spring Security에서 기본으로 제공하는,
         // 메모리 기반 사용자 관리 클래스 + 사용자 1
         return new InMemoryUserDetailsManager(user1);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*"); // 모든 도메인에서의 요청을 허용한다.
+        configuration.addAllowedMethod("*"); // 모든 HTTP 메소드를 허용한다.
+        configuration.addAllowedHeader("*"); // 모든 헤더를 허용한다.
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 설정을 적용한다.
+        return source;
     }
 }

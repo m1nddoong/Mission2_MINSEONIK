@@ -1,6 +1,7 @@
-package com.example.market.shop.entity;
+package com.example.market.shop.toss;
 
-import com.example.market.user.entity.UserEntity;
+
+import com.example.market.shop.entity.Item;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,26 +9,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
-@Setter
+@Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemOrder {
+public class TossItemOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity consumer;
+    private String tossPaymentKey;
+    private String tossOrderId;
 
-    private String status; // 주문 상태 (예: "대기 중", "완료됨", "취소됨")
+    @Setter
+    private String status;
 
 }

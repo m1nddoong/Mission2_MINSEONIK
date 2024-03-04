@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +26,14 @@ public class ItemController {
     private final ItemService service;
     private final ItemRepository productRepository;
 
+    @GetMapping
+    public List<ItemDto> readAll() {
+        return service.readAll();
+    }
+
     /**
      * 쇼핑몰에 상품 등록
+     *
      * @param dto 상품 등록 정보
      * @return 등록 완료 (쇼핑몰 주인만 가능)
      */
@@ -49,6 +56,7 @@ public class ItemController {
 
     /**
      * 쇼핑몰 상품 수정
+     *
      * @param dto
      * @return
      */
@@ -69,6 +77,7 @@ public class ItemController {
 
     /**
      * 쇼핑몰 상품 삭제
+     *
      * @param itemId
      * @return
      */
@@ -84,7 +93,7 @@ public class ItemController {
         }
     }
 
-
+    // 쇼핑몰 상품 검색
     @GetMapping("search")
     public List<ItemDto> search(
             // Query Parameter를 받아온다.
@@ -97,5 +106,6 @@ public class ItemController {
                 .map(ItemDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
 
 }
