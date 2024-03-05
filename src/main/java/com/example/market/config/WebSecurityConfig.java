@@ -67,21 +67,21 @@ public class WebSecurityConfig {
                                 .requestMatchers(
                                         "/auth/user-role",
                                         "/users/register-business",
-                                        "/items",
-                                        "/items/register",
-                                        "/items/register-image",
-                                        "/items/update/{itemId}",
-                                        "/items/delete/{itemId}",
-                                        "/items/{itemId}/proposals",
-                                        "/items/{itemId}/proposals/{proposalId}/accept",
-                                        "/items/{itemId}/proposals/{proposalId}/reject",
-                                        "/items/{itemId}/proposals/{proposalId}/confirm",
+                                        "/used-items",
+                                        "/used-items/register",
+                                        "/used-items/register-image",
+                                        "/used-items/update/{itemId}",
+                                        "/used-items/delete/{itemId}",
+                                        "/used-items/{itemId}/proposals",
+                                        "/used-items/{itemId}/proposals/{proposalId}/accept",
+                                        "/used-items/{itemId}/proposals/{proposalId}/reject",
+                                        "/used-items/{itemId}/proposals/{proposalId}/confirm",
                                         "/shop/read-all-shops",
-                                        "/products/search",
-                                        "/purchase-request",
-                                        "/purchase-approve/{itemOrderId}",
-                                        "/purchase-reject/{itemOrderId}",
-                                        "/purchase-cancel/{itemOrderId}"
+                                        "/items/search",
+                                        "/items-request",
+                                        "/items-approve/{itemOrderId}",
+                                        "/items-reject/{itemOrderId}",
+                                        "/items-cancel/{itemOrderId}"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
@@ -90,9 +90,9 @@ public class WebSecurityConfig {
                                         "/shop/update",
                                         "/shop/open-request",
                                         "/shop/close-request",
-                                        "/products/create",
-                                        "/products/{productId}/update",
-                                        "/products/{productId}/delete"
+                                        "/items/create",
+                                        "/items/{productId}/update",
+                                        "/items/{productId}/delete"
                                 )
                                 .hasAnyRole("BUSINESS_USER", "ADMIN")
 

@@ -48,8 +48,8 @@
 <summary>Postman - 회원가입</summary>
 <div markdown="1">
 
-![signup.png](signup.png)
-![img_2.png](img_2.png)
+![signup.png](img_auth/signup.png)
+![img_2.png](img_auth/img_2.png)
 
 </div>
 </details>
@@ -106,7 +106,7 @@
 <summary>Postman - JWT 발급</summary>
 <div markdown="1">
 
-![img_3.png](img_3.png)
+![img_3.png](img_auth/img_3.png)
 
 
 </div>
@@ -258,8 +258,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 <summary>Postman - 추가 정보 기입</summary>
 <div markdown="1">
 
-![img_4.png](img_4.png)
-![img_5.png](img_5.png)
+![img_4.png](img_auth/img_4.png)
+![img_5.png](img_auth/img_5.png)
 </div>
 </details>
 
@@ -307,9 +307,9 @@ public ResponseEntity<String> profileInfo(
 <summary>Postman - 프로필 이미지 업로드</summary>
 <div markdown="1">
 
-![img_6.png](img_6.png)
-![img_7.png](img_7.png)
-![changmo.png](changmo.png)
+![img_6.png](img_auth/img_6.png)
+![img_7.png](img_auth/img_7.png)
+![changmo.png](img_auth/changmo.png)
 
 
 </div>
@@ -382,18 +382,18 @@ public ResponseEntity<String> avatar(
 <div markdown="1">
 
 사업자 번호 등록 및 사업자 사용자 신청
-![businessregister.png](businessregister.png)
-![businessregisterdb.png](businessregisterdb.png)
+![businessregister.png](img_auth/businessregister.png)
+![businessregisterdb.png](img_auth/businessregisterdb.png)
 
 관리자의 사업자 사용자 신청 목록 조회
-![img_8.png](img_8.png)
+![img_8.png](img_auth/img_8.png)
 
 관리자의 사업자 사용자 신청 수락 후 `ROLE_BUSINESS_USER` 로 변경
-![img_9.png](img_9.png)
-![img_10.png](img_10.png)
+![img_9.png](img_auth/img_9.png)
+![img_10.png](img_auth/img_10.png)
 
 관리자의 사업자 사용자 신청 거절
-![img_11.jpeg](img_11.jpeg)
+![img_11.jpeg](img_auth/img_11.jpeg)
 
 
 </div>

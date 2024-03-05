@@ -29,18 +29,6 @@ public class UsedItemController {
     private final UsedItemService service;
 
     /**
-     * 중고 물품 전체 조회
-     * @return
-     */
-    @GetMapping
-    public List<UsedItemDto> readAll() {
-        return service.readAll();
-    }
-
-
-
-
-    /**
      * 일반 사용자의 중고 물품 등록
      * @param dto
      * @return
@@ -53,9 +41,6 @@ public class UsedItemController {
         service.registerItem(dto);
         return ResponseEntity.ok("물품이 성공적으로 등록되었습니다.");
     }
-
-
-
 
     /**
      * 일반 사용자가 등록한 중고 물품의 이미지 등록
@@ -77,6 +62,19 @@ public class UsedItemController {
         service.registerItemImage(multipartFile, itemId);
         return ResponseEntity.ok("중고 물품 이미지가 성공적으로 등록되었습니다.");
     }
+
+
+
+    /**
+     * 중고 물품 전체 조회
+     * @return
+     */
+    @GetMapping
+    public List<UsedItemDto> readAll() {
+        return service.readAll();
+    }
+
+
 
 
     /**

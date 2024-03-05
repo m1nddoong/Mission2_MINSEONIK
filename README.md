@@ -131,7 +131,7 @@
 <summary>ERD</summary>
 <div markdown="1">
 
-![img.png](md/img.png)
+![img.png](md/img_auth/img.png)
 
 </div>
 </details>

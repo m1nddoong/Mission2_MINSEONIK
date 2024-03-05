@@ -179,7 +179,6 @@ public class UsedItemService {
             usedItemEntity.setTitle(dto.getTitle());
             usedItemEntity.setContent(dto.getContent());
             usedItemEntity.setPrice(dto.getPrice());
-            usedItemEntity.setStatus(dto.getStatus());
             usedItemRepository.save(usedItemEntity);
             return true;
         }
