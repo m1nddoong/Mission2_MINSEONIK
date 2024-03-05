@@ -419,8 +419,11 @@ public void rejectProposal(Long usedItemId, Long proposalId) { // 어떤 물품�
 </details>
 
 ```java
-// 제안을 등록한 사용자의 구매 확정
-// 좀 복잡하다.
+/**
+ * 제안을 등록한 사용자의 구매 확정
+ * @param usedItemId
+ * @param proposalId
+ */
 public void confirmProposal(Long usedItemId, Long proposalId) {
     // 현재 인증된 사용자 정보 가져오기
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
