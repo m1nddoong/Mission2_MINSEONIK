@@ -31,9 +31,59 @@
 </div>
 </details>
 
----
 
 ## 인증 체계 갖추기
+
+
+
+<br>
+
+### 1. 사용자 회원가입
+- 회원가입
+  - 클라이언트로부터 `username` 과 `password` 가 담겨있는 UserDto` 를 받아온다.
+  - `UserDto` 에 포함된 `username` 을 사용하여 이미 존재하는 사용자인지 확인
+  - 만약 사용자가 존재하지 않는다면 새로운 `UserEntity` 객체를 생성, 이떄 패스워드는 인코딩하여 저장하고, 새로운 사용자의 권한은 비활성 사용자(`ROLE_INACTIVE_USER`) 로 설정된다.
+
+<details>
+<summary>Postman - 회원가입</summary>
+<div markdown="1">
+
+![스크린샷 2024-03-05 오전 11.27.09.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fs6%2F5m0_5qy16hj8x94y1pb7gw840000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_0ZFziz%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.27.09.png)
+
+![img_2.png](img_2.png)
+
+</div>
+</details>
+
+```java
+ /**
+     * 회원가입
+     * @param dto 사용자의 username, password
+     * @return 새로운 사용자를 생성 후 DB 저장
+     */
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(
+            @RequestBody
+            UserDto dto
+    ) {
+        if (manager.userExists(dto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
+        }
+
+        // UserEntity 객체 생성
+        UserEntity userEntity = UserEntity.builder()
+                .username(dto.getUsername())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .authorities("ROLE_INACTIVE_USER")
+                .build();
+
+        // 저장
+        userService.save(userEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공!");
+    }
+```
+
+
 
 세션과 JWT 간단한 비교
 - 세션
@@ -42,7 +92,9 @@
   - Restful API 통신에서의 인증 방식
   - 토큰에 사용자 인증 및 권한 정보 외에도 Claim 을 통한 사용자 정보를 포함시킬 수 있다.
 
-### 1. JWT 발급, 검증
+<br>
+
+### 2. JWT 발급, 검증
 
 - JWT 발급
   - `JwtTokenUtils.java`
@@ -50,9 +102,17 @@
     - 주로 사용자의 인증 정보를 바탕으로 `JWT` 토큰을 생성하는데 사용된다.
     - `generateToken()` 메서드는 `UserDetails` 객체를 입력으로 받아 해당 사용자를 나타내는 `JWT` 토큰을 생성한다.
 
+
 <details>
-<summary>generateToken 메서드</summary>
+<summary>Postman - JWT 발급</summary>
 <div markdown="1">
+
+![img_3.png](img_3.png)
+
+
+</div>
+</details>
+
 
 ```java
 /**
@@ -80,8 +140,6 @@ public String generateToken(UserDetails userDetails) {
             .compact();
 }
 ```
-</div>
-</details>
 
 
 
@@ -92,9 +150,7 @@ public String generateToken(UserDetails userDetails) {
     - `JWT` 유효한지 알아보는 메서드 : `JwtTokenUtils.validate()`
     - `OncePerRequestFilter` 추상클래스로 필터 구현 : 사용자가 포함시킨 `JWT`의 유효성을 확인하고 `Spring Security`의 필터를 사용하여 사용자가 인증되었는지 여부를 판단
 
-<details>
-<summary>validate 메서드</summary>
-<div markdown="1">
+
 
 ```java
 /**
@@ -114,14 +170,9 @@ public boolean validate(String token) {
 }
 ```
 
-</div>
-</details>
 
 
 
-<details>
-<summary>JwtTokenFilter</summary>
-<div markdown="1">
 
 ```java
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -184,52 +235,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     ...
 ```
 
-</div>
-</details>
 
 
-
-### 2. 사용자 회원가입
-- 회원가입
-  - 클라이언트로부터 `username` 과 `password` 가 담겨있는 UserDto` 를 받아온다.
-  - `UserDto` 에 포함된 `username` 을 사용하여 이미 존재하는 사용자인지 확인
-  - 만약 사용자가 존재하지 않는다면 새로운 `UserEntity` 객체를 생성, 이떄 패스워드는 인코딩하여 저장하고, 새로운 사용자의 권한은 비활성 사용자(`ROLE_INACTIVE_USER`) 로 설정된다.
-
-<details>
-<summary>signUp</summary>
-<div markdown="1">
-
-```java
- /**
-     * 회원가입
-     * @param dto 사용자의 username, password
-     * @return 새로운 사용자를 생성 후 DB 저장
-     */
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUp(
-            @RequestBody
-            UserDto dto
-    ) {
-        if (manager.userExists(dto.getUsername())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
-        }
-
-        // UserEntity 객체 생성
-        UserEntity userEntity = UserEntity.builder()
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .authorities("ROLE_INACTIVE_USER")
-                .build();
-
-        // 저장
-        userService.save(userEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공!");
-    }
-```
-
-</div>
-</details>
-
+<br>
 
 ### 3. 사용자 권한 처리
 
@@ -246,9 +254,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     - `"USER"`, `"BUSINESS_USER"`, `"ADMIN"` 사용자만 허용
 
 
+
 <details>
-<summary>profile-info</summary>
+<summary>Postman - 추가 정보 기입</summary>
 <div markdown="1">
+
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)
+</div>
+</details>
 
 ```java
 /**
@@ -283,5 +297,198 @@ public ResponseEntity<String> profileInfo(
 }
 ```
 
+
+
+
+
+<br>
+
+#### 4. 프로필 이미지 업로드
+<details>
+<summary>Postman - 프로필 이미지 업로드</summary>
+<div markdown="1">
+
+![img_6.png](img_6.png)
+![img_7.png](img_7.png)
+
+![71062479-438F-4003-90EB-4028DECFF1DB.png](..%2F..%2F..%2F..%2FPictures%2FPhotos%20Library.photoslibrary%2Foriginals%2F7%2F71062479-438F-4003-90EB-4028DECFF1DB.png)
+
 </div>
 </details>
+
+
+```java
+/**
+* 사용자 프로필 이미지 업로드
+*
+* @param multipartFile 이미지 파일
+* @return 이미지 파일 업로드
+* @throws IOException transferTo 로 저장
+*/
+@PostMapping(
+      value = "/avatar",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+)
+public ResponseEntity<String> avatar(
+      @RequestParam("file")
+      MultipartFile multipartFile
+) throws IOException {
+  // 현재 인증된 사용자의 정보 가져오기
+  String username = SecurityContextHolder.getContext().getAuthentication().getName();
+  // 데이터베이스에서 사용자 정보 가져오기
+  Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+  if (optionalUserEntity.isPresent()) {
+      UserEntity userEntity = optionalUserEntity.get();
+      // 폴더 경로 생성: media/{username}/
+      String profileDir = String.format("media/%s/", username);
+      try {
+          // 폴더 생성
+          Files.createDirectories(Path.of(profileDir));
+      } catch (IOException e) {
+          // 폴더를 만드는데 실패하면 기록을 하고 사용자에게 알림
+          log.error(e.getMessage());
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("디렉토리 생성 실패");
+      }
+      // 파일 조합: media/{username}/profile.{확장자}
+      String originalFilename = multipartFile.getOriginalFilename();
+      String[] fileNameSplit = originalFilename.split("\\.");
+      String extension = fileNameSplit[fileNameSplit.length - 1];
+      String profileFilename = "profile." + extension;
+      String profilePath = profileDir + profileFilename;
+      log.info(profileFilename);
+
+      multipartFile.transferTo(Path.of(profilePath));
+      log.info(profilePath);
+
+      // 업로드된 파일의 URL 저장
+      String requestPath = String.format("/media/%s/%s", username, profileFilename);
+      userEntity.setAvatar(requestPath);
+      userRepository.save(userEntity);
+      // 성공적으로 업로드된 메시지 반환
+      return ResponseEntity.status(HttpStatus.OK).body("프로필 이미지가 업로드 되었습니다.");
+  } else {
+      // 사용자를 찾을 수 없을 경우 오류 메시지 반환
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
+  }
+}
+```
+
+
+<br>
+
+### 5. 사업자 번호 등록
+
+<details>
+<summary>Postman - 사업자 번호 등록</summary>
+<div markdown="1">
+
+![스크린샷 2024-03-05 오전 11.51.13.png](..%2F..%2F..%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.51.13.png)
+![스크린샷 2024-03-05 오전 11.52.34.png](..%2F..%2F..%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.52.34.png)
+</div>
+</details>
+
+<details>
+<summary>Postman - Admin 으로 로그인 하여 사업자 사용자 신청 확인 </summary>
+<div markdown="1">
+
+
+</div>
+</details>
+
+```java
+/**
+* 사업자 등록번호 신청 (ROLE_USER 일떄만 가능)
+* @param dto businessNumber 만 포함
+* @return 해당 사용자의 사업자 등록번호 컬럼에 데이터 추가
+*/
+@PostMapping("/register-business")
+public ResponseEntity<String> registerBusinessUser(
+      @RequestBody
+      UserDto dto
+) {
+  String username = SecurityContextHolder.getContext().getAuthentication().getName();
+  // 사용자 정보 가져오기
+  Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+  if (optionalUserEntity.isPresent()) {
+      UserEntity userEntity = optionalUserEntity.get();
+      // 자신의 사업자 번호 등록 (데이터베이스에)
+      userEntity.setBusinessNumber(dto.getBusinessNumber());
+      userRepository.save(userEntity);
+      return ResponseEntity.ok("사업자 등록번호 신청 완료");
+  } else {
+      return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+  }
+}
+
+/**
+* 사업자 등록 번호가 존재하는 사용자 정보 반환
+* @return 사용자 정보 반환
+*/
+@GetMapping("/read-business")
+public ResponseEntity<List<UserEntity>> getBusinessUserRequest() {
+  List<UserEntity> businessUserRequests = userRepository.findByBusinessNumberNotNull();
+  return ResponseEntity.ok(businessUserRequests);
+}
+
+
+/**
+* 사업지 사용자 신청 승인
+* @param userId
+* @return
+*/
+@PostMapping("/approve-business/{userId}")
+public ResponseEntity<String> approveBusinessUserRequest(
+      @PathVariable
+      Long userId
+) {
+  // 사용자의 정보 가져오기
+  Optional<UserEntity> optionalUser = userRepository.findById(userId);
+  if (optionalUser.isPresent()) {
+      UserEntity userEntity = optionalUser.get();
+
+      // 사업자 사용자 권한으로 설정
+      userEntity.setAuthorities("ROLE_BUSINESS_USER");
+      userRepository.save(userEntity);
+
+      // PREPARING 상태인 쇼핑몰이 생성이 되어,
+      // shop 레포지토리에 추가된다.
+      shopService.registerShop(userEntity);
+
+      return ResponseEntity.ok("사업자 사용자 등록이 완료되었고, 쇼핑몰이 추가되었습니다.");
+  } else {
+      return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+  }
+}
+
+/**
+* 사업자 사용자 신청 거절 후 데이터베이스에서 해당 사용자의 사업자 번호 삭제
+* @param userId
+* @return
+*/
+@PostMapping("/reject-business/{userId}")
+public ResponseEntity<String> rejectBusinessUserRequest(
+      @PathVariable
+      Long userId
+) {
+  Optional<UserEntity> optionalUser = userRepository.findById(userId);
+  if (optionalUser.isPresent()) {
+      UserEntity userEntity = optionalUser.get();
+      userEntity.setBusinessNumber(null);
+      userRepository.save(userEntity);
+      return ResponseEntity.ok("사업자 사용자 등록이 거절되었습니다.");
+  } else {
+      return ResponseEntity.badRequest().body("사용자를 찾을 수 없습니다.");
+  }
+}
+
+```
+
+
+
+<br>
+
+### 4. 오류 해결
+**JWT Access Token 파싱안되는 오류 (Feat. Signed Claims JWSs are not supported.)**
+
+- parseClaimsJwt()를 parseClaimsJws()로 수정하여 해결
+
