@@ -496,22 +496,41 @@ public ResponseEntity<String> rejectBusinessUserRequest(
 
 <br>
 
-## 어려웠던 점
+## 오류 해결
 
 ### 1) JWT 발급 오류
 ![error.png](img_auth/error.png)
+1. **JWT 토큰 암호화 복호화 과정**
+   - `claim` 을 통한 사용자 정보 지정 및 `singWith()` 을 통해 서버에서 관리하는 시크릿 키 및 서명 시 암호화
+   ![error_4.png](img_auth/error_4.png)
+   - 해당 토큰을 다시 해독할 때 서버 내에서 관리하는 시크릿 키를 통해서 해독
+   ![error_3.png](img_auth/error_3.png)
 
-- **JWT Access Token 파싱안되는 오류 (Feat. Signed Claims JWSs are not supported.)**
-- parseClaimsJwt()를 parseClaimsJws()로 수정하여 해결
+2. **JWT Access Token 파싱안되는 오류 (Feat. Signed Claims JWSs are not supported.)**
+   - 이때, `parseClaimsJwt()` 메서드를 사용하면 오류 발생
+   - 우리가 처음 토큰을 생성할 때 `signWith` 을 통해서 서명을 진행했기 때문에 복호화 시에도 서명에 대한 검증을 진행해야 하기 떼문
+     - Jwt() 의 경우 서명 검증 없이 단순히 헤더와 클레임만 추출함
+   - `parseClaimsJwt()` 를 사용하고 싶다면 토큰 생성 시에 `signWith` 을 통해서 서명에 대한 정보를 넘겨주지 않으면 된다.
 
+3. **해결**
+   - `parseClaimsJwt()`를 `parseClaimsJws()`로 수정하여 해결
 
 <br>
 
 
-### 2) SecurityContextHolder에 데이터의 변경사항이 반영되지 않음
-- Spring Security는 사용자의 권한 정보를 기본적으로 UserDetails 객체에 저장한다.
-- 따라서, 사용자 정보를 업데이트 할때 UserDetails 객체를 업데이트해야한다.
-- UserDetails 를 확장한 CustomUserDetails 클래스를 가지고 UserDetails 객체를 만들자.
-- CustomUserDetails 클래스는 사용자의 추가 속성을 포함한다. (nickname, name 등)
-- 따라서, UserEntity 를 이용해서 데이터베이스와 소통하는데 CustomUserDetails 라는 엔티티 또한 데이터베이스와 소통이 가능한지 확인해야한다. 
+### 2) SecurityContext에 저장된 사용자 데이터가 업데이트되지 않는 문제
+- `Spring Security`는 사용자의 권한 정보를 기본적으로 `UserDetails` 객체에 저장한다.
+- 따라서, 사용자 정보를 업데이트 할때 `UserDetails` 객체를 생성하고 업데이트 해야한다.
+  - `UserDetails` 를 확장한 `CustomUserDetails` 클래스를 만들어서 사용하고 있다.
+  - `CustomUserDetails` 클래스는 사용자의 추가 속성을 포함할 수 있다. (`nickname`, `name` 등)
+
+
+- 사용자 정보를 등록할 때 `CustomerUserDetails` 객체를 생성하도록 한다.
+  ![error_1.png](img_auth/error_1.png)
+
+
+
+- `UserEntity` 를 통해서 새로운 사용자가 데이터베이스에 저장될 때, 그 사용자 정보를 가져와서 `CustomUserDetails` 객체로 만들고
+- `Spring Security`는 그 객체를 `UserDetails` 로 인식하여 인증 처리에 사용하게 되면서 사용자 정보가 업데이트 되게 된다.
+  ![error_2.png](img_auth/error_2.png)
 

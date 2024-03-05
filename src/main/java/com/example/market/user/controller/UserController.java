@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final JwtTokenUtils jwtTokenUtils;
     private final JpaUserDetailsManager manager;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;

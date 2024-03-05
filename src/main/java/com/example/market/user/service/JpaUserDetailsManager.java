@@ -107,10 +107,6 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
         UserEntity userEntity = optionalUser.get();
         return CustomUserDetails.fromEntity(userEntity);
-
-        /*return User.withUsername(username)
-                .password(optionalUser.get().getPassword())
-                .build();*/
     }
 
     @Override
