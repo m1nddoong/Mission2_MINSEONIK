@@ -468,8 +468,8 @@ public void confirmProposal(Long usedItemId, Long proposalId) {
 ![error_2_1.jpg](./img_usedItem/error_2_1.jpg)
 
 
-- 하지만 요구사항에 맞게 작성자(`proposer`)의 정보를 가려야했기 떄문에 해당 연관관계를 `id` 로 표시하도록 엔티티를 수정해야했다.
-- 우선 데이터베이스에 저장되는 형태는 Dto 의 형식이 될 수 있도록 UsedItemlDto 의 writer 를 writer_id 로 수정해주었다.
+- 하지만 요구사항에 맞게 작성자(`writer`)의 정보를 가려야했기 떄문에 해당 연관관계를 `id` 로 표시하도록 엔티티를 수정해야했다.
+- 우선 데이터베이스에 저장되는 형태는 `Dto` 의 형식이 될 수 있도록 `UsedItemDto` 의 `writer` 를 `writer_id` 로 수정해주었다.
 
 
 
@@ -518,16 +518,16 @@ public void registerItem(UsedItemDto dto) {
 }
 ```
 
-
+![error_2_2.png](./img_usedItem/error_2_2.png)
 
 
 
 ### 2. 기본 데이터 만들어주기 (feat. fetch = FetchType.EAGER)
-- 일일히 모든 데이터를 JWT 토큰을 발급받아서 Authentication Header 로 넣어주는 일은 매우 귀찮은 작업이었다. 
-- Restful API 의 개발 특성상 클라이언트가 이 JWT 토큰의 응답을 받는 것이기 떄문에 직접적으로 토큰을 백엔드에서는 다룰수 없다 (JWT 토큰을 백엔드에서 받아서 사용하기는 불가능)
+- 일일히 모든 테스트에 각 사용자의 `JWT` 토큰을 발급받아서 `Authentication Header` 로 넣어주는 일은 매우 귀찮은 작업이었다. 
+- `Restful API` 의 개발 특성상 클라이언트가 이 `JWT` 토큰의 응답을 받는 것이기 떄문에 직접적으로 토큰을 백엔드에서 다루는 것은 의미가 없다. (`JWT` 토큰을 백엔드에서 받아서 사용 x)
 - 이 프로젝트에서는 따로 테스트 코드를 작성해주지 않았기 때문에, 프로그램 시작과 동시에 직접 테스트 데이터를 각 서비스단의 생성자를 통해 만들어주고, 데이터베이스에 저장해야했다.
-- 하지만 테스트 데이터가 만들어지지 않는 문제가 발생했다.
-- 우선 아래와 같이 생성자에서 테스트 데이터를 데이터베이스 미리 추가해줄 수 있다.
+- 하지만 데이터베이스에 테스트 데이터가 만들어지지 않는 몇몇 문제가 발생했다.
+- 우선 아래와 같이 생성자에서 테스트 데이터를 추가해줄 수 있다.
 ```java
 @Slf4j
 @Service
@@ -565,7 +565,7 @@ public class UsedItemService {
 #### `fetch = FetchType.LAZY` vs `fetch = FetchType.EAGER` 
 - `UsedItem` 엔티티에서 연관관계를 설정하는 부분이 다음과 같이 `fetch = FetchType.LAZY` 로 되어있다면?
   - 값이 정상적으로 데이터베이스에 저장되지 않는다. 왜 그럴까?
-  - 분명 `UserEntity` 에 대한 초가 데이터는 `JpaUserDetailsManager`의 생성자에서 저장하는 코드를 추가했는데, 왜 `UserEntity` 에 객체 정보를 불러올 수 없을까?
+  - 분명 `UserEntity` 에 대한 초기 데이터는 `JpaUserDetailsManager`의 생성자에서 저장하는 코드를 추가했는데, 왜 `UserEntity` 에 객체 정보를 불러올 수 없을까?
 - 문제
   - `fetch = FetchType.LAZY` 로 설정된 연관관계는 지연 로딩(Lazy Loading) 을 의미한다. 
   - 이는 해당 엔티티가 실제로 사용될 때까지 연관된 엔티티를 데이터베이스에서 로딩하지 않고, 사용될 떄에만 로딩하는 것을 말한다.

@@ -31,8 +31,8 @@
 
 - ✅ 쇼핑몰 조회
     - ✅ 비활성 사용자를 제외한 사용자는 쇼핑몰을 조회할 수 있다.
-        - ✅ 조건 없이 조회할 경우, 가장 최근에 거래가 있었던 쇼핑몰 순서로 조회된다.
-        - ✅ 이름, 쇼핑몰 분류, ~~등록된 상품 분류, 등록된 상품 소분류~~ 를 조건으로 쇼핑몰을 검색할 수 있다. ~~단, 분류와 소분류는 하나만 선택이 가능하다.~~
+        - 🆘 조건 없이 조회할 경우, 가장 최근에 거래가 있었던 쇼핑몰 순서로 조회된다.
+        - 🆘 이름, 쇼핑몰 분류, ~~등록된 상품 분류, 등록된 상품 소분류~~ 를 조건으로 쇼핑몰을 검색할 수 있다. ~~단, 분류와 소분류는 하나만 선택이 가능하다.~~
 
 
 - ✅ 쇼핑몰 상품 검색
@@ -53,14 +53,81 @@
 </details>
 
 
+## Postman 테스트 과정 
+
+### 쇼핑몰 개설
+
+- http://localhost:8080/users/approve-business/7 로 사업자 사용자 신청을 수락하면, 해당 사용자의 쇼핑몰이 임시로 개설된다.
+- 사용자는 쇼핑몰 폐쇄 요청을 보낼 수 있다. (분량 관계상 콘솔 출력으로 대체)
+
+![1.png](img_shop/1.png)
+![2.png](img_shop/2.png)
+![3.png](img_shop/3.png)
+![4.png](img_shop/4.png)
+![5.png](img_shop/5.png)
+![6.png](img_shop/6.png)
+![7.png](img_shop/7.png)
+![8.png](img_shop/8.png)
+![9.png](img_shop/9.png)
+![10.png](img_shop/10.png)
 
 ### Google Gmail SMTP 이메일 보내기
 
+- [Spring Boot 에서 API를 통한 이메일 전송 기능 만들기](https://sundries-in-myidea.tistory.com/113)를 참고하여 해당 기능을 구현하였다.
+
+![11.png](img_shop/11.png)
 
 
+![12.png](img_shop/12.png)
+![13.png](img_shop/13.png)
+![14.png](img_shop/14.png)
+![15.png](img_shop/15.png)
+![16.png](img_shop/16.png)
+![17.png](img_shop/17.png)
 
+
+### 쇼핑몰 관리
+
+- 기본적인 데이터 추가
+![18.png](img_shop/18.png)
+
+- User1 은 쇼핑몰에 상품을 추가, 수정, 삭제 가능.
+![19.png](img_shop/19.png)
+![20.png](img_shop/20.png)
+![21.png](img_shop/21.png)
+![22.png](img_shop/22.png)
+![23.png](img_shop/23.png)
+
+  
+### 쇼핑몰 조회
+
+- 쇼핑몰의 목록을 조회가능
+- 이부분은 일단은 querydsl 을 사용하지 않고 모두 조회를 하되 (최근 거래가 있었던 순서로 조회하였다 - 쿼리메서드 사용 (수정 예정))
+- 이름, 쇼핑몰 분류에 대한 검색 기능은 갖추지 못한 상태
+![24.png](img_shop/24.png)
+
+  
+### 쇼핑몰 상품 검색
+
+- 모니터만 검색
+![25.png](img_shop/25.png)
+- 모니터랑 가격 범위를 함께 검색
+![26.png](img_shop/26.png)
 
 ### Querydsl 정리
+TODO
 
+### 쇼핑몰 상품 구매
+user2의 상품을 구매 요청
+![27.png](img_shop/27.png)
+![28.png](img_shop/28.png)
+![29.png](img_shop/29.png)
 
+user1의 상품 구매 요청을 승인
+![30.png](img_shop/30.png)
+![31.png](img_shop/31.png)
+
+user1의 상품 구매 요청 거절
+![32.png](img_shop/32.png)
+![33.png](img_shop/33.png)
 

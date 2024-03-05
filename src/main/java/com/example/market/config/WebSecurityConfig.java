@@ -78,10 +78,10 @@ public class WebSecurityConfig {
                                         "/used-items/{itemId}/proposals/{proposalId}/confirm",
                                         "/shop/read-all-shops",
                                         "/items/search",
-                                        "/items-request",
-                                        "/items-approve/{itemOrderId}",
-                                        "/items-reject/{itemOrderId}",
-                                        "/items-cancel/{itemOrderId}"
+                                        "/orders/purchase-request",
+                                        "/orders/purchase-approve/{itemOrderId}",
+                                        "/orders/purchase-reject/{itemOrderId}",
+                                        "/orders/purchase-cancel/{itemOrderId}"
                                 )
                                 .hasAnyRole("USER", "BUSINESS_USER", "ADMIN")
 
