@@ -32,9 +32,6 @@
 </details>
 
 
-## 인증 체계 갖추기
-
-
 
 <br>
 
@@ -170,8 +167,16 @@ public boolean validate(String token) {
 ```
 
 
-
-
+- JWT Token Filter
+  - `JWT` 토큰으로 사용자를 인증하고, 해당 사용자 정보를 `Spring Security` 의 인증 매커니즘에 연결하여 보안 작업 수행
+    1. 클라이언트로부터 온 `HTTP` 요청을 받아서 `JWT` 토큰을 확인한다.
+    2. `JWT` 토큰의 유효성을 검증한다.
+    3. `JWT` 토큰이 유효하다면 해당 토큰을 사용하여 사용자 정보를 가져온다.
+    4. 가져온 사용자 정보를 `Spring Security` 의 `SecurityContext`애 등록한다. (`SecurityContextHolder`로 관리)
+       - ex) `String username = SecurityContextHolder.getContext().getAuthentication().getName();`
+    5. 이후의 요청 처리를 위해 다음 필터로 요청을 전달한다.
+- `JWT` 토큰을 검증헤야할 때 `HttpServletRequest`를 사용하여 헤더에서 JWT 토큰을 추출하는 것이 일반적
+  
 
 ```java
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -240,17 +245,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 ### 3. 사용자 권한 처리
 
-- `SecurityContextHolder`의 `getContext()` 메서드
-  - 스프링 시큐리티의 `SecurityContext` 객체를 반환, 이 컨텍스트에는 현재 인증된 사용자의 인증 및 보안 정보가 포함되어 있다.
-  - `SecurityContextHolder.getContext().getAuthentication()` 을 호출하면 현재 사용자의 인증 객체(`Authentication`)를 가져온다.
-- 사용자 인증 정보 가져오기 
-  - `String username = SecurityContextHolder.getContext().getAuthentication().getName();`
-  - `username` 을 `userRepository`의 `findByUsername`을 가지고 사용자 객체를 조회하여 CRUD 
+- `String username = SecurityContextHolder.getContext().getAuthentication().getName();`
+  - `SecurityContextHolder`의 `getContext()` 메서드
+    - 스프링 시큐리티의 `SecurityContext` 객체를 반환, 이 컨텍스트에는 현재 인증된 사용자의 인증 및 보안 정보가 포함되어 있다.
+    - `SecurityContextHolder.getContext().getAuthentication()` 을 호출하면 현재 사용자의 인증 객체(`Authentication`)를 가져온다. 
+  - `getName()` 으로 username 필드 값 가져오기
+- `username` 을 `userRepository`의 `findByUsername`을 가지고 사용자 객체를 조회하여 CRUD 
 - 사용자 객체의 `authorities` 필드 
   - `userEntity.setAuthorities("ROLE_???")` 으로 `ROLE`을 설정한다.
-  - `WebSecurityConfig` 파일의 `SecurityFilterChain` 메서드에서 ROLE 에 따른 Http 접근 권한을 설정한
-  - `.authorizeHttpRequests(auth -> auth.requestMatchers("").hasAnyRole("USER", "BUSINESS_USER", "ADMIN"))`
-    - `"USER"`, `"BUSINESS_USER"`, `"ADMIN"` 사용자만 허용
+  - `WebSecurityConfig` 파일의 `SecurityFilterChain` 메서드에서 ROLE 에 따른 Http 접근 권한을 설정한다.
+    - ex) `.authorizeHttpRequests(auth -> auth.requestMatchers("").hasAnyRole("USER", "BUSINESS_USㅋER", "ADMIN"))`
+      - `"USER"`, `"BUSINESS_USER"`, `"ADMIN"` 사용자만 허용
 
 
 
@@ -302,7 +307,7 @@ public ResponseEntity<String> profileInfo(
 
 <br>
 
-#### 4. 프로필 이미지 업로드
+### 4. 프로필 이미지 업로드
 <details>
 <summary>Postman - 프로필 이미지 업로드</summary>
 <div markdown="1">
@@ -491,8 +496,22 @@ public ResponseEntity<String> rejectBusinessUserRequest(
 
 <br>
 
-### 4. 오류 해결
-**JWT Access Token 파싱안되는 오류 (Feat. Signed Claims JWSs are not supported.)**
+## 어려웠던 점
 
+### 1) JWT 발급 오류
+![error.png](img_auth/error.png)
+
+- **JWT Access Token 파싱안되는 오류 (Feat. Signed Claims JWSs are not supported.)**
 - parseClaimsJwt()를 parseClaimsJws()로 수정하여 해결
+
+
+<br>
+
+
+### 2) SecurityContextHolder에 데이터의 변경사항이 반영되지 않음
+- Spring Security는 사용자의 권한 정보를 기본적으로 UserDetails 객체에 저장한다.
+- 따라서, 사용자 정보를 업데이트 할때 UserDetails 객체를 업데이트해야한다.
+- UserDetails 를 확장한 CustomUserDetails 클래스를 가지고 UserDetails 객체를 만들자.
+- CustomUserDetails 클래스는 사용자의 추가 속성을 포함한다. (nickname, name 등)
+- 따라서, UserEntity 를 이용해서 데이터베이스와 소통하는데 CustomUserDetails 라는 엔티티 또한 데이터베이스와 소통이 가능한지 확인해야한다. 
 
