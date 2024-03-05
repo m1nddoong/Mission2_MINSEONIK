@@ -28,6 +28,64 @@
 </div>
 </details>
 
-### 의문의 CORS 오류
+
+
+
+
+### 막힌 부분 : 의문의 CORS 오류
+이전에 배웠던 tosspayment 챕터에서 `items.html`, `item.html` 등을 제공하여 클라이언트가 상품을 결제 요청을 보낼 수 수 있도록 프론트를 구성했었다.
+
+클라이언트가 토스페이먼츠와 주고받은 결제정보를 백엔드로 전달하는 과정을 진행하면 된다.
+
+하지만, HTML 파일 파일이 Spring Security 떄문인지, 웹 브라우저의 기본적인 보안 문제 떄문인지 요청의 대한 응답이 제대로 돌아오지 않았다.  
+
+![toss_1.png](img_toss%2Ftoss_1.png)
+
+`사러가기` 를 눌렀을떄 다음 결제 페이지로 넘어가지지 않는다.
+
+CORS 문제의 가능성이 있어 아래의 코드를 삽입하였으나 실패.
+
+```java
+@Configuration
+@RequiredArgsConstructor
+public class WebSecurityConfig {
+    // 메서드의 결과를 Bean 객체로 관리해주는 어노테이션
+    private final JwtTokenUtils jwtTokenUtils;
+    private final UserDetailsManager manager;
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http // 인증과 권한 관련 설정을 적용할 수 있는 객체
+    ) throws Exception {
+        http
+                .cors(c -> {
+                    c.configurationSource(corsConfigurationSource());
+                })
+                
+                ...
+    }
+    
+    ...
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*"); // 모든 도메인에서의 요청을 허용한다.
+        configuration.addAllowedMethod("*"); // 모든 HTTP 메소드를 허용한다.
+        configuration.addAllowedHeader("*"); // 모든 헤더를 허용한다.
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 설정을 적용한다.
+        return source;
+    }
+}
+```
+
+스프링 시큐리티가 static 파일의 경로를 허용할떄, 해당 정작 파일들을 인식하지 못하는 형식의 문제일까 싶어 URL 패턴을 바꿔 보았지만 실패
+
+![toss_2.png](img_toss%2Ftoss_2.png)
+
+
+toss payment 구현은 여기서 더 나아가지 못했다.😰
 
 

@@ -413,7 +413,7 @@ public void rejectProposal(Long usedItemId, Long proposalId) { // 어떤 물품�
 수락 확정
 나머지 제안들은 거절 처리
 ![proposal_9.png](img_usedItem%2Fproposal_9.png)
-![proposal_10.png](img_usedItem%2Fproposal_10.png)_
+![proposal_10.png](img_usedItem%2Fproposal_10.png)
 
 </div>
 </details>
@@ -456,4 +456,6 @@ public void confirmProposal(Long usedItemId, Long proposalId) {
     }
 }
 ```
+
+### 어려웠던 점 : 중고 물품 테이블에 작성자 정보 가리기 (id로 표시)
 
