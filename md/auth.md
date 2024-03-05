@@ -48,8 +48,7 @@
 <summary>Postman - 회원가입</summary>
 <div markdown="1">
 
-![스크린샷 2024-03-05 오전 11.27.09.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fs6%2F5m0_5qy16hj8x94y1pb7gw840000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_0ZFziz%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.27.09.png)
-
+![signup.png](signup.png)
 ![img_2.png](img_2.png)
 
 </div>
@@ -310,8 +309,8 @@ public ResponseEntity<String> profileInfo(
 
 ![img_6.png](img_6.png)
 ![img_7.png](img_7.png)
+![changmo.png](changmo.png)
 
-![71062479-438F-4003-90EB-4028DECFF1DB.png](..%2F..%2F..%2F..%2FPictures%2FPhotos%20Library.photoslibrary%2Foriginals%2F7%2F71062479-438F-4003-90EB-4028DECFF1DB.png)
 
 </div>
 </details>
@@ -382,8 +381,8 @@ public ResponseEntity<String> avatar(
 <summary>Postman - 사업자 번호 등록</summary>
 <div markdown="1">
 
-![스크린샷 2024-03-05 오전 11.51.13.png](..%2F..%2F..%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.51.13.png)
-![스크린샷 2024-03-05 오전 11.52.34.png](..%2F..%2F..%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-03-05%20%EC%98%A4%EC%A0%84%2011.52.34.png)
+![businessregister.png](businessregister.png)
+![businessregisterdb.png](businessregisterdb.png)
 </div>
 </details>
 
