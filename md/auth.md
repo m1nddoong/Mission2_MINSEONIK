@@ -534,3 +534,19 @@ public ResponseEntity<String> rejectBusinessUserRequest(
 - `Spring Security`는 그 객체를 `UserDetails` 로 인식하여 인증 처리에 사용하게 되면서 사용자 정보가 업데이트 되게 된다.
   ![error_2.png](img_auth/error_2.png)
 
+- 정리
+  - 기본적으로 `UserDetails` 라는 객체를 구현한 `User` 라는 객체는 기본적으로 스프링에서 제공을 하는 객체이다.
+  - 위 `UserDetails` 의 로직을 담당하는 것이 바로 `UserDetailsService`
+  - 그런데 이 `UserDetailsService` 를 좀 더 확장한 것이 바로 `UserDetailsManager` 이고, 이를 구현한 구현체인 `JpaUserDetailsManager` (이름을 이렇게 붙인 것) 가 실질적인 `UserDetails` 객체를 대상으로 로직을 적용한 서비스 클래스인 것이다.
+  - 일단 기본적으로 `User` 클래스는 다음을 필드를 포함한다. 
+    - `username`
+    - `password`
+    - `authorities`
+  - 이처럼 기본적인 인증 및 권한 정보만 저장한다. 즉 이것 외에는 `User` 라는 객체가 갖고 있는 것 외에는 내가 직접 객체를 커스텀 해서 만들어야한다는 의미이다.
+  - 따라서 `CustomUserDetails` 를 사용하여 `UserDetails` 객체를 좀 더 확장하자.
+  - 우리가 원래 작성하고자 했던 일반 `UserEntity` 를 `CustomUserDetails` 로 변환하는 `fromEntity`를 작성을 하였는데 우리는 이런 변환 과정을 통해서 `CustomUserDetails`를 활용한 `JpaUserDetailsManager`를 작성할 수 있다.
+  - `JpaUserDetailsManager` 의 `createUser` 메서드의 경우 원래는 `UserDetails`를 구현한 user 라는 기본 제공 객체를 매개변수로 받는다 (즉, 우리는 사용자를 만들때, `username`, `password` 만 사용할 것이기 때문에 간단하게 `user` 를 사용)
+    - 그렇게 만든 `user` 를 매개변수로 `createUser` 를 호출할때, `user` 에 담겨있는 `username`, `password` 라는 정보에 다른 사용자 정보를 포함시켜주기 위하여 `CustomUserDetails` 라는 객체로 업캐스팅해준다.
+    - `CustomUserDetails userDetails = (CustomUserDetails) user;`
+  - 그렇게 생성된 `userDetails` 를 가지고 레포지토리에 저장을 한다.
+  - 회원가입을 하고, 토큰을 등록한 다음에 그떄 `SecurtiyContext` 에 변경사항을 저장하는 것이 의미있지 그거 아니고서야 굳이 회원 가입 하자마자 `SecurtiyContext` 에 저장할 필요는 없다 (feat. `authorities`)
