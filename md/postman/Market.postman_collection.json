@@ -1,0 +1,1432 @@
+{
+	"info": {
+		"_postman_id": "45bd5b02-3e06-4d8b-9870-b9915866b175",
+		"name": "Market",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32354328"
+	},
+	"item": [
+		{
+			"name": "authority",
+			"item": [
+				{
+					"name": "/user-role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5MDUzNDYwLCJleHAiOjE3MDk2NTgyNjB9.atv8ldwCZ8PjAGrGgUg2znTau0hoxxNlrCPLcLS0qR0sehhyjANoXlWHT3j0vkw7",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"businessNumber\" : \"20240227\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/user-role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"user-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/register-business",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTIwMzQzNiwiZXhwIjoxNzA5ODA4MjM2fQ.E-c2bXYGoeLP68jSPVpXzJadjyH8UDYblXkJQuD3JnOXrOfQSt4cdq1Dki0gtxBO",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"businessNumber\" : \"1111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/register-business",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"register-business"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users/read-business",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTIwMzY0NCwiZXhwIjoxNzA5ODA4NDQ0fQ.nMsN2T5SP2BuS3IiVmtK4J_S01oQRyn4PIq0dmA-Pz4pjll7EzsFVozw5vplCoNY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/read-business",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"read-business"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/approve-business/{userId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI4MjU3NiwiZXhwIjoxNzA5ODg3Mzc2fQ.iVNWrCt6DNyT4840C8Qz6vP8moll-gdKGAn7SEhBJ6juujY7tnpXNe26cLcApCcK",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/approve-business/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"approve-business",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/reject-business/{userId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiLqtIDrpqzsnpAiLCJpYXQiOjE3MDkwOTQ3MDksImV4cCI6MTcwOTY5OTUwOX0.MmUQG45KIQVevDOgqLaGZZQuxLDlWTPqy9D61B66T83iZJoLNS66vK5nJn88tHDD",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/reject-business/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"reject-business",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "jwt",
+			"item": [
+				{
+					"name": "\bSIgnUp /users/signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"Changmo\",\n    \"password\" : \"031\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignIn Issue JWT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\n//     \"username\" : \"Admin\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"BusinessUser\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User1\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User2\",\n//     \"password\" : \"1234\"\n// }\n\n{\n    \"username\" : \"User3\",\n    \"password\" : \"1234\"\n}\n\n// {\n//     \"username\" : \"Changmo\",\n//     \"password\" : \"031\"\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/token/issue",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"token",
+								"issue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate JWT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTI5NjUzNiwiZXhwIjoxNzA5OTAxMzM2fQ.sXOg42LtMbzwwT9NtDeLdsP-tsVh6AOpGQSsxfHUVytG4_L2E-Eh2HCpNI83WgWb",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/token/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"token",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/profile-info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTI2OTA2MywiZXhwIjoxNzA5ODczODYzfQ.AZLjZYEc6s3yTBf2cY80w4KzikWOESabnyNBu1Rb7CMmv8weZuyGyWPL3-vtaD1y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nickname\" : \"UGRS RIGHT HERE!\",\n    \"name\" : \"구창모\",\n    \"age\" : 29,\n    \"email\" : \"boyhood031@gmail.com\",\n    \"phone\" : \"010-0000-0000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/profile-info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"profile-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/avatar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5MTA0OTEwLCJleHAiOjE3MDk3MDk3MTB9.HKBkb0c3eY5ybKUraXr_IXUSqxXRyupRWmcgwFpHm7J6o6zchuunRyMMb-Lpsyp2",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/seonik/Downloads/이미지/창모.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/avatar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UsedItem",
+			"item": [
+				{
+					"name": "GET /used-items",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJCdXNpbmVzc1VzZXIiLCJpYXQiOjE3MDkyMDA2MTcsImV4cCI6MTcwOTgwNTQxN30.RVL1T-IlFzpOkHlREoL8EuqDcntUrjanqG0jfc3mv4OYFNfADb7phkpnS1JHiKTL",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/used-items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE /used-items/update/{itemId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTUzMjM1NiwiZXhwIjoxNzEwMTM3MTU2fQ.MrUyCWIWe3mvLtStjTDOGf-Um1TpSciJyqkxrOV2GkTyGtFXHxoNWoX9QPgtlaoU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"레오폴드 FC660C (가격내림)\",\n    \"price\" : 220000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/used-items/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /used-items/delete/{itemId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTIwMDMzNCwiZXhwIjoxNzA5ODA1MTM0fQ.FhQh6m1YLj1w2_2FUrO75ed551NrNyQQYbjXU-L0YMnXFXM2d4PGyYaJBkPF6Zxk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"레오폴드 FC660C (가격내림)\",\n    \"content\" : \"무접점 저소음 버전, 풀윤활 O\",\n    \"price\" : 220000,\n    \"status\" : \"판매중\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/used-items/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /used-items/register-image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTE5OTIyMywiZXhwIjoxNzA5ODA0MDIzfQ.0rYZcDdxW7iPX3eAy0Vkf3Hws1Pqoq6kV7OrdarspnSP2z4IFo6Q-mQd3Gi6O7b8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1eed603f-23dd-4ad0-9ff0-23f209627f33"
+								},
+								{
+									"key": "usedItemId",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/used-items/register-image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"register-image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /used-items/register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTUzMjM1NiwiZXhwIjoxNzEwMTM3MTU2fQ.MrUyCWIWe3mvLtStjTDOGf-Um1TpSciJyqkxrOV2GkTyGtFXHxoNWoX9QPgtlaoU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"레오폴드 FC660C\",\n    \"content\" : \"무접점 저소음 버전, 풀윤활 O\",\n    \"price\" : 290000\n}\n\n// {\n//     \"title\" : \"해피해킹 프로페셔널 하이브리드\",\n//     \"content\" : \"전용 파우지, 트랙패드 팜레스트, 포인트 키캡, 풀윤활 O\",\n//     \"price\" : 300000\n// }\n\n// {\n//     \"title\" : \"gmk67 커스텀 키보드\",\n//     \"content\" : \"하이무 미드나잇 스위치 공장윤활, XDA 키캡, 테이핑 모드\",\n//     \"price\" : 45000\n// }\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/used-items/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UsedItemProposal",
+			"item": [
+				{
+					"name": "Create /used-items/{itemId}/proposals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJCdXNpbmVzc1VzZXIiLCJpYXQiOjE3MDkyMDE4NjcsImV4cCI6MTcwOTgwNjY2N30.nrxxoBCH9em5w0l2M1VwGpGo79zKm_qgPxLOtivA4rMaiIJC4xKjjSmdKPGbZpCe",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/used-items/2/proposals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"2",
+								"proposals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept /used-items/{itemId}/proposals/{proposalId}/accept",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTIwMTkyNCwiZXhwIjoxNzA5ODA2NzI0fQ.6Ao7YCRzN79wqkzc8xOzq9ZkRDDkujnxCkxjCn1xAqfaxM49MqxtBcrLCdAVn8VD",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/used-items/2/proposals/1/accept",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"2",
+								"proposals",
+								"1",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject /used-items/{itemId}/proposals/{proposalId}/reject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJCdXNpbmVzc1VzZXIiLCJpYXQiOjE3MDkxODk4MjcsImV4cCI6MTcwOTc5NDYyN30.BLco8gLkMKm4XR9myLKFyETBLqSmhLVT10WflOO5_xjqFmc7bJSlPY_hbcntUpFZ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/used-items/2/proposals/1/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"2",
+								"proposals",
+								"1",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm /used-items/{itemId}/proposals/{proposalId}/confirm",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTIwMTk3NywiZXhwIjoxNzA5ODA2Nzc3fQ.dGIGFJxcL2fOjlN_4Ddq1Raq7rTFCeWOC-tNnRBrRCG48zFZ1e5Cep1xMm7_3eo6",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/used-items/2/proposals/1/confirm",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"2",
+								"proposals",
+								"1",
+								"confirm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /used-items/{itemId}/proposals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTIwMTkyNCwiZXhwIjoxNzA5ODA2NzI0fQ.6Ao7YCRzN79wqkzc8xOzq9ZkRDDkujnxCkxjCn1xAqfaxM49MqxtBcrLCdAVn8VD",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/used-items/2/proposals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"used-items",
+								"2",
+								"proposals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "shop",
+			"item": [
+				{
+					"name": "Item",
+					"item": [
+						{
+							"name": "CREATE /items/create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\" : \"Dell-U2723QE\",\n    \"content\" : \"델 27인치 4k 모니터, 울트라샤프, USB C 허브 모니터 블랙 IPS\",\n    \"price\" : \"680000\",\n    \"category\" : \"PC제품\",\n    \"subCategory\" : \"모니터\",\n    \"stock\" : 20\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/items/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"items",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE /items/{productId}/update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\" : \"Dell-U2723QE (3.1절 할인)\",\n    \"content\" : \"델 27인치 4k 모니터, 울트라샤프, USB C 허브 모니터 블랙 IPS\",\n    \"price\" : \"580000\",\n    \"category\" : \"PC제품\",\n    \"subCategory\" : \"모니터\",\n    \"stock\" : 50\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/items/1/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"items",
+										"1",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /items/{productId}/delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/items/1/delete",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"items",
+										"1",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "검색 기능",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/products/search",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"products",
+										"search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "검색 기능 Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/home",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"home"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "\bItemOrder",
+					"item": [
+						{
+							"name": "POST /purchase-request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"itemId\" : 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/purchase-request",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"purchase-request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /purchase-approve/{itemOrderId}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/purchase-approve/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"purchase-approve",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /purchase-reject/{itemOrderId}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancelReaseon\" : \"단순 변심\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/purchase-reject/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"purchase-reject",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST /purchase-cancel/{itemOrderId}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancelReaseon\" : \"단순 변심\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/purchase-cancel/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"purchase-cancel",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "UPDATE /shop/update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjU5MSwiZXhwIjoxNzA5ODg3MzkxfQ.WkKKhJvs7L0LZwqR2MNSEbs0UEBroOVPJIxYyNvj1bvM8E_KJLXnRZZm0PXQvUqv",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// USER1 - 쇼핑몰 개설용\n// {\n//     \"shopName\" : \"XXXX Street House\",\n//     \"introduction\" : \"스트릿 하우스에 오신것을 환영합니다.\",\n//     \"category\" : \"FASHION\"\n// }\n\n//USER2 - 쇼핑몰 관리용\n{\n    \"shopName\" : \"잡동사니 데스크테리어\",\n    \"introduction\" : \"안녕하세요, 데스크테리어 관련 중고 물품 쇼핑몰입니다 :)\",\n    \"category\" : \"ELECTRONICS\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /shop/open-request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjU5MSwiZXhwIjoxNzA5ODg3MzkxfQ.WkKKhJvs7L0LZwqR2MNSEbs0UEBroOVPJIxYyNvj1bvM8E_KJLXnRZZm0PXQvUqv",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/shop/open-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"open-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /shop/get-all-open-requests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI4MjI5OSwiZXhwIjoxNzA5ODg3MDk5fQ.9SG0Fx3f5y_tZhpKxWM5tOZ_Uhi02tA5awRe41jhfwGQnMGKQj4QxXhyOYD7iMSr",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/shop/get-all-open-requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"get-all-open-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /shop/approve-open/{shopId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI4MjYxOSwiZXhwIjoxNzA5ODg3NDE5fQ.CaAeT0iTQERu1Xzlzv3aihvjbBwfm-qJXytimb418mKkIoQLIloE73mhz2c-8Vp7",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/shop/approve-open/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"approve-open",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /shop/reject-open/{shopId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI2OTQ3MiwiZXhwIjoxNzA5ODc0MjcyfQ.4FZ4isw_VY53--XwPCYeE4IBpMxIIjXI19ziEb6Ix_tyTqPBZD2pN5HVsqz3kdjO",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\" : \"쇼핑몰 개설 신청이 불허되었습니다.\",\n    \"text\" : \"쇼핑몰 이름에 욕설이 포함되어있습니다. 수정바랍니다.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/reject-open/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"reject-open",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /shop/close-request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTI3NDM1MSwiZXhwIjoxNzA5ODc5MTUxfQ.KkEHoKuoyDZ1QRTjV0G2iND348nfOl0sCNzxMIS2btkYRN2DF7cQttmwVRmKh198",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\" : \"개인 사정으로 개설된 쇼핑몰의 폐쇄를 요청합니다.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/close-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"close-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /shop/get-all-close-requests",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI3NDM4OCwiZXhwIjoxNzA5ODc5MTg4fQ.xzrLmd3yWrdr9FNqS0YGHDldUtL48Mi-vy5b5gu8mgbgVdtfiiiaNGGkoQlzv2mZ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\" : \"쇼핑몰 개설 신청이 불허되었습니다.\",\n    \"text\" : \"쇼핑몰 이름에 욕설이 포함되어있습니다. 수정바랍니다.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/get-all-close-requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"get-all-close-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /shop/approve-close/{shopId}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJBZG1pbiIsImlhdCI6MTcwOTI3NDM4OCwiZXhwIjoxNzA5ODc5MTg4fQ.xzrLmd3yWrdr9FNqS0YGHDldUtL48Mi-vy5b5gu8mgbgVdtfiiiaNGGkoQlzv2mZ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\" : \"쇼핑몰 개설 신청이 불허되었습니다.\",\n    \"text\" : \"쇼핑몰 이름에 욕설이 포함되어있습니다. 수정바랍니다.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/approve-close/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"approve-close",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /shop/read-all-shops",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTI5NjY5OCwiZXhwIjoxNzA5OTAxNDk4fQ.IBySlgFgRKi7SXI2jSDObqj82DOuQ0b6UpAu_6nTUAPP2qVW1fP0ErsTC8ZnFcPC",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\" : \"쇼핑몰 개설 신청이 불허되었습니다.\",\n    \"text\" : \"쇼핑몰 이름에 욕설이 포함되어있습니다. 수정바랍니다.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/shop/read-all-shops",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"shop",
+								"read-all-shops"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

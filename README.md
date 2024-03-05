@@ -136,7 +136,8 @@
 </div>
 </details>
 
-## 📝 기능 요구사항 
+## 📝 기능 요구사항
+[API 명세 (Postman) Download](./md/postman/Market.postman_collection.json)
 
 #### 1. 기본 기능 
 
@@ -148,5 +149,8 @@
 - [Tosspayments 결제 시스템(진행중)](./md/toss.md)
 
 
+
+
 ## 결론 
+
 

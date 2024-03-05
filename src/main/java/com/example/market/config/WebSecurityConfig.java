@@ -53,6 +53,7 @@ public class WebSecurityConfig {
                                         "/token/validate",
                                         "/users/profile-info",
                                         "/users/avatar",
+                                        "/users/signup",
                                         "/",
                                         "/home",
                                         "/static/**",

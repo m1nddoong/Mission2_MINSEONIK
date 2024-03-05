@@ -5,7 +5,7 @@
 <div markdown="1">
 
 - ✅ 요청을 보낸 사용자가 누구인지 구분할 수 있는 인증 체계가 갖춰져야 한다. 
-    - ✅ ️JWT 기반의 토큰 인증 방식이 권장된다.
+    - ✅ JWT 기반의 토큰 인증 방식이 권장된다.
     - ✅ 사용자는 별도의 클라이언트를 통해 아이디와 비밀번호를 전달한다.
     - ✅ 로그인 URL로 아이디와 비밀번호가 전달되면, 해당 내용의 정당성을 확인하여 JWT를 발급하여 클라이언트에게 반환한다.
     - ✅ 클라이언트는 이후 이 JWT를 Bearer Authentication 방식으로 제시해야 한다.
@@ -31,10 +31,9 @@
 </div>
 </details>
 
+---
 
-
-
-## JWT 발급, 검증
+## 인증 체계 갖추기
 
 세션과 JWT 간단한 비교
 - 세션
@@ -43,17 +42,246 @@
   - Restful API 통신에서의 인증 방식
   - 토큰에 사용자 인증 및 권한 정보 외에도 Claim 을 통한 사용자 정보를 포함시킬 수 있다.
 
-JWT 발급
-- `JwtTokenUtils.java`
-  - JWT 토큰 생성에 사용되는 메서드를 포함하는 유틸리티 클래스
-  - 주로 사용자의 인증 정보를 바탕으로 JWT 토큰을 생성하는데 사용된다.
-  - generateToken() 메서드는 UserDetails 객체를 입력으로 받아 해당 사용자를 나타내는 JWT 토큰을 생성한다.
+### 1. JWT 발급, 검증
+
+- JWT 발급
+  - `JwtTokenUtils.java`
+    - `JWT` 토큰 생성에 사용되는 메서드를 포함하는 유틸리티 클래스
+    - 주로 사용자의 인증 정보를 바탕으로 `JWT` 토큰을 생성하는데 사용된다.
+    - `generateToken()` 메서드는 `UserDetails` 객체를 입력으로 받아 해당 사용자를 나타내는 `JWT` 토큰을 생성한다.
+
+<details>
+<summary>generateToken 메서드</summary>
+<div markdown="1">
+
+```java
+/**
+ * userDetails 를 받아서 클레임으로 만들고, JWT로 변환하는 메서드
+ * @param userDetails
+ * @return
+ */
+public String generateToken(UserDetails userDetails) {
+    // JWT에 담고싶은 정보를 Claims로 만든다.
+
+    // 현재 호출되었을 때 epoch time
+    Instant now = Instant.now();
+    Claims jwtClaims = Jwts.claims()
+            // sub : 누구인지
+            .setSubject(userDetails.getUsername())
+            // iat : 언제 발급 되었는지
+            .setIssuedAt(Date.from(now))
+            // exp : 언제 만료 예정인지
+            .setExpiration(Date.from(now.plusSeconds(60 * 60 * 24 * 7)));
+
+    // 최종적으로 JWT를 발급한다.
+    return Jwts.builder()
+            .setClaims(jwtClaims)
+            .signWith(this.signingKey)
+            .compact();
+}
+```
+</div>
+</details>
+
+
+
+
+- JWT를 이용한 인증 - `Bearer Token` 인증 방식
+  - `JWT` 를 비롯한 토큰을 활용해서 인증을 진행할 경우, `HTTP` 요청을 보낼 때 `Authorization Header` 에  `Bearer {token 값}` 의 형태로 추가해 보내게 된다.
+  - 즉 서버에서는 들어온 `HTTP` 요청에 `Authorization` 이라는 헤더가 존재하는지, 존재한다면 거기에 담긴 값이 `Bearer` 로 시작하는지, 그리고 담겨있는 `Token` 이 유효한지 판단하는 `JwtFilter` 를 만들어야한다.
+    - `JWT` 유효한지 알아보는 메서드 : `JwtTokenUtils.validate()`
+    - `OncePerRequestFilter` 추상클래스로 필터 구현 : 사용자가 포함시킨 `JWT`의 유효성을 확인하고 `Spring Security`의 필터를 사용하여 사용자가 인증되었는지 여부를 판단
+
+<details>
+<summary>validate 메서드</summary>
+<div markdown="1">
+
+```java
+/**
+ * 토큰을 검증하여 정상적인 JWT 인지 판단하는 메서드
+ * @param token
+ * @return
+ */
+public boolean validate(String token) {
+    try {
+        // 정상적이지 않은 JWT라면 예외(Exception)가 발생한다.
+        jwtParser.parseClaimsJws(token);
+        return true;
+    } catch (Exception e) {
+        log.warn("invalid jwt");
+    }
+    return false;
+}
+```
+
+</div>
+</details>
+
+
+
+<details>
+<summary>JwtTokenFilter</summary>
+<div markdown="1">
+
+```java
+public class JwtTokenFilter extends OncePerRequestFilter {
+    private final JwtTokenUtils jwtTokenUtils;
+    // 사용자 정보를 찾기위한 UserDetailsService 또는 Manager
+    private final UserDetailsManager manager;
+    
+    ...
+
+    // JWT 유효성 검증 & 현재 인증된 사용자의 정보를 SecurityContext에 반영
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+      log.debug("try jwt filter");
+      // 1. Authorization 헤더를 회수
+      String authHeader
+              // = request.getHeader("Authorization");
+              = request.getHeader(HttpHeaders.AUTHORIZATION);
+      // 2. Authorization 헤더가 존재하는지 + Bearer로 시작하는지
+      if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String token = authHeader.split(" ")[1];
+        // 3. Token이 유효한 토큰인지
+        if (jwtTokenUtils.validate(token)) {
+          // 4. 유효하다면 해당 토큰을 바탕으로 사용자 정보를 SecurityContext에 등록
+          SecurityContext context = SecurityContextHolder.createEmptyContext();
+          // 사용자 정보 회수
+          String username = jwtTokenUtils
+                  .parseClaims(token)
+                  .getSubject();
   
-JWT를 이용한 인증 - Bearer Token 인증 방식
-- JWT 를 비롯한 토큰을 활용해서 인증을 진행할 경우, HTTP 요청을 보낼 때 Authorization Header 에  `Bearer {token 값}` 의 형태로 추가해 보내게 된다.
-- 즉 서버에서는 들어온 HTTP 요청에 Authorization 이라는 헤더가 존재하는지, 존재한다면 거기에 담긴 값이 Bearer 로 시작하는지, 그리고 담겨있는 Token 이 유효한지 판단하는 JwtFilter 를 만들어야한다.
-  - JWT 유효한지 알아보는 메서드 : `JwtTokenUtils.validate()`
-  - `OncePerRequestFilter` 추상클래스로 필터 구현 : 사용자가 포함시킨 JWT의 유효성을 확인하고 Spring Security의 필터를 사용하여 사용자가 인증되었는지 여부를 판단
+          UserDetails userDetails = manager.loadUserByUsername(username);
+          for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            log.info("authority: {}", authority.getAuthority());
+          }
+  
+          // 인증 정보 생성
+          AbstractAuthenticationToken authentication =
+                  new UsernamePasswordAuthenticationToken(
+                          userDetails,
+                          token,
+                          userDetails.getAuthorities()
+                  );
+          // 인증 정보 등록
+          context.setAuthentication(authentication);
+          SecurityContextHolder.setContext(context);
+          log.info("set security context with jwt");
+        }
+        else {
+          log.warn("jwt validation failed");
+        }
+      }
+      // 5. 다음 필터 호출
+      // doFilter를 호출하지 않으면 Controller까지 요청이 도달하지 못한다.
+      filterChain.doFilter(request, response);
+    }
+    
+    ...
+```
 
-## ROLE
+</div>
+</details>
 
+
+
+### 2. 사용자 회원가입
+- 회원가입
+  - 클라이언트로부터 `username` 과 `password` 가 담겨있는 UserDto` 를 받아온다.
+  - `UserDto` 에 포함된 `username` 을 사용하여 이미 존재하는 사용자인지 확인
+  - 만약 사용자가 존재하지 않는다면 새로운 `UserEntity` 객체를 생성, 이떄 패스워드는 인코딩하여 저장하고, 새로운 사용자의 권한은 비활성 사용자(`ROLE_INACTIVE_USER`) 로 설정된다.
+
+<details>
+<summary>signUp</summary>
+<div markdown="1">
+
+```java
+ /**
+     * 회원가입
+     * @param dto 사용자의 username, password
+     * @return 새로운 사용자를 생성 후 DB 저장
+     */
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(
+            @RequestBody
+            UserDto dto
+    ) {
+        if (manager.userExists(dto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
+        }
+
+        // UserEntity 객체 생성
+        UserEntity userEntity = UserEntity.builder()
+                .username(dto.getUsername())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .authorities("ROLE_INACTIVE_USER")
+                .build();
+
+        // 저장
+        userService.save(userEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공!");
+    }
+```
+
+</div>
+</details>
+
+
+### 3. 사용자 권한 처리
+
+- `SecurityContextHolder`의 `getContext()` 메서드
+  - 스프링 시큐리티의 `SecurityContext` 객체를 반환, 이 컨텍스트에는 현재 인증된 사용자의 인증 및 보안 정보가 포함되어 있다.
+  - `SecurityContextHolder.getContext().getAuthentication()` 을 호출하면 현재 사용자의 인증 객체(`Authentication`)를 가져온다.
+- 사용자 인증 정보 가져오기 
+  - `String username = SecurityContextHolder.getContext().getAuthentication().getName();`
+  - `username` 을 `userRepository`의 `findByUsername`을 가지고 사용자 객체를 조회하여 CRUD 
+- 사용자 객체의 `authorities` 필드 
+  - `userEntity.setAuthorities("ROLE_???")` 으로 `ROLE`을 설정한다.
+  - `WebSecurityConfig` 파일의 `SecurityFilterChain` 메서드에서 ROLE 에 따른 Http 접근 권한을 설정한
+  - `.authorizeHttpRequests(auth -> auth.requestMatchers("").hasAnyRole("USER", "BUSINESS_USER", "ADMIN"))`
+    - `"USER"`, `"BUSINESS_USER"`, `"ADMIN"` 사용자만 허용
+
+
+<details>
+<summary>profile-info</summary>
+<div markdown="1">
+
+```java
+/**
+* 회원정보 추가
+* @param dto 추가정보가 담긴 UserDto
+* @return 추가 정보 업데이트
+*/
+@PostMapping("/profile-info")
+public ResponseEntity<String> profileInfo(
+      @RequestBody UserDto dto
+) {
+  // 현재 인증된 사용자의 이름 가져오기
+  String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+  // 데이터베이스에서 사용자 정보 가져오기
+  Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
+  if (optionalUserEntity.isPresent()) {
+      // 업데이트할 정보 설정
+      UserEntity userEntity = optionalUserEntity.get();
+      userEntity.setNickname(dto.getNickname());
+      userEntity.setName(dto.getName());
+      userEntity.setAge(dto.getAge());
+      userEntity.setEmail(dto.getEmail());
+      userEntity.setPhone(dto.getPhone());
+      userEntity.setAuthorities("ROLE_USER"); // 일반 사용자로 승급
+      userRepository.save(userEntity);
+
+      return ResponseEntity.status(HttpStatus.OK).body("프로필 추가 정보 작성 완료!");
+  } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한 없음");
+  }
+}
+```
+
+</div>
+</details>
