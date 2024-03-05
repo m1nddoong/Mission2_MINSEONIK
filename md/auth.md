@@ -375,20 +375,25 @@ public ResponseEntity<String> avatar(
 
 <br>
 
-### 5. 사업자 번호 등록
+### 5. 사업자 번호 등록, 승인, 거절
 
 <details>
-<summary>Postman - 사업자 번호 등록</summary>
+<summary>Postman - 사업자 번호 등록, 승인, 거절</summary>
 <div markdown="1">
 
+사업자 번호 등록 및 사업자 사용자 신청
 ![businessregister.png](businessregister.png)
 ![businessregisterdb.png](businessregisterdb.png)
-</div>
-</details>
 
-<details>
-<summary>Postman - Admin 으로 로그인 하여 사업자 사용자 신청 확인 </summary>
-<div markdown="1">
+관리자의 사업자 사용자 신청 목록 조회
+![img_8.png](img_8.png)
+
+관리자의 사업자 사용자 신청 수락 후 `ROLE_BUSINESS_USER` 로 변경
+![img_9.png](img_9.png)
+![img_10.png](img_10.png)
+
+관리자의 사업자 사용자 신청 거절
+![img_11.jpeg](img_11.jpeg)
 
 
 </div>
