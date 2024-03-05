@@ -457,5 +457,148 @@ public void confirmProposal(Long usedItemId, Long proposalId) {
 }
 ```
 
-### 어려웠던 점 : 중고 물품 테이블에 작성자 정보 가리기 (id로 표시)
+
+<br>
+
+## 헷갈렸던 부분
+
+### 1. 중고 물품 테이블에 작성자 정보 가리기 (id로 표시)
+- `UserEntity` 와 `UsedItem` 의 관계를 설정해주는데에 있어서 `UsedItem` 테이블에 `writername`을 설정해주므로써 사용자 이름을 통한 사용자 정보 데이터를 쉽게 접근할 수 있도록 관계를 설정 하였다.
+
+![error_2_1.jpg](./img_usedItem/error_2_1.jpg)
+
+
+- 하지만 요구사항에 맞게 작성자(`proposer`)의 정보를 가려야했기 떄문에 해당 연관관계를 `id` 로 표시하도록 엔티티를 수정해야했다.
+- 우선 데이터베이스에 저장되는 형태는 Dto 의 형식이 될 수 있도록 UsedItemlDto 의 writer 를 writer_id 로 수정해주었다.
+
+
+
+```java
+public class UsedItemDto {
+    private Long id;
+    private String title;
+    private String content;
+    private String imageUrl;
+    private Integer price;
+    private String status;
+    private Long writerId;
+
+    public static UsedItemDto fromEntity(UsedItem usedItem) {
+        return UsedItemDto.builder()
+                .id(usedItem.getId())
+                .title(usedItem.getTitle())
+                .content(usedItem.getContent())
+                .price(usedItem.getPrice())
+                .imageUrl(usedItem.getImageUrl())
+                .status(usedItem.getStatus())
+                .writerId(usedItem.getWriter().getId())
+                .build();
+    }
+}
+```
+
+- 나중에 사용자 정보를 데이터베이스에 저장할 떄, 우선 `HTTP` 요청에서 위 `Dto` 의 형태로 값을 보내도록 한다. (`UerEntity` 가 아닌 `writerId` `Long` 타입 값을 전달)
+- 그 `dto` 를 통해 중고 물품 객체를 생성하고 레포지토리에 저장하면 테이블에 작성자 정보를 `id` 로 표시할 수 있다.
+```java
+public void registerItem(UsedItemDto dto) {
+    // 현재 인증된 사용자의 정보 가져오기
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    UserEntity userEntity = getCurrentUserFromUsername(username);
+
+    // 물품 객체 생성
+    UsedItem usedItemEntity = UsedItem.builder()
+            .title(dto.getTitle())
+            .content(dto.getContent())
+            .price(dto.getPrice())
+            .status("판매중") // 기본값 설정
+            .writer(userEntity)
+            .build();
+
+    usedItemRepository.save(usedItemEntity);
+}
+```
+
+
+
+
+
+### 2. 기본 데이터 만들어주기 (feat. fetch = FetchType.EAGER)
+- 일일히 모든 데이터를 JWT 토큰을 발급받아서 Authentication Header 로 넣어주는 일은 매우 귀찮은 작업이었다. 
+- Restful API 의 개발 특성상 클라이언트가 이 JWT 토큰의 응답을 받는 것이기 떄문에 직접적으로 토큰을 백엔드에서는 다룰수 없다 (JWT 토큰을 백엔드에서 받아서 사용하기는 불가능)
+- 이 프로젝트에서는 따로 테스트 코드를 작성해주지 않았기 때문에, 프로그램 시작과 동시에 직접 테스트 데이터를 각 서비스단의 생성자를 통해 만들어주고, 데이터베이스에 저장해야했다.
+- 하지만 테스트 데이터가 만들어지지 않는 문제가 발생했다.
+- 우선 아래와 같이 생성자에서 테스트 데이터를 데이터베이스 미리 추가해줄 수 있다.
+```java
+@Slf4j
+@Service
+//RequiredArgsConstructor
+public class UsedItemService {
+    private final UsedItemRepository usedItemRepository;
+    private final UserRepository userRepository;
+
+    public UsedItemService(
+            UsedItemRepository usedItemRepository,
+            UserRepository userRepository
+    ) {
+        this.usedItemRepository = usedItemRepository;
+        this.userRepository = userRepository;
+
+        // 테스트용 데이터 가져오기
+        // USER1
+        Optional<UserEntity> userEntity = userRepository.findById(3L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        UsedItem usedItem = UsedItem.builder()
+                .title("레오폴드 FC660C")
+                .content("토프래 무접점 저소음, 풀윤활 O, 파루치 O")
+                .price(290000)
+                .status("판매중")
+                .writer(userEntity.get())
+                .build();
+        usedItemRepository.save(usedItem);
+    }
+    ...
+}
+```
+
+#### `fetch = FetchType.LAZY` vs `fetch = FetchType.EAGER` 
+- `UsedItem` 엔티티에서 연관관계를 설정하는 부분이 다음과 같이 `fetch = FetchType.LAZY` 로 되어있다면?
+  - 값이 정상적으로 데이터베이스에 저장되지 않는다. 왜 그럴까?
+  - 분명 `UserEntity` 에 대한 초가 데이터는 `JpaUserDetailsManager`의 생성자에서 저장하는 코드를 추가했는데, 왜 `UserEntity` 에 객체 정보를 불러올 수 없을까?
+- 문제
+  - `fetch = FetchType.LAZY` 로 설정된 연관관계는 지연 로딩(Lazy Loading) 을 의미한다. 
+  - 이는 해당 엔티티가 실제로 사용될 때까지 연관된 엔티티를 데이터베이스에서 로딩하지 않고, 사용될 떄에만 로딩하는 것을 말한다.
+  - 따라서 `UsedItem` 엔티티와 연관된 `UserEntity` 객체는 데이터베이스에 저장되지 않는다.
+- 해결
+  - 일반적으로 엔티티를 로딩하는 시점을 최적화 하기 위해 엔티티가 필요한 경우에만 로딩하는 것이 효율적이다.
+  - 하지만 이 경우, 테스트 데이터를 저장하는 과정에서 연관된 `UserEntity`를 즉각 필요로 한다.
+  - 따라서, `UsedItem` 엔티티의 `writer` 라는 컬럼을 `fetch = FetchType.EAGER` 로 변경하여 `UserEntity`가 즉시 로딩되도록 하면 된다.
+```java
+public class UsedItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Setter
+    private String title;
+    @Setter
+    private String content;
+    @Setter
+    private String imageUrl;
+    @Setter
+    private Integer price;
+
+    @Setter
+    private String status;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserEntity writer;
+}
+```
+
+
+ 
+
 

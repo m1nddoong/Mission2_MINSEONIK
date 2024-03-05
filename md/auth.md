@@ -308,6 +308,9 @@ public ResponseEntity<String> profileInfo(
 <br>
 
 ### 4. 프로필 이미지 업로드
+`form-data` 와 `json` 은 동시에 보낼 수 없다 왜냐면 `Content-type` 은 하나만 지정할 수 있기 때문에 프로필 이미지 등록하는 것은 별개로 진행한다.
+
+
 <details>
 <summary>Postman - 프로필 이미지 업로드</summary>
 <div markdown="1">
@@ -381,6 +384,7 @@ public ResponseEntity<String> avatar(
 <br>
 
 ### 5. 사업자 번호 등록, 승인, 거절
+관리자의 사업자 사용자 전환 신청을 수락 한다는 것은 특정 사용자의 `“authroities”` 컬럼을 “사업자 사용자” 로 변경이 되도록 하고 이를 `SecurityContext` 에 반영 시키면 된다.
 
 <details>
 <summary>Postman - 사업자 번호 등록, 승인, 거절</summary>
@@ -518,23 +522,11 @@ public ResponseEntity<String> rejectBusinessUserRequest(
 <br>
 
 
-### 2) SecurityContext에 저장된 사용자 데이터가 업데이트되지 않는 문제
-- `Spring Security`는 사용자의 권한 정보를 기본적으로 `UserDetails` 객체에 저장한다.
-- 따라서, 사용자 정보를 업데이트 할때 `UserDetails` 객체를 생성하고 업데이트 해야한다.
-  - `UserDetails` 를 확장한 `CustomUserDetails` 클래스를 만들어서 사용하고 있다.
-  - `CustomUserDetails` 클래스는 사용자의 추가 속성을 포함할 수 있다. (`nickname`, `name` 등)
+### 2) SecurityContext에 저장된 사용자 데이터가 업데이트되지 않는 문제 
+![error_1.png](img_auth/error_1.png)
+![error_2.png](img_auth/error_2.png)
 
-
-- 사용자 정보를 등록할 때 `CustomerUserDetails` 객체를 생성하도록 한다.
-  ![error_1.png](img_auth/error_1.png)
-
-
-
-- `UserEntity` 를 통해서 새로운 사용자가 데이터베이스에 저장될 때, 그 사용자 정보를 가져와서 `CustomUserDetails` 객체로 만들고
-- `Spring Security`는 그 객체를 `UserDetails` 로 인식하여 인증 처리에 사용하게 되면서 사용자 정보가 업데이트 되게 된다.
-  ![error_2.png](img_auth/error_2.png)
-
-- 정리
+- createUser
   - 기본적으로 `UserDetails` 라는 객체를 구현한 `User` 라는 객체는 기본적으로 스프링에서 제공을 하는 객체이다.
   - 위 `UserDetails` 의 로직을 담당하는 것이 바로 `UserDetailsService`
   - 그런데 이 `UserDetailsService` 를 좀 더 확장한 것이 바로 `UserDetailsManager` 이고, 이를 구현한 구현체인 `JpaUserDetailsManager` (이름을 이렇게 붙인 것) 가 실질적인 `UserDetails` 객체를 대상으로 로직을 적용한 서비스 클래스인 것이다.
@@ -550,3 +542,37 @@ public ResponseEntity<String> rejectBusinessUserRequest(
     - `CustomUserDetails userDetails = (CustomUserDetails) user;`
   - 그렇게 생성된 `userDetails` 를 가지고 레포지토리에 저장을 한다.
   - 회원가입을 하고, 토큰을 등록한 다음에 그떄 `SecurtiyContext` 에 변경사항을 저장하는 것이 의미있지 그거 아니고서야 굳이 회원 가입 하자마자 `SecurtiyContext` 에 저장할 필요는 없다 (feat. `authorities`)
+
+
+- loadUserByUsername
+  - `loadUserByUsername` 메서드를 통해서 사용자 정보를 가져올 떄, 해당 사용자의 `UserDetails` 객체(`CustomUserDetails`)를 생성하여 `Authentication` 객체에 설정 된다.
+  - 그 후 해당 `Authentication` 객체가 `SecurityContext`에 저장 된다.
+  - 이때 사용자의 정보나 권한이 변경되면(`UserEntity` 를 통해서 새로운 사용자가 데이터베이스에 저장) `fromEntity` 를 통해서 UserDetails 객체로 만들어 변경 사항 업데이트
+  - `Spring Security` 가 업데이트된 `UserDetails` 객체(`CustomUserDetails`)의 새로운 `Authentication` 객체를 만들어서 이를 `SecurityContext`에 저장하여 변경 사항을 반영한다.
+
+
+<details>
+<summary>인증 정보 생성</summary>
+<div markdown="1">
+
+```java
+UserDetails userDetails = manager.loadUserByUsername(username);
+for (GrantedAuthority authority : userDetails.getAuthorities()) {
+    log.info("authority: {}", authority.getAuthority());
+}
+
+// 인증 정보 생성
+AbstractAuthenticationToken authentication =
+        new UsernamePasswordAuthenticationToken(
+            userDetails,
+            token,
+            userDetails.getAuthorities()
+        );
+// 인증 정보 등록
+context.setAuthentication(authentication);
+SecurityContextHolder.setContext(context);
+log.info("set security context with jwt");
+```
+
+</div>
+</details>

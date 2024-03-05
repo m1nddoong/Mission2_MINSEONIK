@@ -27,49 +27,50 @@ public class UsedItemService {
     private final UsedItemRepository usedItemRepository;
     private final UserRepository userRepository;
 
-    public UsedItemService(UsedItemRepository usedItemRepository, UserRepository userRepository) {
+    public UsedItemService(
+            UsedItemRepository usedItemRepository,
+            UserRepository userRepository
+    ) {
         this.usedItemRepository = usedItemRepository;
         this.userRepository = userRepository;
 
-        // 중고 물품은 필요시 만들어 주자.
+        // 테스트용 데이터 가져오기
+        // USER1
+        Optional<UserEntity> userEntity = userRepository.findById(3L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
 
-//        // 테스트용 데이터 가져오기
-//        // USER1
-//        Optional<UserEntity> userEntity = userRepository.findById(3L);
-//        if (userEntity.isEmpty())
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-//
-//        Item item = Item.builder()
-//                .title("레오폴드 FC660C")
-//                .content("토프래 무접점 저소음, 풀윤활 O, 파루치 O")
-//                .price(290000)
-//                .status("판매중")
-//                .writer(userEntity.get())
-//                .build();
-//        itemRepository.save(item);
-//
-//        item = Item.builder()
-//                .title("해피해킹 프로페셔널 하이브리드 일반")
-//                .content("전용 파우지, 트랙패드 팜레스트, 포인트 키캡, 풀윤활 O")
-//                .price(300000)
-//                .status("판매중")
-//                .writer(userEntity.get())
-//                .build();
-//        itemRepository.save(item);
-//
-//        // USER2
-//        userEntity = userRepository.findById(4L);
-//        if (userEntity.isEmpty())
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-//
-//        item = Item.builder()
-//                .title("gmk67 커스텀 키보드")
-//                .content("하이무 미드나잇 스위치 공장윤활, XDA 키캡, 테이핑 모드")
-//                .price(45000)
-//                .status("판매중")
-//                .writer(userEntity.get())
-//                .build();
-//        itemRepository.save(item);
+        UsedItem usedItem = UsedItem.builder()
+                .title("레오폴드 FC660C")
+                .content("토프래 무접점 저소음, 풀윤활 O, 파루치 O")
+                .price(290000)
+                .status("판매중")
+                .writer(userEntity.get())
+                .build();
+        usedItemRepository.save(usedItem);
+
+        usedItem = UsedItem.builder()
+                .title("해피해킹 프로페셔널 하이브리드 일반")
+                .content("전용 파우지, 트랙패드 팜레스트, 포인트 키캡, 풀윤활 O")
+                .price(300000)
+                .status("판매중")
+                .writer(userEntity.get())
+                .build();
+        usedItemRepository.save(usedItem);
+
+        // USER2
+        userEntity = userRepository.findById(4L);
+        if (userEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+
+        usedItem = UsedItem.builder()
+                .title("gmk67 커스텀 키보드")
+                .content("하이무 미드나잇 스위치 공장윤활, XDA 키캡, 테이핑 모드")
+                .price(45000)
+                .status("판매중")
+                .writer(userEntity.get())
+                .build();
+        usedItemRepository.save(usedItem);
 
     }
 

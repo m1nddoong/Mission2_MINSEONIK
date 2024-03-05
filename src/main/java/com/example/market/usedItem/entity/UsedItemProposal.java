@@ -32,13 +32,13 @@ public class UsedItemProposal {
 
     // 물품
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     private UsedItem usedItem;
 
     // 물품 구매를 제안한 사람
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "proposer_id", nullable = false)
     private UserEntity proposer;
 
