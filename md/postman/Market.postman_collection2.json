@@ -20,7 +20,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5MDUzNDYwLCJleHAiOjE3MDk2NTgyNjB9.atv8ldwCZ8PjAGrGgUg2znTau0hoxxNlrCPLcLS0qR0sehhyjANoXlWHT3j0vkw7",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjA1OTUzLCJleHAiOjE3MTAyMTA3NTN9.-pREeaejjQ-zAjnZIpwEZwHt4y2hbFhMTsJqFHtzyO5F8PEGg4NOpidcsvx-14S2",
 									"type": "string"
 								}
 							]
@@ -59,7 +59,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTIwMzQzNiwiZXhwIjoxNzA5ODA4MjM2fQ.E-c2bXYGoeLP68jSPVpXzJadjyH8UDYblXkJQuD3JnOXrOfQSt4cdq1Dki0gtxBO",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjA1OTUzLCJleHAiOjE3MTAyMTA3NTN9.-pREeaejjQ-zAjnZIpwEZwHt4y2hbFhMTsJqFHtzyO5F8PEGg4NOpidcsvx-14S2",
 									"type": "string"
 								}
 							]
@@ -68,7 +68,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"businessNumber\" : \"1111\"\n}",
+							"raw": "{\n    \"businessNumber\" : \"031-00-001\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -223,7 +223,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "// {\n//     \"username\" : \"Admin\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"BusinessUser\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User1\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User2\",\n//     \"password\" : \"1234\"\n// }\n\n{\n    \"username\" : \"User3\",\n    \"password\" : \"1234\"\n}\n\n// {\n//     \"username\" : \"Changmo\",\n//     \"password\" : \"031\"\n// }",
+							"raw": "// {\n//     \"username\" : \"Admin\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"BusinessUser\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User1\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User2\",\n//     \"password\" : \"1234\"\n// }\n\n// {\n//     \"username\" : \"User3\",\n//     \"password\" : \"1234\"\n// }\n\n{\n    \"username\" : \"Changmo\",\n    \"password\" : \"031\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -253,7 +253,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTI5NjUzNiwiZXhwIjoxNzA5OTAxMzM2fQ.sXOg42LtMbzwwT9NtDeLdsP-tsVh6AOpGQSsxfHUVytG4_L2E-Eh2HCpNI83WgWb",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjA1OTUzLCJleHAiOjE3MTAyMTA3NTN9.-pREeaejjQ-zAjnZIpwEZwHt4y2hbFhMTsJqFHtzyO5F8PEGg4NOpidcsvx-14S2",
 									"type": "string"
 								}
 							]
@@ -283,7 +283,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTI2OTA2MywiZXhwIjoxNzA5ODczODYzfQ.AZLjZYEc6s3yTBf2cY80w4KzikWOESabnyNBu1Rb7CMmv8weZuyGyWPL3-vtaD1y",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjA1OTUzLCJleHAiOjE3MTAyMTA3NTN9.-pREeaejjQ-zAjnZIpwEZwHt4y2hbFhMTsJqFHtzyO5F8PEGg4NOpidcsvx-14S2",
 									"type": "string"
 								}
 							]
@@ -292,7 +292,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nickname\" : \"UGRS RIGHT HERE!\",\n    \"name\" : \"구창모\",\n    \"age\" : 29,\n    \"email\" : \"boyhood031@gmail.com\",\n    \"phone\" : \"010-0000-0000\"\n}",
+							"raw": "{\n    \"nickname\" : \"UGRS\",\n    \"name\" : \"구창모\",\n    \"age\" : 29,\n    \"email\" : \"boyhood031@gmail.com\",\n    \"phone\" : \"010-0000-0000\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -322,7 +322,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5MTA0OTEwLCJleHAiOjE3MDk3MDk3MTB9.HKBkb0c3eY5ybKUraXr_IXUSqxXRyupRWmcgwFpHm7J6o6zchuunRyMMb-Lpsyp2",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjA1OTUzLCJleHAiOjE3MTAyMTA3NTN9.-pREeaejjQ-zAjnZIpwEZwHt4y2hbFhMTsJqFHtzyO5F8PEGg4NOpidcsvx-14S2",
 									"type": "string"
 								}
 							]
@@ -858,7 +858,7 @@
 							"response": []
 						},
 						{
-							"name": "검색 기능",
+							"name": "SEARCH /items/search",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -868,7 +868,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJDaGFuZ21vIiwiaWF0IjoxNzA5NjM5ODYxLCJleHAiOjE3MTAyNDQ2NjF9.Nj7Ybsuid4ZRlXHOMNRgdoH5I60_4XyaFhRB3i-_QlOW2wne7n52e9dFU3Zqw5Os",
 											"type": "string"
 										}
 									]
@@ -885,56 +885,29 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/products/search",
+									"raw": "http://localhost:8080/items/search?name=모니터&priceFloor=130000&priceCeil=200000",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"products",
+										"items",
 										"search"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "검색 기능 Copy",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTI4MjYzNSwiZXhwIjoxNzA5ODg3NDM1fQ.W_Xz7jiS3iVJ4u29_Y_2KC0tfjdp-o48To21SlXXjRgbL5G8p-TC6k2zH3QyW8r3",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8080/home",
-									"protocol": "http",
-									"host": [
-										"localhost"
 									],
-									"port": "8080",
-									"path": [
-										"home"
+									"query": [
+										{
+											"key": "name",
+											"value": "모니터"
+										},
+										{
+											"key": "priceFloor",
+											"value": "130000"
+										},
+										{
+											"key": "priceCeil",
+											"value": "200000"
+										}
 									]
 								}
 							},
@@ -946,14 +919,14 @@
 					"name": "\bItemOrder",
 					"item": [
 						{
-							"name": "POST /purchase-request",
+							"name": "POST /orders/purchase-request",
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMiIsImlhdCI6MTcwOTY0MDQ1MiwiZXhwIjoxNzEwMjQ1MjUyfQ.fTEk5_65GlmcIObkxvazecSGd36No7i7Qkkfi5GIO26cBZdcQOIln9fVXtQJ2QEp",
 											"type": "string"
 										}
 									]
@@ -970,13 +943,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/purchase-request",
+									"raw": "http://localhost:8080/orders/purchase-request",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"orders",
 										"purchase-request"
 									]
 								}
@@ -984,7 +958,7 @@
 							"response": []
 						},
 						{
-							"name": "POST /purchase-approve/{itemOrderId}",
+							"name": "POST /orders/purchase-approve/{itemOrderId}",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -999,13 +973,14 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/purchase-approve/1",
+									"raw": "http://localhost:8080/orders/purchase-approve/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"orders",
 										"purchase-approve",
 										"1"
 									]
@@ -1014,14 +989,14 @@
 							"response": []
 						},
 						{
-							"name": "POST /purchase-reject/{itemOrderId}",
+							"name": "POST /orders/purchase-reject/{itemOrderId}",
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMyIsImlhdCI6MTcwOTU1NjI4NCwiZXhwIjoxNzEwMTYxMDg0fQ.xAK1x9Xyg4BKNx7Jjr5GQD9RslHgrq9H06VinHHiOrJFw7CqyWshvHUM2-aLLO02",
+											"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJVc2VyMSIsImlhdCI6MTcwOTY0MDY0MCwiZXhwIjoxNzEwMjQ1NDQwfQ.EgYXs-b8E1ODNDH1tvv-CUiZjInZXOu0kipxp2p6Klnmb0BTWPjKyy_eREE4rIBS",
 											"type": "string"
 										}
 									]
@@ -1030,7 +1005,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"cancelReaseon\" : \"단순 변심\"\n}",
+									"raw": "{\n    \"cancelReaseon\" : \"상품 점검이 필요합니다. 죄송합니다.\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1038,13 +1013,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/purchase-reject/1",
+									"raw": "http://localhost:8080/orders/purchase-reject/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"orders",
 										"purchase-reject",
 										"1"
 									]
