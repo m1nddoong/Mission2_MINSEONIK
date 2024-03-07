@@ -37,63 +37,63 @@ public class ItemService {
 
         // 테스트용 데이터 가져오기
         // BusinessUser1
-        Optional<UserEntity> userEntity = userRepository.findById(2L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        Item item = Item.builder()
-                .name("아로마틱 우드 10ml")
-                .content("스프레이 퍼퓸")
-                .price(20000)
-                .category("화장품")
-                .subCategory("향수")
-                .Stock(5)
-                .writer(userEntity.get())
-                .build();
-        itemRepository.save(item);
-
-        // USER1
-        userEntity = userRepository.findById(3L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        item = Item.builder()
-                .name("벤큐 모니터")
-                .content("144hz")
-                .price(150000)
-                .category("PC제품")
-                .subCategory("모니터")
-                .Stock(30)
-                .writer(userEntity.get())
-                .build();
-        itemRepository.save(item);
-
-        item = Item.builder()
-                .name("삼성 모니터")
-                .content("60hz")
-                .price(240000)
-                .category("PC제품")
-                .subCategory("모니터")
-                .Stock(50)
-                .writer(userEntity.get())
-                .build();
-        itemRepository.save(item);
-
-        // USER2
-        userEntity = userRepository.findById(4L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        item = Item.builder()
-                .name("수제 첼시부츠")
-                .content("천연 가죽, 무광")
-                .price(110000)
-                .category("의류")
-                .subCategory("신발")
-                .Stock(1)
-                .writer(userEntity.get())
-                .build();
-        itemRepository.save(item);
+//        Optional<UserEntity> userEntity = userRepository.findById(2L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        Item item = Item.builder()
+//                .name("아로마틱 우드 10ml")
+//                .content("스프레이 퍼퓸")
+//                .price(20000)
+//                .category("화장품")
+//                .subCategory("향수")
+//                .Stock(5)
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+//
+//        // USER1
+//        userEntity = userRepository.findById(3L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        item = Item.builder()
+//                .name("벤큐 모니터")
+//                .content("144hz")
+//                .price(150000)
+//                .category("PC제품")
+//                .subCategory("모니터")
+//                .Stock(30)
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+//
+//        item = Item.builder()
+//                .name("삼성 모니터")
+//                .content("60hz")
+//                .price(240000)
+//                .category("PC제품")
+//                .subCategory("모니터")
+//                .Stock(50)
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
+//
+//        // USER2
+//        userEntity = userRepository.findById(4L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        item = Item.builder()
+//                .name("수제 첼시부츠")
+//                .content("천연 가죽, 무광")
+//                .price(110000)
+//                .category("의류")
+//                .subCategory("신발")
+//                .Stock(1)
+//                .writer(userEntity.get())
+//                .build();
+//        itemRepository.save(item);
     }
 
 

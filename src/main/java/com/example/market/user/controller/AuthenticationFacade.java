@@ -1,0 +1,22 @@
+package com.example.market.user.controller;
+
+
+import com.example.market.user.entity.CustomUserDetails;
+import com.example.market.user.entity.UserEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AuthenticationFacade {
+    public Authentication getAuth() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public UserEntity extractUser() {
+        CustomUserDetails userDetails
+                = (CustomUserDetails) getAuth().getPrincipal();
+        return userDetails.getEntity();
+    }
+}
+

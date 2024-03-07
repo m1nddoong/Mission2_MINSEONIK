@@ -1,17 +1,16 @@
-package com.example.market.user.jwt;
+package com.example.market.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtRequestDto {
+public class CreateUserDto {
     private String username;
     private String password;
+    private String passwordCheck;
 }

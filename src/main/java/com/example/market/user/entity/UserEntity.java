@@ -25,15 +25,13 @@ public class UserEntity { // Spring 에 저장하고 싶은 사용자 정보를 
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Setter
     private String username;
-    @Setter
     private String password;
 
-    @Setter
-    private String nickname;
-    @Setter
-    private String name;
+//    @Setter
+//    private String nickname;
+//    @Setter
+//    private String name;
     @Setter
     private int age;
     @Setter
@@ -44,7 +42,8 @@ public class UserEntity { // Spring 에 저장하고 싶은 사용자 정보를 
     // 테스트를 위해서 문자열 하나에 ','로 구분해 권한을 묘사
     // ROLE_USER,ROLE_ADMIN,READ_AUTHORITY,WRITE_AUTHORITY
     @Setter
-    private String authorities;
+    @Builder.Default
+    private String authorities = "ROLE_INACTIVE";
 
     @Setter
     private String avatar;

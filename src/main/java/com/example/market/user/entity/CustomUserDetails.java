@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,39 +31,31 @@ public class CustomUserDetails implements UserDetails {
     private String authorities;
     private String avatar;
     private String businessNumber;
+    @Getter
+    private UserEntity entity;
 
     // OptionalUser 라는 레포지토리로부터 조회한 사용자 엔티티 정보를 가지고
     // CustomUserDetails형 객체로 변환하는 과정
+//    public static CustomUserDetails fromEntity(UserEntity entity) {
+//        CustomUserDetails details = new CustomUserDetails();
+//        details.id = entity.getId();
+//        details.username = entity.getUsername();
+//        details.password = entity.getPassword();
+//        details.nickname = entity.getNickname();
+//        details.name = entity.getName();
+//        details.email = entity.getEmail();
+//        details.phone = entity.getPhone();
+//        details.age = entity.getAge();
+//        details.authorities = entity.getAuthorities();
+//        details.avatar = entity.getAvatar();
+//        details.businessNumber = entity.getBusinessNumber();
+//        return details;
+//    }
+
     public static CustomUserDetails fromEntity(UserEntity entity) {
-        CustomUserDetails details = new CustomUserDetails();
-        details.id = entity.getId();
-        details.username = entity.getUsername();
-        details.password = entity.getPassword();
-        details.nickname = entity.getNickname();
-        details.name = entity.getName();
-        details.email = entity.getEmail();
-        details.phone = entity.getPhone();
-        details.age = entity.getAge();
-        details.authorities = entity.getAuthorities();
-        details.avatar = entity.getAvatar();
-        details.businessNumber = entity.getBusinessNumber();
-        return details;
-    }
-
-
-    // 새로운 객체 생성 메서드
-    public UserEntity newEntity() {
-        UserEntity entity = new UserEntity();
-        entity.setUsername(this.username);
-        entity.setPassword(this.password);
-        entity.setNickname(this.nickname);
-        entity.setName(this.name);
-        entity.setEmail(this.email);
-        entity.setPhone(this.phone);
-        entity.setAge(this.age);
-        entity.setAuthorities(this.authorities);
-        entity.setBusinessNumber(this.businessNumber);
-        return entity;
+        return CustomUserDetails.builder()
+                .entity(entity)
+                .build();
     }
 
 

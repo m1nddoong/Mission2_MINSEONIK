@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,11 +25,11 @@ import java.io.IOException;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtils jwtTokenUtils;
     // 사용자 정보를 찾기위한 UserDetailsService 또는 Manager
-    private final UserDetailsManager manager;
+    private final UserDetailsService manager;
 
     public JwtTokenFilter(
             JwtTokenUtils jwtTokenUtils,
-            UserDetailsManager manager
+            UserDetailsService manager
     ) {
         this.jwtTokenUtils = jwtTokenUtils;
         this.manager = manager;

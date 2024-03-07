@@ -39,49 +39,49 @@ public class ShopService {
 
         // 테스트용 데이터 가져오기 (최근 거래 시간이 가장 최근인것은 id 4->3->2 순)
         // BusinessUser
-        Optional<UserEntity> userEntity = userRepository.findById(2L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        Shop shop = Shop.builder()
-                .shopName("향수 공방")
-                .introduction("향수 공방 제품 판매합니다.")
-                .category(ShopCategory.BEAUTY)
-                .owner(userEntity.get())
-                .shopStatus(ShopStatus.OPEN)
-                .recentTransactionDate(LocalDateTime.of(2024, 1, 15, 23, 40))
-                .build();
-        shopRepository.save(shop);
-
-        // USER1
-        userEntity = userRepository.findById(3L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        shop = Shop.builder()
-                .shopName("PC Factory")
-                .introduction("직수입 할인 매장 운영합니다. 반갑습니다.")
-                .category(ShopCategory.ELECTRONICS)
-                .owner(userEntity.get())
-                .shopStatus(ShopStatus.OPEN)
-                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 13, 30))
-                .build();
-        shopRepository.save(shop);
-
-        // USER2
-        userEntity = userRepository.findById(4L);
-        if (userEntity.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
-
-        shop = Shop.builder()
-                .shopName("FASHION village")
-                .introduction("안녕하세요. 수제 의류 용퓸 제작 판매합니다.")
-                .category(ShopCategory.FASHION)
-                .owner(userEntity.get())
-                .shopStatus(ShopStatus.OPEN)
-                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 15, 30))
-                .build();
-        shopRepository.save(shop);
+//        Optional<UserEntity> userEntity = userRepository.findById(2L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        Shop shop = Shop.builder()
+//                .shopName("향수 공방")
+//                .introduction("향수 공방 제품 판매합니다.")
+//                .category(ShopCategory.BEAUTY)
+//                .owner(userEntity.get())
+//                .shopStatus(ShopStatus.OPEN)
+//                .recentTransactionDate(LocalDateTime.of(2024, 1, 15, 23, 40))
+//                .build();
+//        shopRepository.save(shop);
+//
+//        // USER1
+//        userEntity = userRepository.findById(3L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        shop = Shop.builder()
+//                .shopName("PC Factory")
+//                .introduction("직수입 할인 매장 운영합니다. 반갑습니다.")
+//                .category(ShopCategory.ELECTRONICS)
+//                .owner(userEntity.get())
+//                .shopStatus(ShopStatus.OPEN)
+//                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 13, 30))
+//                .build();
+//        shopRepository.save(shop);
+//
+//        // USER2
+//        userEntity = userRepository.findById(4L);
+//        if (userEntity.isEmpty())
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+//
+//        shop = Shop.builder()
+//                .shopName("FASHION village")
+//                .introduction("안녕하세요. 수제 의류 용퓸 제작 판매합니다.")
+//                .category(ShopCategory.FASHION)
+//                .owner(userEntity.get())
+//                .shopStatus(ShopStatus.OPEN)
+//                .recentTransactionDate(LocalDateTime.of(2024, 3, 1, 15, 30))
+//                .build();
+//        shopRepository.save(shop);
 
 
 

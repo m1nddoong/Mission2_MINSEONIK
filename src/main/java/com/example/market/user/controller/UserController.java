@@ -1,10 +1,13 @@
 package com.example.market.user.controller;
 
+import com.example.market.user.dto.CreateUserDto;
+import com.example.market.user.dto.UpdateUserDto;
 import com.example.market.user.dto.UserDto;
 import com.example.market.user.entity.UserEntity;
+import com.example.market.user.jwt.JwtRequestDto;
+import com.example.market.user.jwt.JwtResponseDto;
 import com.example.market.user.jwt.JwtTokenUtils;
 import com.example.market.user.repo.UserRepository;
-import com.example.market.user.service.JpaUserDetailsManager;
 import com.example.market.user.service.UserService;
 import com.example.market.shop.service.ShopService;
 import java.io.IOException;
@@ -18,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,17 +31,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final JpaUserDetailsManager manager;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final UserRepository userRepository;
     private final ShopService shopService;
+
 
 
     /**
@@ -46,56 +51,34 @@ public class UserController {
      * @return 새로운 사용자를 생성 후 DB 저장
      */
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(
+    public UserDto signUp(
             @RequestBody
-            UserDto dto
+            CreateUserDto dto
     ) {
-        if (manager.userExists(dto.getUsername())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
-        }
+        return userService.createUser(dto);
+    }
 
-        // UserEntity 객체 생성
-        UserEntity userEntity = UserEntity.builder()
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .authorities("ROLE_INACTIVE_USER")
-                .build();
-
-        // 저장
-        userService.save(userEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공!");
+    /**
+     * 로그인(JWT 토큰 발급)
+     * @param dto usenname, password
+     * @return token
+     */
+    @PostMapping("/signin")
+    public JwtResponseDto signIn(
+            @RequestBody JwtRequestDto dto
+    ) {
+        return userService.signin(dto);
     }
 
 
     /**
-     * 회원정보 추가
-     * @param dto 추가정보가 담긴 UserDto
-     * @return 추가 정보 업데이트
+     * 회원정보 추가 (업데이트)
      */
     @PostMapping("/profile-info")
-    public ResponseEntity<String> profileInfo(
-            @RequestBody UserDto dto
+    public UserDto profileInfo(
+            @RequestBody UpdateUserDto dto
     ) {
-        // 현재 인증된 사용자의 이름 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        // 데이터베이스에서 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isPresent()) {
-            // 업데이트할 정보 설정
-            UserEntity userEntity = optionalUserEntity.get();
-            userEntity.setNickname(dto.getNickname());
-            userEntity.setName(dto.getName());
-            userEntity.setAge(dto.getAge());
-            userEntity.setEmail(dto.getEmail());
-            userEntity.setPhone(dto.getPhone());
-            userEntity.setAuthorities("ROLE_USER"); // 일반 사용자로 승급
-            userRepository.save(userEntity);
-
-            return ResponseEntity.status(HttpStatus.OK).body("프로필 추가 정보 작성 완료!");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한 없음");
-        }
+        return userService.profileInfo(dto);
     }
 
 
