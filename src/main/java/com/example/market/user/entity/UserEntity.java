@@ -24,16 +24,16 @@ public class UserEntity { // Spring 에 저장하고 싶은 사용자 정보를 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String username;
     private String password;
 
-//    @Setter
-//    private String nickname;
-//    @Setter
-//    private String name;
     @Setter
-    private int age;
+    private String nickname;
+    @Setter
+    private String name;
+    @Setter
+    private Integer age;
     @Setter
     private String email;
     @Setter

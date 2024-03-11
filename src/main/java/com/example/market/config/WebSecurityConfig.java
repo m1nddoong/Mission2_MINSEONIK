@@ -2,28 +2,15 @@ package com.example.market.config;
 
 import com.example.market.user.jwt.JwtTokenFilter;
 import com.example.market.user.jwt.JwtTokenUtils;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 // @Bean을 비롯해서 인증 등 여러 설정을 하기 위한 Bean 객체
 @Configuration
@@ -47,7 +34,7 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/users/signin",
                                 "/token/validate",
-                                "/users/profile-info",
+                                "/users/details",
                                 "/users/avatar",
                                 "/users/signup",
                                 "/",

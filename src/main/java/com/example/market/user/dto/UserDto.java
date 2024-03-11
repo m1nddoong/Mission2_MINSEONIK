@@ -16,25 +16,22 @@ import lombok.Setter;
 public class UserDto {
     private Long id;
     private String username;
-    private String password;
     private String nickname;
     private String name;
-    private int age;
+    private Integer age;
     private String email;
     private String phone;
     private String authorities;
     private String avatar;
     private String businessNumber;
 
-
     // 추가
     public static UserDto fromEntity(UserEntity entity) {
         return UserDto.builder()
                 .id(entity.getId())
                 .username(entity.getUsername())
-                .password(entity.getPassword())
-//                .nickname(entity.getNickname())
-//                .name(entity.getName())
+                .nickname(entity.getNickname())
+                .name(entity.getName())
                 .age(entity.getAge())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())

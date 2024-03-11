@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -25,14 +24,14 @@ import java.io.IOException;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtils jwtTokenUtils;
     // 사용자 정보를 찾기위한 UserDetailsService 또는 Manager
-    private final UserDetailsService manager;
+    private final UserDetailsService service;
 
     public JwtTokenFilter(
             JwtTokenUtils jwtTokenUtils,
-            UserDetailsService manager
+            UserDetailsService service
     ) {
         this.jwtTokenUtils = jwtTokenUtils;
-        this.manager = manager;
+        this.service = service;
     }
 
     // JWT 유효성 검증 & 현재 인증된 사용자의 정보를 SecurityContext에 반영
@@ -59,7 +58,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         .parseClaims(token)
                         .getSubject();
 
-                UserDetails userDetails = manager.loadUserByUsername(username);
+                log.info("username: {}", username);
+
+                UserDetails userDetails = service.loadUserByUsername(username);
                 for (GrantedAuthority authority : userDetails.getAuthorities()) {
                     log.info("authority: {}", authority.getAuthority());
                 }
@@ -75,8 +76,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 context.setAuthentication(authentication);
                 SecurityContextHolder.setContext(context);
                 log.info("set security context with jwt");
-            }
-            else {
+            } else {
                 log.warn("jwt validation failed");
             }
         }

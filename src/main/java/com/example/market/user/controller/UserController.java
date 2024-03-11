@@ -26,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,11 +75,11 @@ public class UserController {
     /**
      * 회원정보 추가 (업데이트)
      */
-    @PostMapping("/profile-info")
-    public UserDto profileInfo(
+    @PutMapping("/details")
+    public UserDto signUpFinal (
             @RequestBody UpdateUserDto dto
     ) {
-        return userService.profileInfo(dto);
+        return userService.updateUser(dto);
     }
 
 

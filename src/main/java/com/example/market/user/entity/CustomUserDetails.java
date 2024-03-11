@@ -24,47 +24,32 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String nickname;
     private String name;
-    private int age;
+    private Integer age;
     private String email;
     private String phone;
-    @Setter
     private String authorities;
     private String avatar;
     private String businessNumber;
     @Getter
     private UserEntity entity;
 
-    // OptionalUser 라는 레포지토리로부터 조회한 사용자 엔티티 정보를 가지고
-    // CustomUserDetails형 객체로 변환하는 과정
-//    public static CustomUserDetails fromEntity(UserEntity entity) {
-//        CustomUserDetails details = new CustomUserDetails();
-//        details.id = entity.getId();
-//        details.username = entity.getUsername();
-//        details.password = entity.getPassword();
-//        details.nickname = entity.getNickname();
-//        details.name = entity.getName();
-//        details.email = entity.getEmail();
-//        details.phone = entity.getPhone();
-//        details.age = entity.getAge();
-//        details.authorities = entity.getAuthorities();
-//        details.avatar = entity.getAvatar();
-//        details.businessNumber = entity.getBusinessNumber();
-//        return details;
-//    }
-
+    // userEntity 를 기반으로 CustomUserDetails 객체 생성
     public static CustomUserDetails fromEntity(UserEntity entity) {
         return CustomUserDetails.builder()
+                .id(entity.getId())
+                .username(entity.getUsername())
+                .password(entity.getPassword())
+                .nickname(entity.getNickname())
+                .name(entity.getName())
+                .age(entity.getAge())
+                .email(entity.getEmail())
+                .phone(entity.getPhone())
+                .authorities(entity.getAuthorities())
+                .avatar(entity.getAvatar())
+                .businessNumber(entity.getBusinessNumber())
                 .entity(entity)
                 .build();
     }
-
-
-    // 기존 CustomUserDetails 클래스 내에서
-//    public CustomUserDetails withAuthorities(String authorities) {
-//        this.authorities = authorities;
-//        return this;
-//    }
-
 
     public String getRawAuthorities() {
         return this.authorities;
@@ -122,9 +107,4 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
-
-
-
 }

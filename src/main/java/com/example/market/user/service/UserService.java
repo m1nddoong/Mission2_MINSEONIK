@@ -47,7 +47,6 @@ public class UserService implements UserDetailsService {
      */
     @Transactional
     public UserDto createUser (
-            // UserDto 에서 CreateUserDto 로 변경 -> passwrodCheck 라는 필드 포함
             CreateUserDto dto
     ) {
         if (!dto.getPassword().equals(dto.getPasswordCheck())) // 비밀번호와 비밀번호 확인이 다르면
@@ -55,27 +54,11 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByUsername(dto.getUsername())) // 데이터베이스에 기존 사용자 존재 유뮤 판단
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-//        마찬가지로 사용자 엔티티의 여부를 UserDetailManager 가 아닌 UserRepository 에서 확인함
-//        if (manager.userExists(dto.getUsername())) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("사용자가 이미 존재합니다.");
-//        }
-
         return UserDto.fromEntity(userRepository.save(UserEntity.builder()
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .build()));
-
-        // UserEntity 객체 생성
-//        UserEntity userEntity = UserEntity.builder()
-//                .username(dto.getUsername())
-//                .password(passwordEncoder.encode(dto.getPassword()))
-//                .authorities("ROLE_INACTIVE_USER")
-//                .build();
-        // 저장
-        // userService.save(userEntity);
-        // return ResponseEntity.status(HttpStatus.CREATED).body("회원 가입 성공!");
     }
-
 
 
     /**
@@ -93,7 +76,6 @@ public class UserService implements UserDetailsService {
         // 평문 비밀번호와 암호화 비밀번호를 비교할 수 있다.
         if (!passwordEncoder.matches(
                 dto.getPassword(),
-                // userDetails.getPassword()))
                 userEntity.getPassword()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
@@ -108,20 +90,27 @@ public class UserService implements UserDetailsService {
      * 회원 정보 추가
      */
     @Transactional
-    public UserDto profileInfo(UpdateUserDto dto) {
+    public UserDto updateUser(UpdateUserDto dto) {
+        // 인증된 사용자 정보 가져오기
         UserEntity userEntity = authFacade.extractUser();
-        // 업데이트할 정보 설정
+        log.info(userEntity.getUsername());
+        // 정보 추가
+        userEntity.setNickname(dto.getNickname());
+        userEntity.setName(dto.getName());
         userEntity.setAge(dto.getAge());
         userEntity.setEmail(dto.getEmail());
         userEntity.setPhone(dto.getPhone());
-        userEntity.setAuthorities("ROLE_USER"); // 일반 사용자로 승급
+        if (
+                userEntity.getNickname() != null &&
+                userEntity.getName() != null &&
+                userEntity.getAge() != null &&
+                userEntity.getEmail() != null &&
+                userEntity.getPhone() != null &&
+                userEntity.getAuthorities().equals("ROLE_INACTIVE")
+        ) {
+            userEntity.setAuthorities("ROLE_USER"); // 일반 사용자로 승급
+        }
 
         return UserDto.fromEntity(userRepository.save(userEntity));
     }
-
-    // 데이터베이스에 저장
-    public void save(UserEntity userEntity) {
-        userRepository.save(userEntity);
-    }
-
 }
