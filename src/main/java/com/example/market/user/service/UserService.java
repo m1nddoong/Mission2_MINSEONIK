@@ -1,5 +1,6 @@
 package com.example.market.user.service;
 
+import com.example.market.FileHandlerUtils;
 import com.example.market.user.controller.AuthenticationFacade;
 import com.example.market.user.dto.CreateUserDto;
 import com.example.market.user.dto.UpdateUserDto;
@@ -11,10 +12,16 @@ import com.example.market.user.jwt.JwtResponseDto;
 import com.example.market.user.jwt.JwtTokenUtils;
 import com.example.market.user.repo.UserRepository;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +30,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -33,6 +42,7 @@ public class UserService implements UserDetailsService {
     private final AuthenticationFacade authFacade;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
+    private final FileHandlerUtils fileHandlerUtils;
 
     // 기본 오버라이드 메서드
     @Override
@@ -112,5 +122,19 @@ public class UserService implements UserDetailsService {
         }
 
         return UserDto.fromEntity(userRepository.save(userEntity));
+    }
+
+
+    public UserDto profileImg (MultipartFile file) {
+        UserEntity userEntity = authFacade.extractUser();
+        String requestPath = fileHandlerUtils.saveFile(
+                String.format("users/%d/", userEntity.getId()),
+                "profile",
+                file
+        );
+
+        userEntity.setProfileImg(requestPath);
+        return UserDto.fromEntity(userRepository.save(userEntity));
+
     }
 }

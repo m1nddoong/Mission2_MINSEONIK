@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
     private String email;
     private String phone;
     private String authorities;
-    private String avatar;
+    private String profileImg;
     private String businessNumber;
     @Getter
     private UserEntity entity;
@@ -45,7 +45,7 @@ public class CustomUserDetails implements UserDetails {
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
                 .authorities(entity.getAuthorities())
-                .avatar(entity.getAvatar())
+                .profileImg(entity.getProfileImg())
                 .businessNumber(entity.getBusinessNumber())
                 .entity(entity)
                 .build();

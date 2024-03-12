@@ -22,7 +22,7 @@ public class UserDto {
     private String email;
     private String phone;
     private String authorities;
-    private String avatar;
+    private String profileImg;
     private String businessNumber;
 
     // 추가
@@ -36,7 +36,7 @@ public class UserDto {
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
                 .authorities(entity.getAuthorities())
-                .avatar(entity.getAvatar())
+                .profileImg(entity.getProfileImg())
                 .businessNumber(entity.getBusinessNumber())
                 .build();
     }

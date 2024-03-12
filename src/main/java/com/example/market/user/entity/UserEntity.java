@@ -46,7 +46,7 @@ public class UserEntity { // Spring 에 저장하고 싶은 사용자 정보를 
     private String authorities = "ROLE_INACTIVE";
 
     @Setter
-    private String avatar;
+    private String profileImg;
 
     @Setter
     // 사업자 등록번호

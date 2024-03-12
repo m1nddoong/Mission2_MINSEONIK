@@ -44,19 +44,17 @@ public class UserController {
     private final UserRepository userRepository;
     private final ShopService shopService;
 
-
-
     /**
      * 회원가입
      * @param dto 사용자의 username, password
      * @return 새로운 사용자를 생성 후 DB 저장
      */
     @PostMapping("/signup")
-    public UserDto signUp(
+    public ResponseEntity<UserDto> signUp(
             @RequestBody
             CreateUserDto dto
     ) {
-        return userService.createUser(dto);
+        return ResponseEntity.ok(userService.createUser(dto));
     }
 
     /**
@@ -84,58 +82,19 @@ public class UserController {
 
 
     /**
-     * 사용자 프로필 이미지 업로드
-     *
-     * @param multipartFile 이미지 파일
-     * @return 이미지 파일 업로드
-     * @throws IOException transferTo 로 저장
+     * 프로필 업로드
      */
-    @PostMapping(
-            value = "/avatar",
+    @PutMapping(
+            value = "/profile",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<String> avatar(
+    public ResponseEntity<UserDto> profileImg(
             @RequestParam("file")
-            MultipartFile multipartFile
-    ) throws IOException {
-        // 현재 인증된 사용자의 정보 가져오기
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        // 데이터베이스에서 사용자 정보 가져오기
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
-            // 폴더 경로 생성: media/{username}/
-            String profileDir = String.format("media/%s/", username);
-            try {
-                // 폴더 생성
-                Files.createDirectories(Path.of(profileDir));
-            } catch (IOException e) {
-                // 폴더를 만드는데 실패하면 기록을 하고 사용자에게 알림
-                log.error(e.getMessage());
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("디렉토리 생성 실패");
-            }
-            // 파일 조합: media/{username}/profile.{확장자}
-            String originalFilename = multipartFile.getOriginalFilename();
-            String[] fileNameSplit = originalFilename.split("\\.");
-            String extension = fileNameSplit[fileNameSplit.length - 1];
-            String profileFilename = "profile." + extension;
-            String profilePath = profileDir + profileFilename;
-            log.info(profileFilename);
-
-            multipartFile.transferTo(Path.of(profilePath));
-            log.info(profilePath);
-
-            // 업로드된 파일의 URL 저장
-            String requestPath = String.format("/media/%s/%s", username, profileFilename);
-            userEntity.setAvatar(requestPath);
-            userRepository.save(userEntity);
-            // 성공적으로 업로드된 메시지 반환
-            return ResponseEntity.status(HttpStatus.OK).body("프로필 이미지가 업로드 되었습니다.");
-        } else {
-            // 사용자를 찾을 수 없을 경우 오류 메시지 반환
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
-        }
+            MultipartFile file
+    ) {
+        return ResponseEntity.ok(userService.profileImg(file));
     }
+
 
     /**
      * 사업자 등록번호 신청 (ROLE_USER 일떄만 가능)
